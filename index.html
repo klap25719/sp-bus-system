@@ -6,35 +6,40 @@
         <link rel="stylesheet" href="css/style.css">
     </head>
     <body>
-        <img src="images/SAINT-PAUL.jpeg" class="header-img">
         <div class="container">
-        <h1>Δήλωση Απουσίας / Αιτήματος</h1>
-        <p>Συμπληρώστε την αντίστοιχη φόρμα για να δηλώσετε την απουσία ενός μαθητή ή
-            να δηλώσετε κάποιο αίτημα που να αφορά τη μετακίνηση κάποιου μαθητή.
-        </p>
+            <img src="images/SAINT-PAUL.jpeg" class="header-img">
+            <h1>Δήλωση Απουσίας / Αιτήματος</h1>
+            <p>Συμπληρώστε την αντίστοιχη φόρμα για να δηλώσετε την απουσία ενός μαθητή ή
+                να δηλώσετε κάποιο αίτημα που να αφορά τη μετακίνηση κάποιου μαθητή.
+            </p>
 
-        <h3>Τύπος Δήλωσης</h3>
-        <input type="radio" name="tab" id="tab1">
-        <label for="tab1" class="btn">Απουσία</label>
+            <h3>Τύπος Δήλωσης</h3>
+            <input type="radio" name="tab" id="tab1">
+            <label for="tab1" class="btn">Απουσία</label>
 
-        <input type="radio" name="tab" id="tab2">
-        <label for="tab2" class="btn">Αίτημα</label>
+            <input type="radio" name="tab" id="tab2">
+            <label for="tab2" class="btn">Αίτημα</label>
         
-        <div class="absence">
-            <h3>Δήλωση Απουσίας</h3>
-            <select name="students">
-                <option value="Χατζηνικολάου Γεωργία">Χατζηνικολάου Γεωργία</option>
-                <option value="Χατζηνικολάου Σπύρος">Χατζηνικολάου Σπύρος</option>
-            </select>
-        </div>
+            <div class="absence">
+                <h3>Δήλωση Απουσίας</h3>
+                <select name="students">
+                    <option value="Χατζηνικολάου Γεωργία">Χατζηνικολάου Γεωργία</option>
+                    <option value="Χατζηνικολάου Σπύρος">Χατζηνικολάου Σπύρος</option>
+                </select>
+                <div class="buttons">
+                    <input type="submit" value="Υποβολή" name="sbutton1">
+                    <input type="reset" value="Καθαρισμός" name="rbutton1">
+                </div>
+            </div>
 
-        <div class="request">
-            <h3>Αίτημα Επιβίβασης</h3>
-            <input type="text" placeholder="Καταγραφή αιτήματος">
-        </div>
-        </div>
-        <input type="submit" value="Υποβολή" name="sbutton1">
-        <input type="reset" value="Καθαρισμός" name="rbutton1">
+            <div class="request">
+                <h3>Αίτημα Επιβίβασης</h3>
+                <input type="text" placeholder="Καταγραφή αιτήματος">
+                <div class="buttons">
+                    <input type="submit" value="Υποβολή" name="sbutton1">
+                    <input type="reset" value="Καθαρισμός" name="rbutton1">
+                </div>
+            </div>
         </div>
     </body>
 </html>

@@ -1,55 +1,56 @@
 input[type="radio"] {
-  display: none;
+    display: none;
 }
 
 .btn {
-  padding: 8px 16px;
-  border: 1px solid #ccc;
-  cursor: pointer;
-  margin-right: 10px;
-  display: inline-block;
-  border-radius: 6px;
-  background: #eee;
-  transition: 0.2s;
+    padding: 8px 16px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    margin-right: 10px;
+    display: inline-block;
+    border-radius: 6px;
+    background: #eee;
+    transition: 0.2s;
 }
 
 .btn:hover {
     background: #ddd;
 }
 .content {
-  display: none;
-  margin-top: 20px;
+    display: none;
+    margin-top: 20px;
 }
 
 .request, .absence {
     display: none;
 }
-/* δείχνει Απουσία */
-#tab1:checked ~ .absence{
-  display: block;
+
+.buttons {
+    display: none;
 }
 
-/* δείχνει Αίτημα */
+#tab1:checked ~ .absence {
+    display: block;
+}
+
 #tab2:checked ~ .request {
-  display: block;
+    display: block;
 }
-
 
 #tab1:checked + .btn {
-    background : rgb(143, 143, 220);
-    color: white;
+    background : rgb(246, 224, 24);
+    color: black;
 }
 
 #tab2:checked + .btn {
-    background : rgb(143, 143, 220);
-    color: white;
+    background : rgb(246, 224, 24);
+    color: black;
 }
 
 .header-img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-  display: block;
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
 }
 
 body {
@@ -59,9 +60,53 @@ body {
 }
 
 .container {
-  max-width: 800px;
-  margin: 20px auto;
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
+    max-width: 800px;
+    margin: 20px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+input, select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+input[type="submit"] {
+    width: auto;
+    background: #2196F3;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background: #1976D2;
+}
+
+input[type="reset"] {
+    width: auto;
+    background: #e0e0e0;
+    color: black;
+    border: none;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+input[type="reset"]:hover {
+    background: #cfcfcf;
+}
+
+.buttons {
+    margin-top: 20px;
+    display: block;
 }
