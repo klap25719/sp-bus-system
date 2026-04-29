@@ -1,0 +1,251 @@
+/* Βασικές Ρυθμίσεις */
+/* Βασικές Ρυθμίσεις */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    color: #333;
+
+    /* 1. Το βασικό παστέλ κίτρινο */
+    background-color: #fdfd96; 
+
+    /* 2. Το μοτίβο με τις βούλες */
+    background-image: radial-gradient(rgba(255, 255, 255, 0.5) 2px, transparent 2px);
+    
+    /* 3. Η απόσταση μεταξύ των βουλών */
+    background-size: 25px 25px;
+}
+
+header {
+    background-color: #0047ab;
+    color: white;
+    padding: 15px 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Αυτό ευθυγραμμίζει το λογότυπο και το κείμενο */
+.logo-container {
+    display: flex;
+    align-items: center;  /* Κεντράρισμα καθ' ύψος */
+    justify-content: center; /* Κεντράρισμα στο κέντρο της σελίδας */
+    gap: 20px; /* Απόσταση μεταξύ εικόνας και κειμένου */
+}
+
+.logo-text h1 {
+    margin: 0;
+    font-size: 2.2rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* Δίνει βάθος στα γράμματα */
+}
+
+.school-logo {
+    height: 80px; /* Ρύθμισε το ύψος ανάλογα με το λογότυπό σου */
+    width: auto;
+}
+
+.logo-text {
+    text-align: left; /* Το κείμενο να στοιχίζεται αριστερά ως προς το λογότυπο */
+}
+
+.logo-text h1 {
+    margin: 0;
+    font-size: 2.2rem;
+}
+
+.logo-text p {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.container {
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* Φωτογραφία */
+.main-photo {
+    width: 100%;           /* Πιάνει όλο το διαθέσιμο πλάτος του container */
+    max-width: 900px;      /* Δεν επιτρέπουμε να ξεχειλώσει πάνω από 900px */
+    height: 450px;         /* Ορίζουμε ένα σταθερό ύψος για ομοιομορφία */
+    
+    /* Η ΠΙΟ ΣΗΜΑΝΤΙΚΗ ΕΝΤΟΛΗ: */
+    object-fit: cover;     /* Η εικόνα γεμίζει το πλαίσιο χωρίς να παραμορφώνεται, κόβοντας αν χρειαστεί λίγο από τα πλάγια */
+    
+    object-position: center; /* Εστιάζει στο κέντρο της φωτογραφίας */
+    border-radius: 15px;
+    border: 5px solid white;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    margin-bottom: 20px;
+    transition: transform 0.3s ease;
+}
+
+/* Για κινητά, χαμηλώνουμε το ύψος για να μην πιάνει όλη την οθόνη */
+@media (max-width: 768px) {
+    .main-photo {
+        height: 250px;
+    }
+}
+
+/* Για κινητά, χαμηλώνουμε το ύψος για να μην πιάνει όλη την οθόνη */
+@media (max-width: 768px) {
+    .main-photo {
+        height: 250px;
+    }
+}
+
+.main-photo:hover {
+    transform: scale(1.02); /* Μεγαλώνει ελάχιστα όταν ακουμπάς το ποντίκι */
+    transition: transform 0.5s ease;
+    cursor: pointer;
+}
+
+/* Κείμενο */
+.intro-text h2 {
+    color: #0047ab;
+    margin-top: 20px;
+}
+
+.intro-text p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+/* Κουμπιά */
+.user-roles {
+    margin-top: 40px;
+    padding: 30px;
+    background-color: rgba(255, 255, 255, 0.5); /* Ημιδιαφανές λευκό */
+    border-radius: 20px;
+}
+
+.button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.btn {
+    display: inline-block;
+    width: 280px;
+    padding: 15px 25px;
+    background-color: #0047ab;
+    color: white;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: bold;
+    transition: transform 0.3s, background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #002d6b;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.btn i {
+    margin-right: 10px; /* Απόσταση εικονιδίου από το κείμενο */
+    font-size: 1.1rem;   /* Μέγεθος εικονιδίου */
+    vertical-align: middle; /* Ευθυγράμμιση στο κέντρο */
+}
+
+footer {
+    margin-top: 50px;
+    padding: 20px;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* Ρυθμίσεις για Κινητά */
+@media (max-width: 768px) {
+    
+    /* Το Header (Λογότυπο + Τίτλος) να μπαίνει το ένα κάτω από το άλλο */
+    .logo-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .logo-text {
+        text-align: center; /* Κεντράρισμα κειμένου στο κινητό */
+    }
+
+    .logo-text h1 {
+        font-size: 1.8rem; /* Λίγο μικρότερα γράμματα για να χωράνε */
+    }
+
+    /* Η φωτογραφία να πιάνει σχεδόν όλο το πλάτος */
+    .main-photo {
+        width: 95%;
+        border-width: 3px;
+    }
+
+    /* Τα κουμπιά να γίνονται λίγο πιο μεγάλα για να πατιούνται εύκολα με το δάχτυλο */
+    .btn {
+        width: 90%; /* Σχεδόν όλο το πλάτος της οθόνης */
+        padding: 18px 0;
+        font-size: 1rem;
+    }
+
+    .user-roles {
+        padding: 20px 10px;
+    }
+}
+
+/* Σκιά στον Τίτλο */
+.logo-text h1 {
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+/* Ρυθμίσεις Sidebar */
+.sidebar {
+    height: 100%;
+    width: 0; 
+    position: fixed;
+    z-index: 2000;
+    top: 0;
+    left: 0;
+    background-color: #0047ab;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+    text-align: left;
+    box-shadow: 4px 0 10px rgba(0,0,0,0.3);
+}
+
+.menu-section h4 {
+    color: #fdfd96;
+    padding: 15px 20px;
+    margin: 0;
+    font-size: 1.1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.sidebar ul { list-style: none; padding: 0; margin: 0; }
+
+.sidebar a {
+    padding: 12px 25px;
+    text-decoration: none;
+    font-size: 15px;
+    color: white;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidebar a:hover, .sidebar a.active {
+    background-color: #fdfd96;
+    color: #0047ab;
+    font-weight: bold;
+}
+
+.close-btn {
+    position: absolute; top: 10px; right: 20px;
+    font-size: 30px; background: none; border: none; color: white; cursor: pointer;
+}
+
+.menu-btn {
+    position: fixed; top: 20px; left: 20px;
+    background-color: #0047ab; color: white; border: none;
+    padding: 10px 20px; border-radius: 5px; cursor: pointer; z-index: 1000;
+}
