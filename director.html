@@ -285,6 +285,12 @@
             color: #5c7a7e;
             border-top: 1px solid #deeae6;
         }
+        .inactive-list {
+            background: #fff5f5;
+            padding: 0.8rem;
+            border-radius: 1rem;
+            border: 1px solid #ffe5d9;
+        }
 
         @media (max-width: 680px) {
             body {
@@ -353,17 +359,26 @@
         <div class="dashboard-grid">
             <!-- Πίνακας με ποσοστά ενεργών δρομολογίων -->
             <div class="card">
-                <h3>🚌 Ποσοστά ενεργών δρομολογίων</h3>
-                <div class="stat-number">12 / 14</div>
-                <div class="progress-bar-container">
-                    <div class="progress-bar">85.7%</div>
-                </div>
-                <div class="stat-label">Σύνολο δρομολογίων: 14 | Ενεργά: 12</div>
-                <div style="margin-top: 1rem;">
-                    <span class="badge">✅ 12 σε λειτουργία</span>
-                    <span class="badge warning-badge">⚠️ 2 ανενεργά (λόγω έλλειψης οδηγών)</span>
-                </div>
-            </div>
+    <h3>🚌 Ποσοστά ενεργών δρομολογίων</h3>
+    <div class="stat-number">25 / 27</div>
+    <div class="progress-bar-container">
+        <div class="progress-bar" style="width: 92.6%;">92.6%</div>
+    </div>
+    <div class="stat-label" style="margin-bottom: 1rem;">Σύνολο: 27 | Ενεργά: 25 | Ανενεργά: 2</div>
+    
+    <div class="inactive-list">
+        <p style="font-size: 0.85rem; font-weight: 600; color: #c44536; margin-bottom: 0.5rem;">Ανενεργά δρομολόγια:</p>
+        <table class="data-table">
+            <thead>
+                <tr><th>ID</th><th>Περιοχή</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>#3</td><td>Πειραιάς - Μοσχάτο</td></tr>
+                <tr><td>#8</td><td>Γλυφάδα - Ελληνικό</td></tr>
+            </tbody>
+        </table>
+    </div>
+    </div>
 
             <!-- Διάγραμμα πίτας με τις πηγές δήλωσης απουσίας -->
             <div class="card">
@@ -384,14 +399,14 @@
                 <h3>📅 Ιστορικό πληρότητας δρομολογίων</h3>
                 <table class="data-table">
                     <thead>
-                        <tr><th>Ημερομηνία</th><th>Σύνολο μαθητών</th><th>Πληρότητα (%)</th><th>Καθυστερήσεις</th></tr>
+                        <tr><th>Ημερομηνία</th><th>Σύνολο μαθητών</th><th>Πληρότητα (%)</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td>28/04/2026</td><td>342</td><td>88%</td><td>2 λεπτά</td></tr>
-                        <tr><td>27/04/2026</td><td>338</td><td>87%</td><td>1 λεπτό</td></tr>
-                        <tr><td>26/04/2026</td><td>330</td><td>85%</td><td>0</td></tr>
-                        <tr><td>25/04/2026</td><td>318</td><td>82%</td><td>5 λεπτά</td></tr>
-                        <tr><td>24/04/2026</td><td>356</td><td>91%</td><td>0</td></tr>
+                        <tr><td>28/04/2026</td><td>342</td><td>88%</td></tr>
+                        <tr><td>27/04/2026</td><td>338</td><td>87%</td></tr>
+                        <tr><td>26/04/2026</td><td>330</td><td>85%</td></tr>
+                        <tr><td>25/04/2026</td><td>318</td><td>82%</td></tr>
+                        <tr><td>24/04/2026</td><td>356</td><td>91%</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -405,9 +420,9 @@
                     <tr><th>Ονοματεπώνυμο</th><th>Τάξη</th><th>Αδήλωτες απουσίες (φετινό έτος)</th><th>Τελευταία αδήλωτη</th></tr>
                 </thead>
                 <tbody>
-                    <tr><td>Αντιωνίου Μαρία</td><td>Γ' Γυμνασίου</td><td>3</td><td>26/04/2026</td></tr>
+                    <tr><td>Αντωνίου Μαρία</td><td>Γ' Γυμνασίου</td><td>3</td><td>26/04/2026</td></tr>
                     <tr><td>Παπαδόπουλος Κωνσταντίνος</td><td>Α' Λυκείου</td><td>2</td><td>25/04/2026</td></tr>
-                    <tr><td>Γεωργίου Ελένη</td><td>Ε' Δημοτικού</td><td>1</td><td>22/04/2026</td></tr>
+                    <tr><td>Γεωργίου Ελένη</td><td>Γ' Λυκείου</td><td>1</td><td>22/04/2026</td></tr>
                     <tr><td>Νικολάου Ανδρέας</td><td>Β' Γυμνασίου</td><td>1</td><td>20/04/2026</td></tr>
                 </tbody>
             </table>
@@ -416,24 +431,54 @@
                 χωρίς προηγούμενη ενημέρωση γονέα, υπαλλήλου ή υπευθύνου γραφείου κίνησης.
             </div>
         </div>
-
-        <!-- Πρόσθετος πίνακας με αναλυτικά ποσοστά ανά δρομολόγιο -->
+    <!-- Πίνακας με αναλυτικά ποσοστά ενεργών δρομολογίων ανά περιοχή -->
         <div class="card">
-            <h3>📊 Αναλυτικά ποσοστά ενεργών δρομολογίων ανά περιοχή</h3>
-            <table class="data-table">
-                <thead>
-                    <tr><th>Δρομολόγιο</th><th>Περιοχή</th><th>Κατάσταση</th><th>Πληρότητα</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td>#1</td><td>Κηφισιά - Μαρούσι</td><td><span class="badge">Ενεργό</span></td><td>92%</td></tr>
-                    <tr><td>#2</td><td>Χαλάνδρι - Αγία Παρασκευή</td><td><span class="badge">Ενεργό</span></td><td>88%</td></tr>
-                    <tr><td>#3</td><td>Πειραιάς - Μοσχάτο</td><td><span class="badge warning-badge">Ανενεργό</span></td><td>-</td></tr>
-                    <tr><td>#4</td><td>Γλυφάδα - Βούλα</td><td><span class="badge">Ενεργό</span></td><td>79%</td></tr>
-                    <tr><td>#5</td><td>Περιστέρι - Αιγάλεω</td><td><span class="badge">Ενεργό</span></td><td>84%</td></tr>
-                    <tr><td>#6</td><td>Ίλιον - Πετρούπολη</td><td><span class="badge">Ενεργό</span></td><td>76%</td></tr>
-                    <tr><td>#7</td><td>Άλιμος - Ελληνικό</td><td><span class="badge">Ενεργό</span></td><td>91%</td></tr>
-                </tbody>
-            </table>
+            <h3>📊 Αναλυτικά ποσοστά δρομολογίων (Σύνολο: 27)</h3>
+            
+            <div class="filter-controls" style="margin-bottom: 1rem; display: flex; gap: 0.5rem;">
+                <button onclick="filterRoutes('all')" class="login-btn" style="padding: 0.3rem 0.8rem; font-size: 0.8rem;">Όλα</button>
+                <button onclick="filterRoutes('active')" class="login-btn" style="padding: 0.3rem 0.8rem; font-size: 0.8rem; background: #2c6e4f;">Ενεργά</button>
+                <button onclick="filterRoutes('inactive')" class="login-btn" style="padding: 0.3rem 0.8rem; font-size: 0.8rem; background: #c44536;">Ανενεργά</button>
+            </div>
+
+            <div style="max-height: 400px; overflow-y: auto;">
+                <table class="data-table" id="routesTable">
+                    <thead>
+                        <tr><th>Δρομολόγιο</th><th>Περιοχή</th><th>Κατάσταση</th><th>Πληρότητα</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr data-status="active"><td>#1</td><td>Κηφισιά - Μαρούσι</td><td><span class="badge">Ενεργό</span></td><td>92%</td></tr>
+                        <tr data-status="active"><td>#2</td><td>Χαλάνδρι - Αγία Παρασκευή</td><td><span class="badge">Ενεργό</span></td><td>88%</td></tr>
+                        <tr data-status="active"><td>#4</td><td>Γλυφάδα - Βούλα</td><td><span class="badge">Ενεργό</span></td><td>79%</td></tr>
+                        <tr data-status="active"><td>#5</td><td>Περιστέρι - Αιγάλεω</td><td><span class="badge">Ενεργό</span></td><td>84%</td></tr>
+                        <tr data-status="active"><td>#6</td><td>Ίλιον - Πετρούπολη</td><td><span class="badge">Ενεργό</span></td><td>76%</td></tr>
+                        <tr data-status="active"><td>#7</td><td>Άλιμος - Ελληνικό</td><td><span class="badge">Ενεργό</span></td><td>91%</td></tr>
+                        <tr data-status="active"><td>#9</td><td>Νέα Σμύρνη - Καλλιθέα</td><td><span class="badge">Ενεργό</span></td><td>85%</td></tr>
+                        <tr data-status="active"><td>#10</td><td>Ζωγράφου - Καισαριανή</td><td><span class="badge">Ενεργό</span></td><td>82%</td></tr>
+                        <tr data-status="active"><td>#11</td><td>Βύρωνας - Παγκράτι</td><td><span class="badge">Ενεργό</span></td><td>78%</td></tr>
+                        <tr data-status="active"><td>#12</td><td>Γαλάτσι - Πατήσια</td><td><span class="badge">Ενεργό</span></td><td>89%</td></tr>
+                        <tr data-status="active"><td>#13</td><td>Μαρούσι - Πεύκη</td><td><span class="badge">Ενεργό</span></td><td>93%</td></tr>
+                        <tr data-status="active"><td>#14</td><td>Βριλήσσια - Χαλάνδρι</td><td><span class="badge">Ενεργό</span></td><td>81%</td></tr>
+                        <tr data-status="active"><td>#15</td><td>Αγία Παρασκευή - Γέρακας</td><td><span class="badge">Ενεργό</span></td><td>87%</td></tr>
+                        <tr data-status="active"><td>#16</td><td>Κορυδαλλός - Νίκαια</td><td><span class="badge">Ενεργό</span></td><td>74%</td></tr>
+                        <tr data-status="active"><td>#17</td><td>Αιγάλεω - Χαϊδάρι</td><td><span class="badge">Ενεργό</span></td><td>80%</td></tr>
+                        <tr data-status="active"><td>#18</td><td>Ηλιούπολη - Αργυρούπολη</td><td><span class="badge">Ενεργό</span></td><td>95%</td></tr>
+                        <tr data-status="active"><td>#19</td><td>Μελίσσια - Κηφισιά</td><td><span class="badge">Ενεργό</span></td><td>77%</td></tr>
+                        <tr data-status="active"><td>#20</td><td>Πικέρμι - Παλλήνη</td><td><span class="badge">Ενεργό</span></td><td>83%</td></tr>
+                        <tr data-status="active"><td>#21</td><td>Μαρκόπουλο - Κορωπί</td><td><span class="badge">Ενεργό</span></td><td>86%</td></tr>
+                        <tr data-status="active"><td>#22</td><td>Βάρη - Βούλα</td><td><span class="badge">Ενεργό</span></td><td>89%</td></tr>
+                        <tr data-status="active"><td>#23</td><td>Διόνυσος - Εκάλη</td><td><span class="badge">Ενεργό</span></td><td>72%</td></tr>
+                        <tr data-status="active"><td>#24</td><td>Χολαργός - Παπάγου</td><td><span class="badge">Ενεργό</span></td><td>84%</td></tr>
+                        <tr data-status="active"><td>#25</td><td>Νέα Φιλαδέλφεια</td><td><span class="badge">Ενεργό</span></td><td>79%</td></tr>
+                        <tr data-status="active"><td>#26</td><td>Περιστέρι - Ανθούπολη</td><td><span class="badge">Ενεργό</span></td><td>81%</td></tr>
+                        <tr data-status="active"><td>#27</td><td>Μαρούσι - Λυκόβρυση </td><td><span class="badge">Ενεργό</span></td><td>88%</td></tr>
+                        
+                        <tr data-status="inactive"><td>#3</td><td>Πειραιάς - Μοσχάτο</td><td><span class="badge warning-badge">Ανενεργό</span></td><td>-</td></tr>
+                        <tr data-status="inactive"><td>#8</td><td>Γλυφάδα - Ελληνικό </td><td><span class="badge warning-badge">Ανενεργό</span></td><td>-</td></tr>
+</tbody>    
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
