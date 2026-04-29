@@ -5,6 +5,33 @@
         <title>Δήλωση Απουσίας / Αιτήματος</title>
         <link rel="stylesheet" href="css/style.css">
     </head>
+    <!--function that confirms the user for his submission-->
+    <script>
+        function submitForm(event, type) {
+            //Prevent the default form submission
+            event.preventDefault();
+ 
+            //Get the popup container element
+            const popup = document.getElementById("popup");
+            //Get the text element inside the popup
+            const text = document.getElementById("popup-text");
+
+            //Check the type of submission
+            if (type == 'absence') {
+                text.innerText = "Η δήλωσή σας υποβλήθηκε επιτυχώς! ✅";
+            } else {
+                text.innerText = "Το αίτημά σας υποβλήθηκε επιτυχώς! ✅";
+            }
+
+            //Display the popup
+            popup.style.display = "block";
+        }
+
+        function closePopup() {
+            //Hide the popup when the user clicks the close button
+            document.getElementById("popup").style.display = "none";
+        }
+    </script>
     <body>
         <div class="container">
             <img src="images/SAINT-PAUL.jpeg" class="header-img">
@@ -14,31 +41,113 @@
             </p>
 
             <h3>Τύπος Δήλωσης</h3>
+            <!--Two buttons for two submission types-->
             <input type="radio" name="tab" id="tab1">
             <label for="tab1" class="btn">Απουσία</label>
 
             <input type="radio" name="tab" id="tab2">
             <label for="tab2" class="btn">Αίτημα</label>
-        
-            <div class="absence">
-                <h3>Δήλωση Απουσίας</h3>
-                <select name="students">
-                    <option value="Χατζηνικολάου Γεωργία">Χατζηνικολάου Γεωργία</option>
-                    <option value="Χατζηνικολάου Σπύρος">Χατζηνικολάου Σπύρος</option>
+
+            
+            <form class="absence" onsubmit="submitForm(event, 'absence')">
+                <h3>Δρομολόγιο</h3>
+                <select name="route">
+                    <option value="" disabled selected>Επιλέξτε δρομολόγιο...</option>
+
+                    <option value="Δρομολόγιο 1 (Κηφισιά - Μαρούσι)">Δρομολόγιο 1 (Κηφισιά - Μαρούσι)</option>
+                    <option value="Δρομολόγιο 2 (Χαλάνδρι - Αγία Παρασκευή)">Δρομολόγιο 2 (Χαλάνδρι - Αγία Παρασκευή)</option>
+                    <option value="Δρομολόγιο 3 (Γλυφάδα - Βούλα)">Δρομολόγιο 3 (Γλυφάδα - Βούλα)</option>
+                    <option value="Δρομολόγιο 4 (Περιστέρι - Αιγάλεω)">Δρομολόγιο 4 (Περιστέρι - Αιγάλεω)</option>
+                    <option value="Δρομολόγιο 5 (Ίλιον - Πετρούπολη)">Δρομολόγιο 5 (Ίλιον - Πετρούπολη)</option>
+                    <option value="Δρομολόγιο 6 (Άλιμος - Ελληνικό)">Δρομολόγιο 6 (Άλιμος - Ελληνικό)</option>
+                    <option value="Δρομολόγιο 7 (Νέα Σμύρνη - Καλλιθέα)">Δρομολόγιο 7 (Νέα Σμύρνη - Καλλιθέα)</option>
+                    <option value="Δρομολόγιο 8 (Ζωγράφου - Καισαριανή)">Δρομολόγιο 8 (Ζωγράφου - Καισαριανή)</option>
+                    <option value="Δρομολόγιο 9 (Βύρωνας - Παγκράτι)">Δρομολόγιο 9 (Βύρωνας - Παγκράτι)</option>
+                    <option value="Δρομολόγιο 10 (Γαλάτσι - Πατήσια)">Δρομολόγιο 10 (Γαλάτσι - Πατήσια)</option>
+                    <option value="Δρομολόγιο 11 (Μαρούσι - Πεύκη)">Δρομολόγιο 11 (Μαρούσι - Πεύκη)</option>
+                    <option value="Δρομολόγιο 12 (Βριλήσσια - Χαλάνδρι)">Δρομολόγιο 12 (Βριλήσσια - Χαλάνδρι)</option>
+                    <option value="Δρομολόγιο 13 (Αγία Παρασκευή - Γέρακας)">Δρομολόγιο 13 (Αγία Παρασκευή - Γέρακας)</option>
+                    <option value="Δρομολόγιο 14 (Κορυδαλλός - Νίκαια)">Δρομολόγιο 14 (Κορυδαλλός - Νίκαια)</option>
+                    <option value="Δρομολόγιο 15 (Αιγάλεω - Χαϊδάρι)">Δρομολόγιο 15 (Αιγάλεω - Χαϊδάρι)</option>
+                    <option value="Δρομολόγιο 16 (Ηλιούπολη - Αργυρούπολη)">Δρομολόγιο 16 (Ηλιούπολη - Αργυρούπολη)</option>
+                    <option value="Δρομολόγιο 17 (Μελίσσια - Κηφισιά)">Δρομολόγιο 17 (Μελίσσια - Κηφισιά)</option>
+                    <option value="Δρομολόγιο 18 (Πικέρμι - Παλλήνη)">Δρομολόγιο 18 (Πικέρμι - Παλλήνη)</option>
+                    <option value="Δρομολόγιο 19 (Μαρκόπουλο - Κορωπί)">Δρομολόγιο 19 (Μαρκόπουλο - Κορωπί)</option>
+                    <option value="Δρομολόγιο 20 (Βάρη - Βούλα)">Δρομολόγιο 20 (Βάρη - Βούλα)</option>
+                    <option value="Δρομολόγιο 21 (Διόνυσος - Εκάλη)">Δρομολόγιο 21 (Διόνυσος - Εκάλη)</option>
+                    <option value="Δρομολόγιο 22 (Χολαργός - Παπάγου)">Δρομολόγιο 22 (Χολαργός - Παπάγου)</option>
+                    <option value="Δρομολόγιο 23 (Νέα Φιλαδέλφεια)">Δρομολόγιο 23 (Νέα Φιλαδέλφεια)</option>
+                    <option value="Δρομολόγιο 24 (Περιστέρι - Ανθούπολη)">Δρομολόγιο 24 (Περιστέρι - Ανθούπολη)</option>
+                    <option value="Δρομολόγιο 25 (Μαρούσι - Λυκόβρυση)">Δρομολόγιο 25 (Μαρούσι - Λυκόβρυση)</option>
+                    <option value="Δρομολόγιο 26 (Πειραιάς - Μοσχάτο)">Δρομολόγιο 26 (Πειραιάς - Μοσχάτο)</option>
+                    <option value="Δρομολόγιο 27 (Γλυφάδα - Ελληνικό)">Δρομολόγιο 27 (Γλυφάδα - Ελληνικό)</option>
                 </select>
+
+                <h3>Δήλωση Απουσίας</h3>
+                <input type="checkbox" name="students" value="Ζαφειροπούλου Αναστασία">Ζαφειροπούλου Αναστασία</label><br>
+                <input type="checkbox" name="students" value="Καμαριάρης Γεώργιος">Καμαριάρης Γεώργιος</label><br>
+                <input type="checkbox" name="students" value="Καμαριάρη Ευφροσύνη">Καμαριάρη Ευφροσύνη</label><br>
+                <input type="checkbox" name="students" value="Κλαπαύτης Γεώργιος">Κλαπαύτης Γεώργιος</label><br>
+                <input type="checkbox" name="students" value="Σμυρνιός Σταύρος">Σμυρνιός Σταύρος</label><br>
+                <input type="checkbox" name="students" value="Τσιμιδάκη Αγγελική">Τσιμιδάκη Αγγελική</label><br>
+                <input type="checkbox" name="students" value="Τσιμιδάκη Κωνσταντίνα">Τσιμιδάκη Κωνσταντίνα</label><br>
+                <input type="checkbox" name="students" value="Χατζηνικολάου Γεωργία">Χατζηνικολάου Γεωργία</label><br>
+                <input type="checkbox" name="students" value="Χατζηνικολάου Ιωάννα">Χατζηνικολάου Ιωάννα</label><br>
+                <input type="checkbox" name="students" value="Χατζηνικολάου Σπύρος">Χατζηνικολάου Σπύρος</label><br>
+
                 <div class="buttons">
                     <input type="submit" value="Υποβολή" name="sbutton1">
                     <input type="reset" value="Καθαρισμός" name="rbutton1">
                 </div>
-            </div>
+            </form>
 
-            <div class="request">
+            <form class="request" onsubmit="submitForm(event, 'request')">
+                <h3>Δρομολόγιο</h3>
+                <select name="route">
+                    <option value="" disabled selected>Επιλέξτε δρομολόγιο...</option>
+
+                    <option value="Δρομολόγιο 1 (Κηφισιά - Μαρούσι)">Δρομολόγιο 1 (Κηφισιά - Μαρούσι)</option>
+                    <option value="Δρομολόγιο 2 (Χαλάνδρι - Αγία Παρασκευή)">Δρομολόγιο 2 (Χαλάνδρι - Αγία Παρασκευή)</option>
+                    <option value="Δρομολόγιο 3 (Γλυφάδα - Βούλα)">Δρομολόγιο 3 (Γλυφάδα - Βούλα)</option>
+                    <option value="Δρομολόγιο 4 (Περιστέρι - Αιγάλεω)">Δρομολόγιο 4 (Περιστέρι - Αιγάλεω)</option>
+                    <option value="Δρομολόγιο 5 (Ίλιον - Πετρούπολη)">Δρομολόγιο 5 (Ίλιον - Πετρούπολη)</option>
+                    <option value="Δρομολόγιο 6 (Άλιμος - Ελληνικό)">Δρομολόγιο 6 (Άλιμος - Ελληνικό)</option>
+                    <option value="Δρομολόγιο 7 (Νέα Σμύρνη - Καλλιθέα)">Δρομολόγιο 7 (Νέα Σμύρνη - Καλλιθέα)</option>
+                    <option value="Δρομολόγιο 8 (Ζωγράφου - Καισαριανή)">Δρομολόγιο 8 (Ζωγράφου - Καισαριανή)</option>
+                    <option value="Δρομολόγιο 9 (Βύρωνας - Παγκράτι)">Δρομολόγιο 9 (Βύρωνας - Παγκράτι)</option>
+                    <option value="Δρομολόγιο 10 (Γαλάτσι - Πατήσια)">Δρομολόγιο 10 (Γαλάτσι - Πατήσια)</option>
+                    <option value="Δρομολόγιο 11 (Μαρούσι - Πεύκη)">Δρομολόγιο 11 (Μαρούσι - Πεύκη)</option>
+                    <option value="Δρομολόγιο 12 (Βριλήσσια - Χαλάνδρι)">Δρομολόγιο 12 (Βριλήσσια - Χαλάνδρι)</option>
+                    <option value="Δρομολόγιο 13 (Αγία Παρασκευή - Γέρακας)">Δρομολόγιο 13 (Αγία Παρασκευή - Γέρακας)</option>
+                    <option value="Δρομολόγιο 14 (Κορυδαλλός - Νίκαια)">Δρομολόγιο 14 (Κορυδαλλός - Νίκαια)</option>
+                    <option value="Δρομολόγιο 15 (Αιγάλεω - Χαϊδάρι)">Δρομολόγιο 15 (Αιγάλεω - Χαϊδάρι)</option>
+                    <option value="Δρομολόγιο 16 (Ηλιούπολη - Αργυρούπολη)">Δρομολόγιο 16 (Ηλιούπολη - Αργυρούπολη)</option>
+                    <option value="Δρομολόγιο 17 (Μελίσσια - Κηφισιά)">Δρομολόγιο 17 (Μελίσσια - Κηφισιά)</option>
+                    <option value="Δρομολόγιο 18 (Πικέρμι - Παλλήνη)">Δρομολόγιο 18 (Πικέρμι - Παλλήνη)</option>
+                    <option value="Δρομολόγιο 19 (Μαρκόπουλο - Κορωπί)">Δρομολόγιο 19 (Μαρκόπουλο - Κορωπί)</option>
+                    <option value="Δρομολόγιο 20 (Βάρη - Βούλα)">Δρομολόγιο 20 (Βάρη - Βούλα)</option>
+                    <option value="Δρομολόγιο 21 (Διόνυσος - Εκάλη)">Δρομολόγιο 21 (Διόνυσος - Εκάλη)</option>
+                    <option value="Δρομολόγιο 22 (Χολαργός - Παπάγου)">Δρομολόγιο 22 (Χολαργός - Παπάγου)</option>
+                    <option value="Δρομολόγιο 23 (Νέα Φιλαδέλφεια)">Δρομολόγιο 23 (Νέα Φιλαδέλφεια)</option>
+                    <option value="Δρομολόγιο 24 (Περιστέρι - Ανθούπολη)">Δρομολόγιο 24 (Περιστέρι - Ανθούπολη)</option>
+                    <option value="Δρομολόγιο 25 (Μαρούσι - Λυκόβρυση)">Δρομολόγιο 25 (Μαρούσι - Λυκόβρυση)</option>
+                    <option value="Δρομολόγιο 26 (Πειραιάς - Μοσχάτο)">Δρομολόγιο 26 (Πειραιάς - Μοσχάτο)</option>
+                    <option value="Δρομολόγιο 27 (Γλυφάδα - Ελληνικό)">Δρομολόγιο 27 (Γλυφάδα - Ελληνικό)</option>
+                </select>
+
                 <h3>Αίτημα Επιβίβασης</h3>
                 <input type="text" placeholder="Καταγραφή αιτήματος">
                 <div class="buttons">
                     <input type="submit" value="Υποβολή" name="sbutton1">
                     <input type="reset" value="Καθαρισμός" name="rbutton1">
                 </div>
+            </form>
+        </div>
+        <!--Call the javascript function above for the popup-->
+        <div id="popup" class="popup">
+            <div class="popup-content">
+                <p id="popup-text"></p>
+                <button onclick="closePopup()">OK</button>
             </div>
         </div>
     </body>
