@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Καθορισμός Δρομολογίων</title>
+
+<style>
+/*γραμματοσειρά, χρώμα φόντο, αφαίρεση εξωτερικών κενών, εσωτερικό κενό από άκρα*/
+body{font-family:Arial,sans-serif;background:#f4f6f8;margin:0;padding:30px}
+/*πλάτος, κεντράρισμα, φόντο, εσωτερικά κενά, στρογγυλές γωνίες, σκιά κάτω από κουτί*/
+.container{max-width:1000px;margin:auto;background:#ffffff;padding:25px;border-radius:16px;box-shadow:0 8px 20px rgba(0,0,0,.08)}
+h1{margin-top:0}
+/*διαχωρισμός σελίδας σε 2 ίσες στήλες με κενό*/
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+/*πλαίσιο, χρώμα περιγράμματος, στρογγυλές γωνίες, εσωτερικό κενό*/
+.panel{border:1px solid #ddd;border-radius:12px;padding:16px}
+/*λίστα ονομάτων, ύψος, δυνατότητα σκρολ, εσωτερικό κενό, χρώμα φόντο, στρογγυλές γωνίες*/
+.list{max-height:360px;overflow:auto;padding:8px;background:#fafafa;border-radius:10px}
+/*κουτάκια τσεκ & ονόματα σε ίδια σειρά, με κενό, στοίχιση*/
+.row{display:flex;gap:10px;align-items:center;padding:6px 0;border-bottom:1px solid #eee}
+/*κουμπιά, μέγεθος, περίγραμμα, στρογγυλά, ποντίκι γίνεται χεράκι*/
+button{padding:10px 16px;border:none;border-radius:10px;cursor:pointer;margin:6px 6px 0 0;font-weight:bold}
+.primary{background:#2563eb;color:#fff}.success{background:#16a34a;color:#fff}.warn{background:#f59e0b;color:#fff}.gray{background:#6b7280;color:#fff}
+.route{padding:8px;border-bottom:1px solid #eee}
+input[type=text]{padding:10px;width:100%;border:1px solid #ccc;border-radius:8px;margin-bottom:12px}
+</style>
+</head>
+
+<body>
+<div class="container">
+<h1>Καθορισμός Δρομολογίων</h1>
+<div class="grid">
+<div class="panel">
+<h3>1. Λίστα Μαθητών</h3>
+<input type="text" id="routeName" placeholder="Όνομα Δρομολογίου (π.χ. Saint Paul - Ίλιον)">
+<div class="list" id="studentList"></div>
+<button class="primary" onclick="confirmSelection()">Επιβεβαίωση Επιλογών</button>
+</div>
+<div class="panel">
+<h3>2. Δρομολόγιο</h3>
+<div class="list" id="selectedList"></div>
+<button class="success" onclick="saveRoute()">Καταχώρηση Δρομολογίου</button>
+<button class="warn" onclick="editRoute()">Τροποποίηση Δρομολογίου</button>
+<button class="gray" onclick="newRoute()">Νέο Δρομολόγιο</button>
+</div>
+</div>
+<div class="panel" style="margin-top:24px">
+<h3>Αποθηκευμένα Δρομολόγια</h3>
+<div id="savedRoutes"></div>
+</div>
+</div>
+<script>
+const students=["Νίκος","Μαρία","Ιωάννα","Σπυρίδων","Γεωργία","Δήμητρα","Ιάσονας","Χρήστος","Σταύρος","Αναστασία","Νάνσυ"];
+let currentSelection=[];
+let routes=[];
+//εμφάνιση μαθητών
+function renderStudents(){
+ const list=document.getElementById('studentList');
+ list.innerHTML='';
+ students.forEach(name=>{
+  list.innerHTML+=`<div class='row'><input type='checkbox' value='${name}'><span>${name}</span></div>`;
+ });
+}
+//επιλογή μαθητών
+function confirmSelection(){
+ const checks=[...document.querySelectorAll('#studentList input:checked')];
+ currentSelection=checks.map(c=>c.value);
+ const box=document.getElementById('selectedList');
+ box.innerHTML=currentSelection.map(n=>`<div class='route'>${n}</div>`).join('');
+}
+//αποθήκευση δρομολογίου
+function saveRoute(){
+ const name=document.getElementById('routeName').value||'Χωρίς όνομα';
+ routes.push({name,students:[...currentSelection]});
+ renderRoutes();
+ alert('Το δρομολόγιο καταχωρήθηκε!');
+}
+//εμφάνιση δρομολογίων
+function renderRoutes(){
+    const area=document.getElementById('savedRoutes');
+ area.innerHTML=routes.map((r,i)=>`<div class='route'><strong>${i+1}. ${r.name}</strong> - ${r.students.join(', ')}</div>`).join('');
+}
+//τροποποίηση δρομολογίων
+function editRoute(){ alert('Επίλεξε δρομολόγιο προς τροποποίηση'); }
+//καθαρισμός όλων για δημιουργία νέου δρομολογίου
+function newRoute(){
+ document.getElementById('routeName').value='';
+ document.getElementById('selectedList').innerHTML='';
+ document.querySelectorAll('#studentList input').forEach(c=>c.checked=false);
+ currentSelection=[];
+}
+renderStudents();
+</script>
+</body>
+</html>
