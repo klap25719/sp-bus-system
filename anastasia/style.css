@@ -121,16 +121,17 @@ header {
 
 .button-group {
     display: flex;
-    flex-direction: column;
-    gap: 15px;
-    align-items: center;
-    margin-top: 20px;
+    flex-wrap: wrap; /* Επιτρέπει στα κουμπιά να αλλάζουν γραμμή */
+    gap: 20px;
+    justify-content: center;
+    max-width: 700px; /* Περιορίζουμε το πλάτος για να μπουν ανά δύο */
+    margin: 20px auto 0 auto;
 }
 
 .btn {
     display: inline-block;
-    width: 280px;
-    padding: 15px 25px;
+    width: 280px; /* Σταθερό πλάτος για να είναι ομοιόμορφα */
+    padding: 15px;
     background-color: #0047ab;
     color: white;
     text-decoration: none;
