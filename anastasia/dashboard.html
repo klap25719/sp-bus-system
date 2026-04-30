@@ -34,7 +34,6 @@
             <h4><i class="fas fa-user-tie"></i> Διευθυντής</h4>
             <ul>
                 <li><a href="#" class="menu-item">Προβολή στατιστικών/ιστορικού</a></li>
-                <li><a href="#" class="menu-item">Κατάσταση δρομολογίων</a></li>
             </ul>
         </div>
 
@@ -43,9 +42,13 @@
 
     <button id="menu-toggle" class="menu-btn" style="display:none;"><i class="fas fa-bars"></i> Μενού</button>
 
-    <main id="main-content" style="margin-left: 320px; transition: 0.5s; padding: 40px; text-align: left;">
+    <main id="main-content" style="margin-left: 320px; transition: 0.5s; padding: 0; text-align: left; height: 100vh; overflow: hidden;">
+    <iframe id="content-frame" src="about:blank" style="width: 100%; height: 100%; border: none; display: none;"></iframe>
+    
+    <div id="welcome-message" style="padding: 40px;">
         <h2 style="color: #0047ab;">Πίνακας Διαχείρισης</h2>
         <p>Επιλέξτε μια ενέργεια από το πλευρικό μενού για να συνεχίσετε.</p>
+    </div>
     </main>
 
     <script>
@@ -73,6 +76,25 @@
         menuItems.forEach(item => {
             item.onclick = function() {
                 menuItems.forEach(i => i.classList.remove("active"));
+                this.classList.add("active");
+            };
+        });
+        // για διευθυντή 
+        document.querySelectorAll(".menu-item").forEach(item => {
+            item.onclick = function(e) {
+                // Αν είναι το κουμπί του Διευθυντή
+                if (this.textContent.includes("Προβολή στατιστικών")) {
+                    e.preventDefault();
+                    const iframe = document.getElementById("content-frame");
+                    const welcome = document.getElementById("welcome-message");
+                    
+                    welcome.style.display = "none";
+                    iframe.style.display = "block";
+                    iframe.src = "director.html"; // Φορτώνει τη σελίδα
+                }
+                
+                // Active class logic
+                document.querySelectorAll(".menu-item").forEach(i => i.classList.remove("active"));
                 this.classList.add("active");
             };
         });
