@@ -1,5 +1,4 @@
 /* Βασικές Ρυθμίσεις */
-/* Βασικές Ρυθμίσεις */
 body {
     margin: 0;
     padding: 0;
@@ -7,13 +6,13 @@ body {
     text-align: center;
     color: #333;
 
-    /* 1. Το βασικό παστέλ κίτρινο */
+    /*Το βασικό παστέλ κίτρινο */
     background-color: #fdfd96; 
 
-    /* 2. Το μοτίβο με τις βούλες */
+    /* Το μοτίβο με τις βούλες */
     background-image: radial-gradient(rgba(255, 255, 255, 0.5) 2px, transparent 2px);
     
-    /* 3. Η απόσταση μεταξύ των βουλών */
+    /* Η απόσταση μεταξύ των βουλών */
     background-size: 25px 25px;
 }
 
@@ -157,6 +156,66 @@ footer {
     padding: 20px;
     font-size: 0.9rem;
     color: #666;
+}
+
+.options-box {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    border: 3px solid #0047ab;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    min-width: 320px;
+}
+
+.option-btn {
+    width: 100% !important;
+    margin: 0 !important;
+    text-align: center;
+}
+
+.back-link {
+    color: #0047ab;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* Το κουμπί "Hamburger" */
+.menu-toggle {
+    position: fixed;
+    top: 25px; /* Ύψος από την κορυφή */
+    left: 20px;
+    font-size: 24px;
+    background-color: #0047ab;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: none; /* Ξεκινάει κρυμμένο, το εμφανίζει η JS */
+    z-index: 1000;
+    transition: background 0.3s;
+}
+
+.menu-toggle:hover {
+    background-color: #003580;
+}
+
+/* Το περιεχόμενο της σελίδας */
+#main-content {
+    transition: margin-left 0.3s;
+    padding-top: 25px !important; /* Ίδιο ύψος με το κουμπί για ευθυγράμμιση */
+    padding-left: 80px !important; /* Χώρος αριστερά για να μην πέφτει το κουμπί πάνω στον τίτλο */
+    display: block;
+}
+
+/* Ο τίτλος μέσα στο περιεχόμενο */
+#main-content h2, #main-content h1 {
+    margin-top: 0 !important; /* Αφαιρούμε το προκαθορισμένο κενό του τίτλου */
+    line-height: 1.2;
+    color: #0047ab;
 }
 
 /* Ρυθμίσεις για Κινητά */

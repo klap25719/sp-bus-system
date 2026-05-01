@@ -1,0 +1,46 @@
+<!-- options.html -->
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <title>Saint-Paul | Επιλογές</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body style="background-color: #fdfd96; display: flex; align-items: center; justify-content: center; height: 100vh;">
+
+    <div class="options-container">
+        <h2 id="role-title" style="color: #0047ab; margin-bottom: 25px;"></h2>
+        <div id="options-box" class="options-box">
+            <!-- Εδώ θα μπουν τα κουμπιά από τη JavaScript -->
+        </div>
+        <br>
+        <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Πίσω στην Αρχική</a>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const role = urlParams.get('role');
+        const box = document.getElementById('options-box');
+        const title = document.getElementById('role-title');
+
+        const data = {
+            'parents': { title: 'Γονείς / Υπάλληλοι', menu: ['Δήλωση απουσίας', 'Τροποποίηση απουσίας'] },
+            'drivers': { title: 'Οδηγοί', menu: ['Προβολή Δρομολογίου', 'Αναφορά Προβλήματος'] },
+            'office': { title: 'Γραφείο Κίνησης', menu: ['Τακτικά δρομολόγια', 'Δηλώσεις απουσιών', 'Προβολή & Τροποποίηση', 'Έλεγχος & Οριστικοποίηση'] },
+            'director': { title: 'Διευθυντής', menu: ['Προβολή στατιστικών/ιστορικού', 'Κατάσταση δρομολογίων'] }
+        };
+
+        if(data[role]) {
+            title.innerText = data[role].title;
+            data[role].menu.forEach(item => {
+                const a = document.createElement('a');
+                a.href = `dashboard.html?role=${role}`;
+                a.className = 'btn option-btn';
+                a.innerText = item;
+                box.appendChild(a);
+            });
+        }
+    </script>
+</body>
+</html>

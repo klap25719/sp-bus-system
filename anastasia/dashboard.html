@@ -10,36 +10,24 @@
 <body style="background-color: #fdfd96; background-image: none;">
 
     <div id="sidebar" class="sidebar" style="width: 300px;">
-        <button id="close-btn" class="close-btn">&times;</button>
-        
-        <div class="menu-section">
-            <h4><i class="fas fa-users"></i> Γονείς</h4>
-            <ul>
-                <li><a href="#" class="menu-item">Δήλωση απουσίας</a></li>
-                <li><a href="#" class="menu-item">Τροποποίηση απουσίας</a></li>
-            </ul>
-        </div>
-
-        <div class="menu-section">
-            <h4><i class="fas fa-bus"></i> Γραφείο Κίνησης</h4>
-            <ul>
-                <li><a href="#" class="menu-item">Τακτικά δρομολόγια</a></li>
-                <li><a href="#" class="menu-item">Δηλώσεις απουσιών</a></li>
-                <li><a href="#" class="menu-item">Προβολή και Τροποποίηση</a></li>
-                <li><a href="#" class="menu-item">Έλεγχος και οριστικοποίηση</a></li>
-            </ul>
-        </div>
-
-        <div class="menu-section">
-            <h4><i class="fas fa-user-tie"></i> Διευθυντής</h4>
-            <ul>
-                <li><a href="#" class="menu-item">Προβολή στατιστικών/ιστορικού</a></li>
-                <li><a href="#" class="menu-item">Κατάσταση δρομολογίων</a></li>
-            </ul>
-        </div>
-
-        <a href="index.html" style="margin-top: 30px; border-top: 1px solid white;"><i class="fas fa-home"></i> Επιστροφή στην Αρχική</a>
+    <button id="close-btn" class="close-btn">&times;</button>
+    
+    <!-- Εδώ θα εμφανίζονται οι επιλογές του ρόλου -->
+    <div id="dynamic-menu" class="menu-section">
+        <h4 id="menu-title"></h4>
+        <ul id="menu-list">
+            <!-- Τα <li><a> θα μπουν εδώ από τη JS -->
+        </ul>
     </div>
+
+    <hr style="border: 0.5px solid rgba(255,255,255,0.2); margin: 20px 0;">
+    <a href="index.html" class="menu-item"><i class="fas fa-home"></i> Επιστροφή στην Αρχική</a>
+    </div>
+
+    <!-- Κουμπί για να ξανανοίγει το μενού (Menu Toggle) -->
+    <button id="menu-toggle" class="menu-toggle">
+    <i class="fas fa-bars"></i>
+    </button>
 
     <button id="menu-toggle" class="menu-btn" style="display:none;"><i class="fas fa-bars"></i> Μενού</button>
 
@@ -49,33 +37,75 @@
     </main>
 
     <script>
-        const sidebar = document.getElementById("sidebar");
-        const menuToggle = document.getElementById("menu-toggle");
-        const closeBtn = document.getElementById("close-btn");
-        const mainContent = document.getElementById("main-content");
-        const menuItems = document.querySelectorAll(".menu-item");
+    const urlParams = new URLSearchParams(window.location.search);
+    const role = urlParams.get('role');
 
-        // Λειτουργία Κλεισίματος
+    const sidebar = document.getElementById("sidebar");
+    const menuToggle = document.getElementById("menu-toggle");
+    const menuList = document.getElementById('menu-list');
+    const menuTitle = document.getElementById('menu-title');
+    const mainContent = document.getElementById("main-content");
+    const closeBtn = document.getElementById("close-btn");
+
+    const roleData = {
+        'parents': { title: 'Γονείς', items: ['Δήλωση απουσίας', 'Τροποποίηση απουσίας'] },
+        'office': { title: 'Γραφείο Κίνησης', items: ['Τακτικά δρομολόγια', 'Δηλώσεις απουσιών', 'Προβολή & Τροποποίηση', 'Έλεγχος & Οριστικοποίηση'] },
+        'director': { title: 'Διευθυντής', items: ['Προβολή στατιστικών', 'Κατάσταση δρομολογίων'] }
+    };
+
+    // ΠΕΡΙΠΤΩΣΗ ΟΔΗΓΩΝ
+   if (role === 'drivers') {
+    if(sidebar) sidebar.remove();
+    if(menuToggle) menuToggle.remove();
+    
+    //Σπρώχνουμε το περιεχόμενο αρκετά κάτω για να χωρέσει το κουμπί από πάνω
+    mainContent.style.setProperty('padding-top', '120px', 'important');
+    mainContent.style.setProperty('padding-left', '20px', 'important');
+    mainContent.style.marginLeft = "20px";
+
+    //Φτιάχνουμε το κουμπί
+    const backBtn = document.createElement('a');
+    backBtn.href = "index.html";
+    backBtn.innerHTML = '<i class="fas fa-arrow-left"></i> Επιστροφή στην Αρχική';
+    
+    backBtn.style.cssText = `
+        position: fixed; 
+        top: 20px; 
+        left: 20px; 
+        background: #0047ab; 
+        color: white; 
+        padding: 10px 20px; 
+        border-radius: 5px; 
+        text-decoration: none; 
+        z-index: 10000; 
+        font-weight: bold;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    `;
+    document.body.appendChild(backBtn);
+}
+    // ΥΠΟΛΟΙΠΟΙ ΡΟΛΟΙ
+    else if (roleData[role]) {
+        menuTitle.innerHTML = `<i class="fas fa-bars"></i> ${roleData[role].title}`;
+        
+        roleData[role].items.forEach(item => {
+            const li = document.createElement('li');
+            li.innerHTML = `<a href="#" class="menu-item">${item}</a>`;
+            menuList.appendChild(li);
+        });
+
+        // Λειτουργία Sidebar (X και Hamburger)
         closeBtn.onclick = () => {
             sidebar.style.width = "0";
-            menuToggle.style.display = "block";
             mainContent.style.marginLeft = "20px";
+            menuToggle.style.display = "block";
         };
 
-        // Λειτουργία Ανοίγματος
         menuToggle.onclick = () => {
             sidebar.style.width = "300px";
-            menuToggle.style.display = "none";
             mainContent.style.marginLeft = "320px";
+            menuToggle.style.display = "none";
         };
-
-        // Εφέ επιλογής (Active Color)
-        menuItems.forEach(item => {
-            item.onclick = function() {
-                menuItems.forEach(i => i.classList.remove("active"));
-                this.classList.add("active");
-            };
-        });
-    </script>
+    }
+</script>
 </body>
 </html>
