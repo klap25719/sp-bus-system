@@ -3,94 +3,660 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Καθορισμός Δρομολογίων</title>
+<title>Καθορισμός Δρομολογίων - Σχολικός Στόλος</title>
 
 <style>
+/* ΧΡΥΣΟΣ ΚΑΝΟΝΑΣ - box-sizing για όλα τα στοιχεία */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 /*γραμματοσειρά, χρώμα φόντο, αφαίρεση εξωτερικών κενών, εσωτερικό κενό από άκρα*/
-body{font-family:Arial,sans-serif;background:#f4f6f8;margin:0;padding:30px}
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    margin: 0;
+    padding: 20px;
+}
+
 /*πλάτος, κεντράρισμα, φόντο, εσωτερικά κενά, στρογγυλές γωνίες, σκιά κάτω από κουτί*/
-.container{max-width:1000px;margin:auto;background:#ffffff;padding:25px;border-radius:16px;box-shadow:0 8px 20px rgba(0,0,0,.08)}
-h1{margin-top:0}
-/*διαχωρισμός σελίδας σε 2 ίσες στήλες με κενό*/
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.container {
+    max-width: 1000px;
+    width: 100%;
+    margin: auto;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .08);
+    overflow-x: hidden; /* Αποτρέπει οριζόντια κύλιση */
+}
+
+h1 {
+    margin-top: 0;
+    color: #1e3a3f;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-size: clamp(1.2rem, 5vw, 1.8rem);
+}
+
+/*διαχωρισμός σελίδας σε 2 ίσες στήλες με κενό - Responsive*/
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+}
+
 /*πλαίσιο, χρώμα περιγράμματος, στρογγυλές γωνίες, εσωτερικό κενό*/
-.panel{border:1px solid #ddd;border-radius:12px;padding:16px}
+.panel {
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 16px;
+    background: #ffffff;
+    transition: box-shadow 0.3s;
+    overflow: hidden; /* Κόβει ό,τι περισσεύει */
+    display: flex;
+    flex-direction: column;
+    min-width: 0; /* Σημαντικό για flex children */
+}
+
+.panel:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .1);
+}
+
+.panel h3 {
+    font-size: clamp(0.9rem, 4vw, 1.1rem);
+    margin-bottom: 12px;
+}
+
 /*λίστα ονομάτων, ύψος, δυνατότητα σκρολ, εσωτερικό κενό, χρώμα φόντο, στρογγυλές γωνίες*/
-.list{max-height:360px;overflow:auto;padding:8px;background:#fafafa;border-radius:10px}
+.list {
+    max-height: 360px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 8px;
+    background: #fafafa;
+    border-radius: 10px;
+}
+
 /*κουτάκια τσεκ & ονόματα σε ίδια σειρά, με κενό, στοίχιση*/
-.row{display:flex;gap:10px;align-items:center;padding:6px 0;border-bottom:1px solid #eee}
+.row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 8px 6px;
+    border-bottom: 1px solid #eee;
+    min-width: 0; /* Επιτρέπει το shrinking */
+}
+
+.row:hover {
+    background: #f0f4f2;
+    border-radius: 6px;
+    padding-left: 10px;
+}
+
+/* Για να μην βγαίνουν τα ονόματα των μαθητών έξω */
+.row span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Βάζει αποσιωπητικά αν το όνομα είναι τεράστιο */
+    flex: 1;
+    font-size: clamp(0.75rem, 3vw, 0.85rem);
+}
+
+.row input[type="checkbox"] {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
 /*κουμπιά, μέγεθος, περίγραμμα, στρογγυλά, ποντίκι γίνεται χεράκι*/
-button{padding:10px 16px;border:none;border-radius:10px;cursor:pointer;margin:6px 6px 0 0;font-weight:bold}
-.primary{background:#2563eb;color:#fff}.success{background:#16a34a;color:#fff}.warn{background:#f59e0b;color:#fff}.gray{background:#6b7280;color:#fff}
-.route{padding:8px;border-bottom:1px solid #eee}
-input[type=text]{padding:10px;width:100%;border:1px solid #ccc;border-radius:8px;margin-bottom:12px}
+button {
+    padding: 8px 12px; /* Μειωμένο padding για μικρότερα κουμπιά */
+    font-size: 13px;   /* Μικρότερο κείμενο */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin: 4px;
+    font-weight: bold;
+    transition: transform 0.2s, opacity 0.2s;
+    white-space: nowrap;
+}
+
+button:hover {
+    transform: translateY(-1px);
+    opacity: 0.9;
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+/* Διαφορετικά χρώματα κουμπιών */
+.primary { background: #2563eb; color: #fff; }
+.success { background: #16a34a; color: #fff; }
+.warn { background: #f59e0b; color: #fff; }
+.gray { background: #6b7280; color: #fff; }
+.danger { background: #dc2626; color: #fff; }
+.info { background: #0ea5e9; color: #fff; }
+
+/* Στυλ για inputs - ΔΙΟΡΘΩΜΕΝΟ με box-sizing */
+input[type="text"] {
+    padding: 10px 12px;
+    width: 100%;
+    box-sizing: border-box; /* ΚΡΙΣΙΜΟ: Το padding υπολογίζεται ΜΕΣΑ στο width */
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    display: block;
+    transition: border-color 0.2s;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, .1);
+}
+
+/* Δρόμοι - κάθε εγγραφή */
+.route {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    transition: background 0.2s;
+}
+
+.route:hover {
+    background: #f9fafb;
+}
+
+.route-name {
+    font-weight: bold;
+    color: #1e3a3f;
+    word-break: break-word;
+}
+
+.route-students {
+    color: #6b7280;
+    font-size: 0.8rem;
+    word-break: break-word;
+    margin-top: 4px;
+}
+
+.route-actions {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.route-actions button {
+    padding: 4px 10px;
+    font-size: 11px;
+}
+
+/* Search box - προσαρμοσμένο */
+.search-box {
+    position: relative;
+    margin-bottom: 12px;
+    width: 100%;
+}
+
+.search-box input {
+    padding: 8px 8px 8px 32px;
+    font-size: 13px;
+    margin-bottom: 0;
+}
+
+.search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+    font-size: 14px;
+}
+
+/* Στατιστικά */
+.stats {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding: 12px;
+    background: #f0fdf4;
+    border-radius: 10px;
+    flex-wrap: wrap;
+}
+
+.stat-item {
+    flex: 1;
+    text-align: center;
+    min-width: 80px;
+}
+
+.stat-number {
+    font-size: clamp(18px, 5vw, 24px);
+    font-weight: bold;
+    color: #16a34a;
+}
+
+.stat-label {
+    font-size: 11px;
+    color: #6b7280;
+}
+
+/* Empty state */
+.empty-state {
+    text-align: center;
+    padding: 30px 15px;
+    color: #9ca3af;
+}
+
+/* Badges */
+.badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.badge-primary {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+/* Ενημέρωση επιλογών */
+.selected-count {
+    background: #2563eb;
+    color: white;
+    border-radius: 20px;
+    padding: 2px 8px;
+    font-size: 12px;
+    margin-left: 8px;
+}
+
+.route-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.selection-info {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+/* Responsive προσαρμογές */
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+    
+    .container {
+        padding: 15px;
+    }
+    
+    button {
+        padding: 6px 10px;
+        font-size: 11px;
+    }
+    
+    .route {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .route-actions {
+        align-self: flex-end;
+    }
+    
+    .row span {
+        font-size: 0.75rem;
+    }
+    
+    .stats {
+        gap: 8px;
+    }
+    
+    .stat-item {
+        min-width: 65px;
+    }
+}
+
+@media (max-width: 480px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .route-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .panel {
+        padding: 12px;
+    }
+}
+
+/* Toasts animation */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
 </style>
 </head>
 
 <body>
 <div class="container">
-<h1>Καθορισμός Δρομολογίων</h1>
+<h1>
+🚍 Καθορισμός Δρομολογίων
+<span style="font-size:12px;background:#e2efe4;padding:4px 12px;border-radius:20px;">Διαχείριση Σχολικών Δρομολογίων</span>
+</h1>
+
+<div class="stats">
+<div class="stat-item">
+<div class="stat-number" id="totalStudents">0</div>
+<div class="stat-label">Σύνολο Μαθητών</div>
+</div>
+<div class="stat-item">
+<div class="stat-number" id="totalRoutes">0</div>
+<div class="stat-label">Δρομολόγια</div>
+</div>
+<div class="stat-item">
+<div class="stat-number" id="totalAssigned">0</div>
+<div class="stat-label">Ανατεθειμένοι</div>
+</div>
+</div>
+
 <div class="grid">
 <div class="panel">
-<h3>1. Λίστα Μαθητών</h3>
-<input type="text" id="routeName" placeholder="Όνομα Δρομολογίου (π.χ. Saint Paul - Ίλιον)">
+<h3>📋 1. Λίστα Μαθητών</h3>
+<input type="text" id="routeName" placeholder="✏️ Όνομα Δρομολογίου (π.χ. Saint Paul - Ίλιον)">
+<div class="search-box">
+<span class="search-icon">🔍</span>
+<input type="text" id="searchStudent" placeholder="Αναζήτηση μαθητή...">
+</div>
 <div class="list" id="studentList"></div>
-<button class="primary" onclick="confirmSelection()">Επιβεβαίωση Επιλογών</button>
+<div style="margin-top:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+<span class="selection-info" id="selectionInfo">0 επιλεγμένοι</span>
+<button class="primary" onclick="confirmSelection()">✅ Επιβεβαίωση</button>
 </div>
+</div>
+
 <div class="panel">
-<h3>2. Δρομολόγιο</h3>
-<div class="list" id="selectedList"></div>
-<button class="success" onclick="saveRoute()">Καταχώρηση Δρομολογίου</button>
-<button class="warn" onclick="editRoute()">Τροποποίηση Δρομολογίου</button>
-<button class="gray" onclick="newRoute()">Νέο Δρομολόγιο</button>
+<h3>👥 2. Επιλεγμένο Δρομολόγιο</h3>
+<div class="list" id="selectedList" style="min-height:180px;"></div>
+<div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:6px;">
+<button class="success" onclick="saveRoute()">💾 Καταχώρηση</button>
+<button class="info" onclick="editSelectedRoute()">✏️ Τροποποίηση</button>
+<button class="gray" onclick="newRoute()">🆕 Νέο</button>
 </div>
 </div>
-<div class="panel" style="margin-top:24px">
-<h3>Αποθηκευμένα Δρομολόγια</h3>
+</div>
+
+<div class="panel" style="margin-top:20px">
+<div class="route-header">
+<h3>📚 Αποθηκευμένα Δρομολόγια</h3>
+<button class="danger" onclick="clearAllRoutes()" style="padding:6px 12px;font-size:12px;">🗑️ Διαγραφή Όλων</button>
+</div>
 <div id="savedRoutes"></div>
 </div>
 </div>
+
 <script>
-const students=["Νίκος","Μαρία","Ιωάννα","Σπυρίδων","Γεωργία","Δήμητρα","Ιάσονας","Χρήστος","Σταύρος","Αναστασία","Νάνσυ"];
-let currentSelection=[];
-let routes=[];
-//εμφάνιση μαθητών
-function renderStudents(){
- const list=document.getElementById('studentList');
- list.innerHTML='';
- students.forEach(name=>{
-  list.innerHTML+=`<div class='row'><input type='checkbox' value='${name}'><span>${name}</span></div>`;
- });
+const studentsList = [
+"Νίκος Ανδρεόπουλος", "Μαρία Παπαδοπούλου", "Ιωάννα Αντωνίου", "Σπυρίδων Δημητρίου",
+"Γεωργία Βασιλείου", "Δήμητρα Κωνσταντίνου", "Ιάσονας Χρηστίδης", "Χρήστος Αναστασίου",
+"Σταύρος Νικολάου", "Αναστασία Ελευθερίου", "Νάνσυ Αθανασίου", "Αντώνης Γεωργίου",
+"Ελένη Δασκαλάκη", "Πέτρος Λιάπης", "Σοφία Μακρή", "Αικατερίνη Δημητρίου",
+"Δημήτρης Παπαδόπουλος", "Κωνσταντίνα Λεονταρίου"
+];
+
+let currentSelection = [];
+let routes = [];
+let editIndex = null;
+
+// Φόρτωση από localStorage
+function loadFromStorage() {
+    const saved = localStorage.getItem('schoolRoutes');
+    if (saved) {
+        routes = JSON.parse(saved);
+        renderRoutes();
+    }
+    updateStats();
 }
-//επιλογή μαθητών
-function confirmSelection(){
- const checks=[...document.querySelectorAll('#studentList input:checked')];
- currentSelection=checks.map(c=>c.value);
- const box=document.getElementById('selectedList');
- box.innerHTML=currentSelection.map(n=>`<div class='route'>${n}</div>`).join('');
+
+// Αποθήκευση σε localStorage
+function saveToStorage() {
+    localStorage.setItem('schoolRoutes', JSON.stringify(routes));
+    updateStats();
 }
-//αποθήκευση δρομολογίου
-function saveRoute(){
- const name=document.getElementById('routeName').value||'Χωρίς όνομα';
- routes.push({name,students:[...currentSelection]});
- renderRoutes();
- alert('Το δρομολόγιο καταχωρήθηκε!');
+
+// Ενημέρωση στατιστικών
+function updateStats() {
+    document.getElementById('totalStudents').innerText = studentsList.length;
+    document.getElementById('totalRoutes').innerText = routes.length;
+    const assignedCount = routes.reduce((sum, r) => sum + r.students.length, 0);
+    document.getElementById('totalAssigned').innerText = assignedCount;
 }
-//εμφάνιση δρομολογίων
-function renderRoutes(){
-    const area=document.getElementById('savedRoutes');
- area.innerHTML=routes.map((r,i)=>`<div class='route'><strong>${i+1}. ${r.name}</strong> - ${r.students.join(', ')}</div>`).join('');
+
+// Εμφάνιση μαθητών με φίλτρο
+function renderStudents(filterText = '') {
+    const list = document.getElementById('studentList');
+    const filtered = studentsList.filter(s => s.toLowerCase().includes(filterText.toLowerCase()));
+    list.innerHTML = '';
+    if (filtered.length === 0) {
+        list.innerHTML = '<div style="text-align:center;padding:20px;color:#9ca3af;">❌ Δεν βρέθηκαν μαθητές</div>';
+        return;
+    }
+    filtered.forEach(name => {
+        const isChecked = currentSelection.includes(name);
+        const escapedName = name.replace(/'/g, "\\'");
+        list.innerHTML += `<div class='row'><input type='checkbox' value='${escapedName}' ${isChecked ? 'checked' : ''}><span title="${name}">${name}</span></div>`;
+    });
+    updateSelectionInfo();
 }
-//τροποποίηση δρομολογίων
-function editRoute(){ alert('Επίλεξε δρομολόγιο προς τροποποίηση'); }
-//καθαρισμός όλων για δημιουργία νέου δρομολογίου
-function newRoute(){
- document.getElementById('routeName').value='';
- document.getElementById('selectedList').innerHTML='';
- document.querySelectorAll('#studentList input').forEach(c=>c.checked=false);
- currentSelection=[];
+
+// Ενημέρωση πληροφορίας επιλογών
+function updateSelectionInfo() {
+    const checks = [...document.querySelectorAll('#studentList input:checked')];
+    const count = checks.length;
+    document.getElementById('selectionInfo').innerHTML = `${count} επιλεγμένοι ${count > 0 ? '✓' : ''}`;
 }
-renderStudents();
+
+// Επιλογή μαθητών
+function confirmSelection() {
+    const checks = [...document.querySelectorAll('#studentList input:checked')];
+    currentSelection = checks.map(c => c.value);
+    renderSelectedList();
+    updateSelectionInfo();
+    showToast('✅ Οι μαθητές επιλέχθηκαν!', '#16a34a');
+}
+
+// Εμφάνιση επιλεγμένων
+function renderSelectedList() {
+    const box = document.getElementById('selectedList');
+    if (currentSelection.length === 0) {
+        box.innerHTML = '<div style="text-align:center;padding:25px;color:#9ca3af;">✨ Κανένας επιλεγμένος μαθητής</div>';
+        return;
+    }
+    box.innerHTML = currentSelection.map((n, i) => `<div class='route'><div style="flex:1;word-break:break-word;"><strong>${i + 1}.</strong> ${n}</div><button onclick="removeFromSelection('${n.replace(/'/g, "\\'")}')" style="background:#fee2e2;color:#dc2626;padding:4px 8px;font-size:11px;">✖</button></div>`).join('');
+}
+
+// Αφαίρεση από επιλογή
+function removeFromSelection(name) {
+    currentSelection = currentSelection.filter(s => s !== name);
+    renderSelectedList();
+    renderStudents(document.getElementById('searchStudent')?.value || '');
+    showToast(`Ο/Η ${name.split(' ')[0]} αφαιρέθηκε`, '#f59e0b');
+}
+
+// Αποθήκευση δρομολογίου
+function saveRoute() {
+    const name = document.getElementById('routeName').value.trim();
+    if (!name) {
+        showToast('⚠️ Εισάγετε όνομα δρομολογίου!', '#f59e0b');
+        return;
+    }
+    if (currentSelection.length === 0) {
+        showToast('⚠️ Επιλέξτε τουλάχιστον έναν μαθητή!', '#f59e0b');
+        return;
+    }
+
+    if (editIndex !== null) {
+        routes[editIndex] = { name, students: [...currentSelection] };
+        showToast(`✏️ Το "${name}" τροποποιήθηκε!`, '#0ea5e9');
+        editIndex = null;
+        document.querySelector('.info').textContent = '✏️ Τροποποίηση';
+    } else {
+        routes.push({ name, students: [...currentSelection] });
+        showToast(`✅ Το "${name}" καταχωρήθηκε!`, '#16a34a');
+    }
+
+    saveToStorage();
+    renderRoutes();
+    newRoute();
+}
+
+// Επεξεργασία δρομολογίου
+function editRoute(index) {
+    const route = routes[index];
+    document.getElementById('routeName').value = route.name;
+    currentSelection = [...route.students];
+    renderSelectedList();
+    renderStudents(document.getElementById('searchStudent')?.value || '');
+    editIndex = index;
+    const editBtn = document.querySelector('.info');
+    editBtn.textContent = '💾 Αποθήκευση';
+    editBtn.style.background = '#0ea5e9';
+    showToast(`✏️ Επεξεργασία: ${route.name}`, '#0ea5e9');
+}
+
+function editSelectedRoute() {
+    if (editIndex !== null) {
+        saveRoute();
+    } else {
+        showToast('ℹ️ Επιλέξτε δρομολόγιο από τη λίστα', '#6b7280');
+    }
+}
+
+// Διαγραφή δρομολογίου
+function deleteRoute(index) {
+    if (confirm(`Διαγραφή του "${routes[index].name}";`)) {
+        routes.splice(index, 1);
+        saveToStorage();
+        renderRoutes();
+        if (editIndex === index) newRoute();
+        showToast('🗑️ Διαγράφηκε!', '#dc2626');
+    }
+}
+
+// Αντιγραφή δρομολογίου
+function copyRoute(index) {
+    const route = routes[index];
+    const newName = `${route.name} (αντίγραφο)`;
+    routes.push({ name: newName, students: [...route.students] });
+    saveToStorage();
+    renderRoutes();
+    showToast(`📋 Αντιγράφηκε`, '#0ea5e9');
+}
+
+// Εμφάνιση δρομολογίων
+function renderRoutes() {
+    const area = document.getElementById('savedRoutes');
+    if (routes.length === 0) {
+        area.innerHTML = `<div class="empty-state"><div>📭</div><div>Δεν υπάρχουν δρομολόγια</div></div>`;
+        return;
+    }
+    area.innerHTML = routes.map((r, i) => `<div class='route'>
+        <div style="flex:1;min-width:0;">
+            <div class="route-name">${i + 1}. ${r.name} <span class="badge badge-primary">${r.students.length} μαθητές</span></div>
+            <div class="route-students">${r.students.join(', ')}</div>
+        </div>
+        <div class="route-actions">
+            <button onclick="editRoute(${i})" style="background:#0ea5e9;color:#fff;">✏️</button>
+            <button onclick="copyRoute(${i})" style="background:#8b5cf6;color:#fff;">📋</button>
+            <button onclick="deleteRoute(${i})" style="background:#dc2626;color:#fff;">🗑️</button>
+        </div>
+    </div>`).join('');
+}
+
+// Νέο δρομολόγιο
+function newRoute() {
+    document.getElementById('routeName').value = '';
+    document.querySelectorAll('#studentList input').forEach(c => c.checked = false);
+    currentSelection = [];
+    renderSelectedList();
+    editIndex = null;
+    const editBtn = document.querySelector('.info');
+    editBtn.textContent = '✏️ Τροποποίηση';
+    editBtn.style.background = '#0ea5e9';
+    if (document.getElementById('searchStudent')) document.getElementById('searchStudent').value = '';
+    renderStudents('');
+    showToast('🆕 Νέο δρομολόγιο', '#6b7280');
+}
+
+// Διαγραφή όλων
+function clearAllRoutes() {
+    if (confirm('⚠️ Διαγραφή ΟΛΩΝ των δρομολογίων;')) {
+        routes = [];
+        saveToStorage();
+        renderRoutes();
+        newRoute();
+        showToast('🗑️ Όλα διαγράφηκαν!', '#dc2626');
+    }
+}
+
+// Toast μήνυμα
+function showToast(message, color) {
+    const toast = document.createElement('div');
+    toast.textContent = message;
+    toast.style.position = 'fixed';
+    toast.style.bottom = '20px';
+    toast.style.left = '50%';
+    toast.style.transform = 'translateX(-50%)';
+    toast.style.backgroundColor = color;
+    toast.style.color = 'white';
+    toast.style.padding = '10px 20px';
+    toast.style.borderRadius = '10px';
+    toast.style.zIndex = '1000';
+    toast.style.fontWeight = 'bold';
+    toast.style.fontSize = '13px';
+    toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.2)';
+    toast.style.animation = 'slideUp 0.3s ease';
+    document.body.appendChild(toast);
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.remove(), 300);
+    }, 2000);
+}
+
+// Αναζήτηση
+document.getElementById('searchStudent')?.addEventListener('input', (e) => {
+    renderStudents(e.target.value);
+});
+
+// Αρχικοποίηση
+renderStudents('');
+loadFromStorage();
 </script>
 </body>
 </html>
