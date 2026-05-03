@@ -42,6 +42,15 @@
       align-items: center;
     }
 
+    .absent-passenger-row {
+      background: rgb(234, 60, 60);
+      border-radius: 10px;
+      padding: 10px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+    }
+
     .name {
       font-size: 16px;
     }
@@ -80,6 +89,7 @@
 <body class="p-3">
 
 <h5 class="mb-3">Επιβάτες</h5>
+<p>Σχολικό 1 - Δρομολόγιο: Πρωινό</p>
 
 <!-- STATE 1 -->
 <div id="waitingState" class="waiting-state">
@@ -101,27 +111,21 @@
     </button>
 
     <div class="actions ms-auto">
-      <button class="btn btn-success btn-circle" title="Κλήση γονέα">
+      <button class="btn btn-success btn-circle"
+              title="Κλήση γονέα">
         <i class="bi bi-telephone"></i>
       </button>
-      <button class="btn btn-danger btn-circle" title="Μη προσέλευση">
+      <button class="btn btn-danger btn-circle"
+              title="Μη προσέλευση"
+              onclick="markAbsent(this)">
         <i class="bi bi-x-lg"></i>
       </button>
     </div>
   </div>
 
   <!-- 2 -->
-  <div class="passenger-row">
+  <div class="absent-passenger-row">
     <div class="name">Μαρία Κωνσταντίνου</div>
-
-    <div class="actions ms-auto">
-      <button class="btn btn-success btn-circle" title="Κλήση γονέα">
-        <i class="bi bi-telephone"></i>
-      </button>
-      <button class="btn btn-danger btn-circle" title="Μη προσέλευση">
-        <i class="bi bi-x-lg"></i>
-      </button>
-    </div>
   </div>
 
   <!-- 3 -->
@@ -135,10 +139,13 @@
     </button>
 
     <div class="actions ms-auto">
-      <button class="btn btn-success btn-circle" title="Κλήση γονέα">
+      <button class="btn btn-success btn-circle"
+              title="Κλήση γονέα">
         <i class="bi bi-telephone"></i>
       </button>
-      <button class="btn btn-danger btn-circle" title="Μη προσέλευση">
+      <button class="btn btn-danger btn-circle"
+              title="Μη προσέλευση"
+              onclick="markAbsent(this)">
         <i class="bi bi-x-lg"></i>
       </button>
     </div>
@@ -149,10 +156,13 @@
     <div class="name">Ελένη Γεωργίου</div>
 
     <div class="actions ms-auto">
-      <button class="btn btn-success btn-circle" title="Κλήση γονέα">
+      <button class="btn btn-success btn-circle"
+              title="Κλήση γονέα">
         <i class="bi bi-telephone"></i>
       </button>
-      <button class="btn btn-danger btn-circle" title="Μη προσέλευση">
+      <button class="btn btn-danger btn-circle"
+              title="Μη προσέλευση"
+              onclick="markAbsent(this)">
         <i class="bi bi-x-lg"></i>
       </button>
     </div>
@@ -169,10 +179,13 @@
     </button>
 
     <div class="actions ms-auto">
-      <button class="btn btn-success btn-circle" title="Κλήση γονέα">
+      <button class="btn btn-success btn-circle"
+              title="Κλήση γονέα">
         <i class="bi bi-telephone"></i>
       </button>
-      <button class="btn btn-danger btn-circle" title="Μη προσέλευση">
+      <button class="btn btn-danger btn-circle"
+              title="Μη προσέλευση"
+              onclick="markAbsent(this)">
         <i class="bi bi-x-lg"></i>
       </button>
     </div>
@@ -183,10 +196,13 @@
     <div class="name">Σοφία Παπαδοπούλου</div>
 
     <div class="actions ms-auto">
-      <button class="btn btn-success btn-circle" title="Κλήση γονέα">
+      <button class="btn btn-success btn-circle"
+              title="Κλήση γονέα">
         <i class="bi bi-telephone"></i>
       </button>
-      <button class="btn btn-danger btn-circle" title="Μη προσέλευση">
+      <button class="btn btn-danger btn-circle"
+              title="Μη προσέλευση"
+              onclick="markAbsent(this)">
         <i class="bi bi-x-lg"></i>
       </button>
     </div>
@@ -197,10 +213,13 @@
     <div class="name">Ανδρέας Νικολάου</div>
 
     <div class="actions ms-auto">
-      <button class="btn btn-success btn-circle" title="Κλήση γονέα">
+      <button class="btn btn-success btn-circle"
+              title="Κλήση γονέα">
         <i class="bi bi-telephone"></i>
       </button>
-      <button class="btn btn-danger btn-circle" title="Μη προσέλευση">
+      <button class="btn btn-danger btn-circle"
+              title="Μη προσέλευση"
+              onclick="markAbsent(this)">
         <i class="bi bi-x-lg"></i>
       </button>
     </div>
@@ -211,10 +230,13 @@
     <div class="name">Χριστίνα Ιωάννου</div>
 
     <div class="actions ms-auto">
-      <button class="btn btn-success btn-circle" title="Κλήση γονέα">
+      <button class="btn btn-success btn-circle"
+              title="Κλήση γονέα">
         <i class="bi bi-telephone"></i>
       </button>
-      <button class="btn btn-danger btn-circle" title="Μη προσέλευση">
+      <button class="btn btn-danger btn-circle"
+              title="Μη προσέλευση"
+              onclick="markAbsent(this)">
         <i class="bi bi-x-lg"></i>
       </button>
     </div>
@@ -225,10 +247,13 @@
     <div class="name">Δημήτρης Παναγιώτου</div>
 
     <div class="actions ms-auto">
-      <button class="btn btn-success btn-circle" title="Κλήση γονέα">
+      <button class="btn btn-success btn-circle"
+              title="Κλήση γονέα">
         <i class="bi bi-telephone"></i>
       </button>
-      <button class="btn btn-danger btn-circle" title="Μη προσέλευση">
+      <button class="btn btn-danger btn-circle"
+              title="Μη προσέλευση"
+              onclick="markAbsent(this)">
         <i class="bi bi-x-lg"></i>
       </button>
     </div>
@@ -239,10 +264,13 @@
     <div class="name">Άννα Θεοδώρου</div>
 
     <div class="actions ms-auto">
-      <button class="btn btn-success btn-circle" title="Κλήση γονέα">
+      <button class="btn btn-success btn-circle"
+              title="Κλήση γονέα">
         <i class="bi bi-telephone"></i>
       </button>
-      <button class="btn btn-danger btn-circle" title="Μη προσέλευση">
+      <button class="btn btn-danger btn-circle"
+              title="Μη προσέλευση"
+              onclick="markAbsent(this)">
         <i class="bi bi-x-lg"></i>
       </button>
     </div>
@@ -253,10 +281,13 @@
     <div class="name">Νικόλας Στεφανίδης</div>
 
     <div class="actions ms-auto">
-      <button class="btn btn-success btn-circle" title="Κλήση γονέα">
+      <button class="btn btn-success btn-circle"
+              title="Κλήση γονέα">
         <i class="bi bi-telephone"></i>
       </button>
-      <button class="btn btn-danger btn-circle" title="Μη προσέλευση">
+      <button class="btn btn-danger btn-circle"
+              title="Μη προσέλευση"
+              onclick="markAbsent(this)">
         <i class="bi bi-x-lg"></i>
       </button>
     </div>
@@ -267,10 +298,13 @@
     <div class="name">Άννα Βασιλείου</div>
 
     <div class="actions ms-auto">
-      <button class="btn btn-success btn-circle" title="Κλήση γονέα">
+      <button class="btn btn-success btn-circle"
+              title="Κλήση γονέα">
         <i class="bi bi-telephone"></i>
       </button>
-      <button class="btn btn-danger btn-circle" title="Μη προσέλευση">
+      <button class="btn btn-danger btn-circle"
+              title="Μη προσέλευση"
+              onclick="markAbsent(this)">
         <i class="bi bi-x-lg"></i>
       </button>
     </div>
@@ -281,10 +315,13 @@
     <div class="name">Πάνος Καραγιάννης</div>
 
     <div class="actions ms-auto">
-      <button class="btn btn-success btn-circle" title="Κλήση γονέα">
+      <button class="btn btn-success btn-circle"
+              title="Κλήση γονέα">
         <i class="bi bi-telephone"></i>
       </button>
-      <button class="btn btn-danger btn-circle" title="Μη προσέλευση">
+      <button class="btn btn-danger btn-circle"
+              title="Μη προσέλευση"
+              onclick="markAbsent(this)">
         <i class="bi bi-x-lg"></i>
       </button>
     </div>
@@ -295,10 +332,13 @@
     <div class="name">Κατερίνα Ιωάννου</div>
 
     <div class="actions ms-auto">
-      <button class="btn btn-success btn-circle" title="Κλήση γονέα">
+      <button class="btn btn-success btn-circle"
+              title="Κλήση γονέα">
         <i class="bi bi-telephone"></i>
       </button>
-      <button class="btn btn-danger btn-circle" title="Μη προσέλευση">
+      <button class="btn btn-danger btn-circle"
+              title="Μη προσέλευση"
+              onclick="markAbsent(this)">
         <i class="bi bi-x-lg"></i>
       </button>
     </div>
@@ -309,10 +349,13 @@
     <div class="name">Ελένη Παπαγεωργίου</div>
 
     <div class="actions ms-auto">
-      <button class="btn btn-success btn-circle" title="Κλήση γονέα">
+      <button class="btn btn-success btn-circle"
+              title="Κλήση γονέα">
         <i class="bi bi-telephone"></i>
       </button>
-      <button class="btn btn-danger btn-circle" title="Μη προσέλευση">
+      <button class="btn btn-danger btn-circle"
+              title="Μη προσέλευση"
+              onclick="markAbsent(this)">
         <i class="bi bi-x-lg"></i>
       </button>
     </div>
@@ -362,6 +405,17 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
 });
+
+function markAbsent(button) {
+  const row = button.closest(".passenger-row");
+  const actions = row.querySelector(".actions");
+
+  // βάφει το row
+  row.classList.add("absent-passenger-row");
+
+  // κρύβει τα κουμπιά
+  actions.style.display = "none";
+}
 </script>
 
 </body>
