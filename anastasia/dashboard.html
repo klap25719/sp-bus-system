@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Saint-Paul | Πίνακας Ελέγχου</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body style="background-color: #fdfd96; background-image: none;">
@@ -29,7 +30,7 @@
     <i class="fas fa-bars"></i>
     </button>
 
-    <button id="menu-toggle" class="menu-btn" style="display:none;"><i class="fas fa-bars"></i> Μενού</button>
+    <button id="menu-toggle-2" class="menu-btn" style="display:none;"><i class="fas fa-bars"></i> Μενού</button>
 
     <main id="main-content" style="margin-left: 320px; transition: 0.5s; padding: 40px; text-align: left;">
         <h2 style="color: #0047ab;">Πίνακας Διαχείρισης</h2>
@@ -39,6 +40,7 @@
     <script>
     const urlParams = new URLSearchParams(window.location.search);
     const role = urlParams.get('role');
+    const action = urlParams.get('action');
 
     const sidebar = document.getElementById("sidebar");
     const menuToggle = document.getElementById("menu-toggle");
@@ -48,8 +50,8 @@
     const closeBtn = document.getElementById("close-btn");
 
     const roleData = {
-        'parents': { title: 'Γονείς', items: ['Δήλωση απουσίας', 'Τροποποίηση απουσίας'] },
-        'office': { title: 'Γραφείο Κίνησης', items: ['Τακτικά δρομολόγια', 'Δηλώσεις απουσιών', 'Προβολή & Τροποποίηση', 'Έλεγχος & Οριστικοποίηση'] },
+        'parents': { title: 'Γονείς', items: ['Δήλωση Απουσίας / Αιτήματος', 'Τροποποίηση δήλωσης'] },
+        'office': { title: 'Γραφείο Κίνησης', items: ['Τακτικά δρομολόγια', 'Δήλωση Απουσίας / Αιτήματος', 'Προβολή & Τροποποίηση', 'Έλεγχος & Οριστικοποίηση'] },
         'director': { title: 'Διευθυντής', items: ['Προβολή στατιστικών', 'Κατάσταση δρομολογίων'] }
     };
 
@@ -86,13 +88,24 @@
     // ΥΠΟΛΟΙΠΟΙ ΡΟΛΟΙ
     else if (roleData[role]) {
         menuTitle.innerHTML = `<i class="fas fa-bars"></i> ${roleData[role].title}`;
+        menuList.innerHTML = "";
         
         roleData[role].items.forEach(item => {
             const li = document.createElement('li');
-            li.innerHTML = `<a href="#" class="menu-item">${item}</a>`;
+            if (item === 'Δήλωση Απουσίας / Αιτήματος') {
+                li.innerHTML = `<a href="#" class="menu-item">${item}</a>`;
+            } else {
+                li.innerHTML = `<a href="#" class="menu-item">${item}</a>`;
+            }
             menuList.appendChild(li);
+
         });
 
+        if (action === 'direct_form') {
+            setTimeout(() => {
+                loadMyForm();
+            }, 0);
+        }
         // Λειτουργία Sidebar (X και Hamburger)
         closeBtn.onclick = () => {
             sidebar.style.width = "0";
@@ -106,6 +119,21 @@
             menuToggle.style.display = "none";
         };
     }
+</script>
+
+<script>
+function loadMyForm() {
+    const main = document.getElementById("main-content");
+
+    main.innerHTML = `
+        <h2 style="color:#0047ab;">Δήλωση Απουσίας / Αιτήματος</h2>
+
+        <iframe 
+            src="https://detfolio.dmst.aueb.gr/students2024/aggetsimidaki/inetpub/index.html"
+            style="width:100%; height:80vh; border:none; border-radius:10px;">
+        </iframe>
+    `;
+}
 </script>
 </body>
 </html>
