@@ -75,15 +75,32 @@ body {
 }
 
 /* Styling for text inputs and dropdowns */
-input[type="text"],
 select {
     width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    margin-bottom: 15px;
-    border-radius: 6px;
+    padding: 12px;
+    font-size: 13px;
     border: 1px solid #ccc;
-    font-family: Arial, sans-serif;
+    border-radius: 8px;
+    background-color: #fff;
+    color: #333;
+    box-sizing: border-box;
+}
+
+.absence input[type="text"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.request input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    font-size: 13px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    color: #333;
+    box-sizing: border-box;
 }
 
 /* Submit button styling */
@@ -171,7 +188,8 @@ input[type="reset"]:hover {
     width: 97%;
 }
 
-#niceDate {
+#niceDateAbsence,
+#niceDateRequest {
     width: 100%;
     padding: 10px;
     border-radius: 12px;
@@ -181,11 +199,11 @@ input[type="reset"]:hover {
     cursor: pointer;
 }
 
-/* το date δεν είναι clickable πλέον */
-#realDate {
+#realDateAbsence,
+#realDateRequest {
     position: absolute;
     opacity: 0;
-    pointer-events: none; /* ❗ σημαντικό */
+    pointer-events: none;
 }
 
 /* Section card style */

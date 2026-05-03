@@ -8,6 +8,7 @@
     </head>
     <!--script for the submission-->
     <script>
+        let pendingType = null;
         function submitForm(event, type) {
             //Prevent the default form submission
             event.preventDefault();
@@ -15,16 +16,15 @@
             // Check if at least one student is selected
             const checked = document.querySelectorAll('input[name="students"]:checked');
 
-            if (type === "absence") {
             if (!selectedStudent) {
                 alert("Παρακαλώ επιλέξτε τουλάχιστον έναν μαθητή!");
                 return;
             }
+            pendingType = type;
             document.getElementById("amPopup").style.display = "block"
             return;
         }
-            showFinalPopup(type);
-        }
+        showFinalPopup();
 
         function closePopup() {
             //Hide the popup when the user clicks the close button
@@ -36,7 +36,7 @@
 
             if (inputAM === selectedStudent.am) {
                 document.getElementById("amPopup").style.display = "none";
-                showFinalPopup("absence");
+                showFinalPopup(pendingType);
             } else {
                 alert("Λάθος Αριθμός Μητρώου!");
             }
@@ -62,7 +62,6 @@
 
     <body>
         <div class="container">
-            <img src="images/SAINT-PAUL.jpeg" class="header-img">
             <h1>Δήλωση Απουσίας / Αιτήματος</h1>
             <p>Συμπληρώστε την αντίστοιχη φόρμα για να δηλώσετε την απουσία ενός μαθητή ή
                 να δηλώσετε κάποιο αίτημα που να αφορά τη μετακίνηση κάποιου μαθητή.
@@ -96,8 +95,8 @@
                 <div class="section">
                     <h3>Ημερομηνία απουσίας</h3>
                     <div class="date-wrapper">
-                        <input type="text" id="niceDate" placeholder="Επιλέξτε ημερομηνία">
-                        <input type="date" id="realDate" required>
+                        <input type="text" id="niceDateAbsence" placeholder="Επιλέξτε ημερομηνία">
+                        <input type="date" id="realDateAbsence" required>
                     </div>
                 </div>
 
@@ -172,8 +171,8 @@
                 <div class="section">
                     <h3>Ημερομηνία πραγματοποίησης αιτήματος</h3>
                     <div class="date-wrapper">
-                        <input type="text" id="niceDate" placeholder="Επιλέξτε ημερομηνία">
-                        <input type="date" id="realDate" required>
+                        <input type="text" id="niceDateRequest" placeholder="Επιλέξτε ημερομηνία">
+                        <input type="date" id="realDateRequest" required>
                     </div>
                 </div>
 
@@ -250,25 +249,24 @@
             </div>
         </div>
 
-        <!--Script for the date-->
+        <!--Script for the Absence date-->
         <script>
-            const realDate = document.getElementById("realDate");
-            const niceDate = document.getElementById("niceDate");
+            const realDateAbsence = document.getElementById("realDateAbsence");
+            const niceDateAbsence = document.getElementById("niceDateAbsence");
 
             // min date
-            const today = new Date().toISOString().split("T")[0];
-            realDate.setAttribute("min", today);
+            realDateAbsence.setAttribute("min", new Date().toISOString().split("T")[0]);
 
-            niceDate.addEventListener("click", () => {
-                if (realDate.showPicker) {
-                    realDate.showPicker(); // Open calendar
+            niceDateAbsence.addEventListener("click", () => {
+                if (realDateAbsence.showPicker) {
+                    realDateAbsence.showPicker(); // Open calendar
                 } else {
-                    realDate.focus(); // fallback
+                    realDateAbsence.focus(); // fallback
                 }
             });
             // when the user chooses date
-            realDate.addEventListener("change", () => {
-                const date = new Date(realDate.value);
+            realDateAbsence.addEventListener("change", () => {
+                const date = new Date(realDateAbsence.value);
 
                 const formatted = date.toLocaleDateString("el-GR", {
                     day: "2-digit",
@@ -276,22 +274,74 @@
                     year: "numeric"
                 });
 
-                niceDate.value = formatted;
+                niceDateAbsence.value = formatted;
+            });
+        </script>
+
+        <!--Script for the Request date-->
+        <script>
+            const realDateRequest = document.getElementById("realDateRequest");
+            const niceDateRequest = document.getElementById("niceDateRequest");
+
+            // min date
+            realDateRequest.setAttribute("min", new Date().toISOString().split("T")[0]);
+
+            niceDateRequest.addEventListener("click", () => {
+                if (realDateRequest.showPicker) {
+                    realDateRequest.showPicker(); // Open calendar
+                } else {
+                    realDateRequest.focus(); // fallback
+                }
+            });
+            // when the user chooses date
+            realDateRequest.addEventListener("change", () => {
+                const date = new Date(realDateRequest.value);
+
+                const formatted = date.toLocaleDateString("el-GR", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric"
+                });
+
+                niceDateRequest.value = formatted;
             });
         </script>
 
         <!--Script for the students choice-->
         <script>
             const students = [
-               { name: "Ζαφειροπούλου Αναστασία", am: "1001", route: "Δρομολόγιο 1 (Κηφισιά - Μαρούσι)"},
-               { name: "Καμαριάρης Γεώργιος", am: "1002", route: "Δρομολόγιο 2 (Χαλάνδρι - Αγία Παρασκευή)" },
-               { name: "Καμαριάρης Ευφροσύνη", am: "1003", route: "Δρομολόγιο 2 (Χαλάνδρι - Αγία Παρασκευή)" },
-               { name:  "Κλαπαύτης Γεώργιος", am: "1004", route: "Δρομολόγιο 3 (Γλυφάδα - Βούλα)" },
-               { name: "Τσιμιδάκη Αγγελική", am: "1005", route: "Δρομολόγιο 4 (Περιστέρι - Αιγάλεω)" },
-               { name:  "Τσιμιδάκη Κωνσταντίνα", am: "1006", route: "Δρομολόγιο 4 (Περιστέρι - Αιγάλεω)" },
-               { name:  "Χατζηνικολάου Γεωργία", am: "1007", route: "Δρομολόγιο 5 (Ίλιον - Πετρούπολη)" },
-               { name:  "Χατζηνικολάου Ιωάννα", am: "1008", route: "Δρομολόγιο 5 (Ίλιον - Πετρούπολη)" },
-               { name:  "Χατζηνικολάου Σπύρος", am: "1009", route: "Δρομολόγιο 5 (Ίλιον - Πετρούπολη)" }
+               { name: "Αντωνίου Πέτρος", am: "1001", route: "Δρομολόγιο 5 (Ίλιον - Πετρούπολη)"},
+               { name: "Βασιλείου Αγγελική", am: "1002", route: "Δρομολόγιο 2 (Χαλάνδρι - Αγία Παρασκευή)" },
+               { name: "Βασιλείου Άννα", am: "1003", route: "Δρομολόγιο 5 (Ίλιον - Πετρούπολη)" },
+               { name:  "Γεωργίου Ελένη", am: "1004", route: "Δρομολόγιο 5 (Ίλιον - Πετρούπολη)" },
+               { name: "Δημητρίου Νίκος", am: "1005", route: "Δρομολόγιο 5 (Ίλιον - Πετρούπολη)" },
+               { name:  "Θεοδώρου Άννα", am: "1006", route: "Δρομολόγιο 5 (Ίλιον - Πετρούπολη)" },
+               { name:  "Ιωάννου Κατερίνα", am: "1007", route: "Δρομολόγιο 5 (Ίλιον - Πετρούπολη)" },
+               { name:  "Ιωάννου Χριστίνα", am: "1008", route: "Δρομολόγιο 5 (Ίλιον - Πετρούπολη)" },
+               { name:  "Καραγιάννη Ευαγγελία", am: "1009", route: "Δρομολόγιο 1 (Κηφισιά - Μαρούσι)" },
+               { name:  "Καραγιάννη Παναγιώτα", am: "1010", route: "Δρομολόγιο 1 (Κηφισιά - Μαρούσι)" },
+               { name:  "Καραγιάννης Πάνος", am: "1011", route: "Δρομολόγιο 5 (Ίλιον - Πετρούπολη)" },
+               { name:  "Κωνσταντίνου Μαρία", am: "1012", route: "Δρομολόγιο 5 (Ίλιον - Πετρούπολη)" },
+               { name:  "Μαντάς Αλέξανδρος", am: "1013", route: "Δρομολόγιο 3 (Γλυφάδα - Βούλα)" },
+               { name:  "Μανωλάκης Χρήστος", am: "1014", route: "Δρομολόγιο 4 (Περιστέρι - Αιγάλεω)" },
+               { name:  "Μακρής Κώστας", am: "1015", route: "Δρομολόγιο 4 (Περιστέρι - Αιγάλεω)" },
+               { name:  "Νικολάου Ανδρέας", am: "1016", route: "Δρομολόγιο 5 (Ίλιον - Πετρούπολη)" },
+               { name:  "Παπαδάκης Γιώργος", am: "1017", route: "Δρομολόγιο 4 (Περιστέρι - Αιγάλεω)" },
+               { name:  "Παπαδόπουλος Γιάννης", am: "1018", route: "Δρομολόγιο 5 (Ίλιον - Πετρούπολη)" },
+               { name:  "Παπαγεωργίου Ελένη", am: "1019", route: "Δρομολόγιο 5 (Ίλιον - Πετρούπολη)" },
+               { name:  "Παπαζέρβα Παναγιώτα", am: "1020", route: "Δρομολόγιο 6 (Άλιμος - Ελληνικό)" },
+               { name:  "Παπαδοπούλου Σοφία", am: "1021", route: "Δρομολόγιο 5 (Ίλιον - Πετρούπολη)" },
+               { name:  "Παππά Ιωάννα", am: "1022", route: "Δρομολόγιο 6 (Άλιμος - Ελληνικό)" },
+               { name:  "Παπασωτηρίου Μαρία", am: "1023", route: "Δρομολόγιο 3 (Γλυφάδα - Βούλα)" },
+               { name:  "Παναγιώτου Δημήτρης", am: "1024", route: "Δρομολόγιο 5 (Ίλιον - Πετρούπολη)" },
+               { name:  "Πολίτης Μάξιμος", am: "1025", route: "Δρομολόγιο 6 (Άλιμος - Ελληνικό)" },
+               { name:  "Ράπτης Θανάσης", am: "1026", route: "Δρομολόγιο 7 (Νέα Σμύρνη - Καλλιθέα)" },
+               { name:  "Στεφανέλης Σέργιος", am: "1027", route: "Δρομολόγιο 3 (Γλυφάδα - Βούλα)" },
+               { name:  "Στεφανίδης Νικόλας", am: "1028", route: "Δρομολόγιο 5 (Ίλιον - Πετρούπολη)" },
+               { name:  "Στεργίου Δέσποινα", am: "1029", route: "Δρομολόγιο 7 (Νέα Σμύρνη - Καλλιθέα)" },
+               { name:  "Σχοινάς Σπύρος", am: "1030", route: "Δρομολόγιο 7 (Νέα Σμύρνη - Καλλιθέα)" },
+               { name:  "Χατζής Ιάσονας", am: "1031", route: "Δρομολόγιο 8 (Ζωγράφου - Καισαριανή)" },
+               { name:  "Χριστοδούλου Σταμάτης", am: "1032", route: "Δρομολόγιο 8 (Ζωγράφου - Καισαριανή)" }
             ];
 
             let selectedStudent = null;
