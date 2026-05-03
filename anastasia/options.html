@@ -5,13 +5,79 @@
     <title>Saint-Paul | Επιλογές</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #fdfd96;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .options-container {
+            background: white;
+            border-radius: 2rem;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        h2 {
+            color: #0047ab;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+        }
+        
+        .options-box {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .option-btn {
+            background: #1e3a3f;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 2rem;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.2s;
+            display: block;
+        }
+        
+        .option-btn:hover {
+            background: #2c5a5f;
+            transform: translateY(-2px);
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 15px;
+            color: #0047ab;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
-<body style="background-color: #fdfd96; display: flex; align-items: center; justify-content: center; height: 100vh;">
-
+<body>
     <div class="options-container">
-        <h2 id="role-title" style="color: #0047ab; margin-bottom: 25px;"></h2>
+        <h2 id="role-title"></h2>
         <div id="options-box" class="options-box"></div>
-        <br>
         <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Πίσω στην Αρχική</a>
     </div>
 
@@ -24,7 +90,7 @@
         const data = {
             'parents': { title: 'Γονείς / Υπάλληλοι', menu: ['Δήλωση απουσίας', 'Τροποποίηση απουσίας'] },
             'drivers': { title: 'Οδηγοί', menu: ['Προβολή Δρομολογίου', 'Αναφορά Προβλήματος'] },
-            'office': { title: 'Γραφείο Κίνησης', menu: ['Τακτικά δρομολόγια', 'Δηλώσεις απουσιών', 'Προβολή & Τροποποίηση', 'Έλεγχος & Οριστικοποίηση'] },
+            'office': { title: 'Υπεύθυνος Κίνησης', menu: ['Τακτικά δρομολόγια', 'Δηλώσεις απουσιών', 'Προβολή & Τροποποίηση', 'Έλεγχος & Οριστικοποίηση'] },
             'director': { title: 'Διευθυντής', menu: ['Προβολή στατιστικών'] }
         };
 
@@ -32,13 +98,15 @@
             title.innerText = data[role].title;
             data[role].menu.forEach(item => {
                 const a = document.createElement('a');
-                // Για τον διευθυντή, προσθέτουμε &view=stats στο URL
                 let targetUrl = `dashboard.html?role=${role}`;
                 if (role === 'director' && item === 'Προβολή στατιστικών') {
                     targetUrl += '&view=stats';
                 }
+                if (role === 'office' && item === 'Τακτικά δρομολόγια') {
+                    targetUrl += '&view=routes';
+                }
                 a.href = targetUrl;
-                a.className = 'btn option-btn';
+                a.className = 'option-btn';
                 a.innerText = item;
                 box.appendChild(a);
             });
