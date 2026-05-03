@@ -1,4 +1,3 @@
-<!-- options.html -->
 <!DOCTYPE html>
 <html lang="el">
 <head>
@@ -11,9 +10,7 @@
 
     <div class="options-container">
         <h2 id="role-title" style="color: #0047ab; margin-bottom: 25px;"></h2>
-        <div id="options-box" class="options-box">
-            <!-- Εδώ θα μπουν τα κουμπιά από τη JavaScript -->
-        </div>
+        <div id="options-box" class="options-box"></div>
         <br>
         <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Πίσω στην Αρχική</a>
     </div>
@@ -28,14 +25,19 @@
             'parents': { title: 'Γονείς / Υπάλληλοι', menu: ['Δήλωση απουσίας', 'Τροποποίηση απουσίας'] },
             'drivers': { title: 'Οδηγοί', menu: ['Προβολή Δρομολογίου', 'Αναφορά Προβλήματος'] },
             'office': { title: 'Γραφείο Κίνησης', menu: ['Τακτικά δρομολόγια', 'Δηλώσεις απουσιών', 'Προβολή & Τροποποίηση', 'Έλεγχος & Οριστικοποίηση'] },
-            'director': { title: 'Διευθυντής', menu: ['Προβολή στατιστικών/ιστορικού', 'Κατάσταση δρομολογίων'] }
+            'director': { title: 'Διευθυντής', menu: ['Προβολή στατιστικών'] }
         };
 
         if(data[role]) {
             title.innerText = data[role].title;
             data[role].menu.forEach(item => {
                 const a = document.createElement('a');
-                a.href = `dashboard.html?role=${role}`;
+                // Για τον διευθυντή, προσθέτουμε &view=stats στο URL
+                let targetUrl = `dashboard.html?role=${role}`;
+                if (role === 'director' && item === 'Προβολή στατιστικών') {
+                    targetUrl += '&view=stats';
+                }
+                a.href = targetUrl;
                 a.className = 'btn option-btn';
                 a.innerText = item;
                 box.appendChild(a);

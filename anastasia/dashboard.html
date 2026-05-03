@@ -2,110 +2,453 @@
 <html lang="el">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saint-Paul | Πίνακας Ελέγχου</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Saint-Paul | Dashboard</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* Επιπλέον styles για το ταμπλό στατιστικών (ενσωματωμένα από το αρχικό director panel) */
+        .stats-dashboard {
+            background: transparent;
+            color: #1e2a2e;
+        }
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.8rem;
+            margin-bottom: 2rem;
+        }
+        .card {
+            background: white;
+            border-radius: 1.8rem;
+            padding: 1.4rem 1.6rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.03), 0 2px 6px rgba(0,0,0,0.05);
+            border: 1px solid #e2efe4;
+        }
+        .card h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.3rem;
+            margin-bottom: 1.2rem;
+            color: #1e3a3f;
+            border-left: 5px solid #c44536;
+            padding-left: 0.8rem;
+        }
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #1e3a3f;
+        }
+        .stat-label {
+            color: #577a7e;
+            font-size: 0.85rem;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        .data-table th, .data-table td {
+            text-align: left;
+            padding: 0.75rem 0.4rem;
+            border-bottom: 1px solid #deeae6;
+        }
+        .data-table th {
+            font-weight: 600;
+            color: #1e3a3f;
+            background: #f5faf7;
+        }
+        .badge {
+            background: #eaf4e8;
+            padding: 0.2rem 0.7rem;
+            border-radius: 2rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #2c6e4f;
+            display: inline-block;
+        }
+        .warning-badge {
+            background: #ffe5d9;
+            color: #bc4e2c;
+        }
+        .pie-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+        .pie-chart {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: conic-gradient(#2c6e4f 0% 64%, #e0a800 64% 86%, #c44536 86% 100%);
+            margin-bottom: 0.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .pie-legend {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            font-size: 0.8rem;
+        }
+        .legend-color {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+            margin-right: 0.3rem;
+        }
+        .progress-bar-container {
+            background: #e2efe4;
+            border-radius: 1rem;
+            height: 1.2rem;
+            width: 100%;
+            overflow: hidden;
+            margin: 0.8rem 0;
+        }
+        .progress-bar {
+            background: #2c6e4f;
+            height: 100%;
+            width: 92.6%;
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 0.5rem;
+            color: white;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+        .inactive-list {
+            background: #fff5f5;
+            padding: 0.8rem;
+            border-radius: 1rem;
+            border: 1px solid #ffe5d9;
+        }
+        .filter-controls button {
+            background: #1e3a3f;
+            color: white;
+            border: none;
+            padding: 0.3rem 0.8rem;
+            border-radius: 2rem;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .filter-controls button:hover {
+            background: #2c5a5f;
+        }
+        .offline-warning {
+            background: #ffe5d9;
+            border-left: 5px solid #c44536;
+            padding: 1rem;
+            border-radius: 1rem;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+        .offline-warning.show {
+            display: block;
+        }
+        .info-note {
+            background: #f9f3e3;
+            padding: 0.8rem;
+            border-radius: 1rem;
+            margin-top: 1rem;
+        }
+        @media (max-width: 680px) {
+            .card {
+                padding: 1rem;
+            }
+            .data-table th, .data-table td {
+                font-size: 0.75rem;
+                padding: 0.5rem 0.2rem;
+            }
+            .stat-number {
+                font-size: 1.5rem;
+            }
+            .pie-chart {
+                width: 140px;
+                height: 140px;
+            }
+        }
+    </style>
 </head>
 <body style="background-color: #fdfd96; background-image: none;">
 
+    <!-- Sidebar (ίδια δομή με το dashboard.html) -->
     <div id="sidebar" class="sidebar" style="width: 300px;">
-    <button id="close-btn" class="close-btn">&times;</button>
-    
-    <!-- Εδώ θα εμφανίζονται οι επιλογές του ρόλου -->
-    <div id="dynamic-menu" class="menu-section">
-        <h4 id="menu-title"></h4>
-        <ul id="menu-list">
-            <!-- Τα <li><a> θα μπουν εδώ από τη JS -->
-        </ul>
+        <button id="close-btn" class="close-btn">&times;</button>
+        <div id="dynamic-menu" class="menu-section">
+            <h4 id="menu-title"></h4>
+            <ul id="menu-list"></ul>
+        </div>
+        <hr style="border: 0.5px solid rgba(255,255,255,0.2); margin: 20px 0;">
+        <a href="index.html" class="menu-item"><i class="fas fa-home"></i> Επιστροφή στην Αρχική</a>
     </div>
 
-    <hr style="border: 0.5px solid rgba(255,255,255,0.2); margin: 20px 0;">
-    <a href="index.html" class="menu-item"><i class="fas fa-home"></i> Επιστροφή στην Αρχική</a>
-    </div>
-
-    <!-- Κουμπί για να ξανανοίγει το μενού (Menu Toggle) -->
-    <button id="menu-toggle" class="menu-toggle">
-    <i class="fas fa-bars"></i>
-    </button>
-
-    <button id="menu-toggle" class="menu-btn" style="display:none;"><i class="fas fa-bars"></i> Μενού</button>
+    <button id="menu-toggle" class="menu-toggle"><i class="fas fa-bars"></i></button>
 
     <main id="main-content" style="margin-left: 320px; transition: 0.5s; padding: 40px; text-align: left;">
-        <h2 style="color: #0047ab;">Πίνακας Διαχείρισης</h2>
-        <p>Επιλέξτε μια ενέργεια από το πλευρικό μενού για να συνεχίσετε.</p>
+        <h2 style="color: #0047ab;" id="welcome-title">Πίνακας Διαχείρισης</h2>
+        
+        <!-- Εδώ θα φορτωθεί δυναμικά το περιεχόμενο ανάλογα με το view -->
+        <div id="dynamic-content">
+            <p>Επιλέξτε μια ενέργεια από το πλευρικό μενού για να συνεχίσετε.</p>
+        </div>
     </main>
 
     <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const role = urlParams.get('role');
+        const urlParams = new URLSearchParams(window.location.search);
+        const role = urlParams.get('role');
+        const view = urlParams.get('view'); // 'stats' για τον διευθυντή
 
-    const sidebar = document.getElementById("sidebar");
-    const menuToggle = document.getElementById("menu-toggle");
-    const menuList = document.getElementById('menu-list');
-    const menuTitle = document.getElementById('menu-title');
-    const mainContent = document.getElementById("main-content");
-    const closeBtn = document.getElementById("close-btn");
+        const sidebar = document.getElementById("sidebar");
+        const menuToggle = document.getElementById("menu-toggle");
+        const menuList = document.getElementById('menu-list');
+        const menuTitle = document.getElementById('menu-title');
+        const mainContent = document.getElementById("main-content");
+        const closeBtn = document.getElementById("close-btn");
+        const dynamicContent = document.getElementById("dynamic-content");
+        const welcomeTitle = document.getElementById("welcome-title");
 
-    const roleData = {
-        'parents': { title: 'Γονείς', items: ['Δήλωση απουσίας', 'Τροποποίηση απουσίας'] },
-        'office': { title: 'Γραφείο Κίνησης', items: ['Τακτικά δρομολόγια', 'Δηλώσεις απουσιών', 'Προβολή & Τροποποίηση', 'Έλεγχος & Οριστικοποίηση'] },
-        'director': { title: 'Διευθυντής', items: ['Προβολή στατιστικών', 'Κατάσταση δρομολογίων'] }
-    };
+        // Δεδομένα ρόλων για το μενού
+        const roleData = {
+            'parents': { title: 'Γονείς', items: ['Δήλωση απουσίας', 'Τροποποίηση απουσίας'] },
+            'office': { title: 'Γραφείο Κίνησης', items: ['Τακτικά δρομολόγια', 'Δηλώσεις απουσιών', 'Προβολή & Τροποποίηση', 'Έλεγχος & Οριστικοποίηση'] },
+            'director': { title: 'Διευθυντής', items: ['Προβολή στατιστικών'] }
+        };
 
-    // ΠΕΡΙΠΤΩΣΗ ΟΔΗΓΩΝ
-   if (role === 'drivers') {
-    if(sidebar) sidebar.remove();
-    if(menuToggle) menuToggle.remove();
-    
-    //Σπρώχνουμε το περιεχόμενο αρκετά κάτω για να χωρέσει το κουμπί από πάνω
-    mainContent.style.setProperty('padding-top', '120px', 'important');
-    mainContent.style.setProperty('padding-left', '20px', 'important');
-    mainContent.style.marginLeft = "20px";
-
-    //Φτιάχνουμε το κουμπί
-    const backBtn = document.createElement('a');
-    backBtn.href = "index.html";
-    backBtn.innerHTML = '<i class="fas fa-arrow-left"></i> Επιστροφή στην Αρχική';
-    
-    backBtn.style.cssText = `
-        position: fixed; 
-        top: 20px; 
-        left: 20px; 
-        background: #0047ab; 
-        color: white; 
-        padding: 10px 20px; 
-        border-radius: 5px; 
-        text-decoration: none; 
-        z-index: 10000; 
-        font-weight: bold;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    `;
-    document.body.appendChild(backBtn);
-}
-    // ΥΠΟΛΟΙΠΟΙ ΡΟΛΟΙ
-    else if (roleData[role]) {
-        menuTitle.innerHTML = `<i class="fas fa-bars"></i> ${roleData[role].title}`;
-        
-        roleData[role].items.forEach(item => {
-            const li = document.createElement('li');
-            li.innerHTML = `<a href="#" class="menu-item">${item}</a>`;
-            menuList.appendChild(li);
-        });
-
-        // Λειτουργία Sidebar (X και Hamburger)
-        closeBtn.onclick = () => {
-            sidebar.style.width = "0";
+        // Ειδική περίπτωση για Οδηγούς (χωρίς sidebar)
+        if (role === 'drivers') {
+            if(sidebar) sidebar.remove();
+            if(menuToggle) menuToggle.remove();
+            mainContent.style.setProperty('padding-top', '120px', 'important');
+            mainContent.style.setProperty('padding-left', '20px', 'important');
             mainContent.style.marginLeft = "20px";
-            menuToggle.style.display = "block";
-        };
+            const backBtn = document.createElement('a');
+            backBtn.href = "index.html";
+            backBtn.innerHTML = '<i class="fas fa-arrow-left"></i> Επιστροφή στην Αρχική';
+            backBtn.style.cssText = `position: fixed; top: 20px; left: 20px; background: #0047ab; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; z-index: 10000; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.2);`;
+            document.body.appendChild(backBtn);
+            welcomeTitle.innerText = "Οδηγοί - Πίνακας Ελέγχου";
+            dynamicContent.innerHTML = "<p>Εδώ θα εμφανίζονται οι επιλογές για τους οδηγούς.</p>";
+        }
+        // Για τους υπόλοιπους ρόλους (συμπεριλαμβανομένου Διευθυντή)
+        else if (roleData[role]) {
+            // Γέμισμα μενού
+            menuTitle.innerHTML = `<i class="fas fa-bars"></i> ${roleData[role].title}`;
+            menuList.innerHTML = '';
+            roleData[role].items.forEach(item => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = "#";
+                a.className = "menu-item";
+                a.innerHTML = item;
+                // Όταν πατάει "Προβολή στατιστικών" (για Διευθυντή), φορτώνουμε το ταμπλό
+                if (role === 'director' && item === 'Προβολή στατιστικών') {
+                    a.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        loadDirectorStats();
+                    });
+                } else {
+                    a.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        dynamicContent.innerHTML = `<p>Λειτουργία "${item}" υπό ανάπτυξη.</p>`;
+                    });
+                }
+                li.appendChild(a);
+                menuList.appendChild(li);
+            });
 
-        menuToggle.onclick = () => {
-            sidebar.style.width = "300px";
-            mainContent.style.marginLeft = "320px";
-            menuToggle.style.display = "none";
-        };
-    }
-</script>
+            // Λειτουργίες sidebar
+            closeBtn.onclick = () => {
+                sidebar.style.width = "0";
+                mainContent.style.marginLeft = "20px";
+                menuToggle.style.display = "block";
+            };
+            menuToggle.onclick = () => {
+                sidebar.style.width = "300px";
+                mainContent.style.marginLeft = "320px";
+                menuToggle.style.display = "none";
+            };
+
+            // Αν ο διευθυντής μπήκε απευθείας με view=stats (από options.html), φορτώνουμε κατευθείαν τα στατιστικά
+            if (role === 'director' && view === 'stats') {
+                loadDirectorStats();
+            } else {
+                welcomeTitle.innerText = `${roleData[role].title} - Πίνακας Ελέγχου`;
+                dynamicContent.innerHTML = "<p>Επιλέξτε μια ενέργεια από το πλευρικό μενού.</p>";
+            }
+        } else {
+            // Αν δεν υπάρχει ρόλος, ή άγνωστος
+            welcomeTitle.innerText = "Πίνακας Διαχείρισης";
+            dynamicContent.innerHTML = "<p>Μη έγκυρος ρόλος. Παρακαλώ επιστρέψτε στην αρχική σελίδα.</p>";
+        }
+
+        // Συνάρτηση που φορτώνει ΟΛΟ το ταμπλό στατιστικών του Διευθυντή
+        function loadDirectorStats() {
+            welcomeTitle.innerText = "Διευθυντής - Στατιστικά & Ιστορικό";
+            dynamicContent.innerHTML = `
+                <div class="stats-dashboard">
+                    <div id="offlineWarning" class="offline-warning">
+                        ⚠️ <strong>Μη διαθεσιμότητα επικαιροποιημένων δεδομένων</strong><br>
+                        Λόγω ασταθούς σύνδεσης, τα δεδομένα που εμφανίζονται ενδέχεται να μην είναι πλήρως ενημερωμένα.
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <!-- Ποσοστά ενεργών δρομολογίων -->
+                        <div class="card">
+                            <h3>🚌 Ποσοστά ενεργών δρομολογίων</h3>
+                            <div class="stat-number">25 / 27</div>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar" style="width: 92.6%;">92.6%</div>
+                            </div>
+                            <div class="stat-label">Σύνολο: 27 | Ενεργά: 25 | Ανενεργά: 2</div>
+                            <div class="inactive-list">
+                                <p style="font-size: 0.85rem; font-weight: 600; color: #c44536; margin-bottom: 0.5rem;">Ανενεργά δρομολόγια:</p>
+                                <table class="data-table">
+                                    <thead><tr><th>ID</th><th>Περιοχή</th></tr></thead>
+                                    <tbody>
+                                        <tr><td>#3</td><td>Πειραιάς - Μοσχάτο</td></tr>
+                                        <tr><td>#8</td><td>Γλυφάδα - Ελληνικό</td></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Πηγές δήλωσης απουσίας -->
+                        <div class="card">
+                            <h3>📞 Πηγές δήλωσης απουσίας</h3>
+                            <div class="pie-container">
+                                <div class="pie-chart"></div>
+                                <div class="pie-legend">
+                                    <div><span class="legend-color" style="background:#2c6e4f;"></span> Γονείς: 64%</div>
+                                    <div><span class="legend-color" style="background:#e0a800;"></span> Γραμματεία: 22%</div>
+                                    <div><span class="legend-color" style="background:#c44536;"></span> Υπεύθ. Κίνησης: 14%</div>
+                                </div>
+                            </div>
+                            <div class="stat-label" style="text-align:center;">Στοιχεία Σχολικού Έτους 2025-26</div>
+                        </div>
+
+                        <!-- Ιστορικό πληρότητας -->
+                        <div class="card">
+                            <h3>📅 Ιστορικό πληρότητας δρομολογίων</h3>
+                            <table class="data-table">
+                                <thead><tr><th>Ημερομηνία</th><th>Σύνολο μαθητών</th><th>Πληρότητα (%)</th></tr></thead>
+                                <tbody>
+                                    <tr><td>28/04/2026</td><td>342</td><td>88%</td></tr>
+                                    <tr><td>27/04/2026</td><td>338</td><td>87%</td></tr>
+                                    <tr><td>26/04/2026</td><td>330</td><td>85%</td></tr>
+                                    <tr><td>25/04/2026</td><td>318</td><td>82%</td></tr>
+                                    <tr><td>24/04/2026</td><td>356</td><td>91%</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Μαθητές με αδήλωτες απουσίες -->
+                    <div class="card" style="margin-bottom: 1.8rem;">
+                        <h3>⚠️ Μαθητές με περισσότερες αδήλωτες απουσίες</h3>
+                        <table class="data-table">
+                            <thead><tr><th>Ονοματεπώνυμο</th><th>Τάξη</th><th>Αδήλωτες απουσίες</th><th>Τελευταία αδήλωτη</th></tr></thead>
+                            <tbody>
+                                <tr><td>Αντωνίου Μαρία</td><td>Γ' Γυμνασίου</td><td>3</td><td>26/04/2026</td></tr>
+                                <tr><td>Παπαδόπουλος Κωνσταντίνος</td><td>Α' Λυκείου</td><td>2</td><td>25/04/2026</td></tr>
+                                <tr><td>Γεωργίου Ελένη</td><td>Γ' Λυκείου</td><td>1</td><td>22/04/2026</td></tr>
+                                <tr><td>Νικολάου Ανδρέας</td><td>Β' Γυμνασίου</td><td>1</td><td>20/04/2026</td></tr>
+                            </tbody>
+                        </table>
+                        <div class="info-note">
+                            ℹ️ <strong>Σημείωση:</strong> Αδήλωτη απουσία ονομάζεται η περίπτωση όπου μαθητής απουσιάζει από δρομολόγιο χωρίς προηγούμενη ενημέρωση.
+                        </div>
+                    </div>
+
+                    <!-- Πίνακας αναλυτικών δρομολογίων με φίλτρα -->
+                    <div class="card">
+                        <h3>📊 Αναλυτικά ποσοστά δρομολογίων (Σύνολο: 27)</h3>
+                        <div class="filter-controls" style="margin-bottom: 1rem; display: flex; gap: 0.5rem;">
+                            <button onclick="filterRoutes('all')">Όλα</button>
+                            <button onclick="filterRoutes('active')" style="background: #2c6e4f;">Ενεργά</button>
+                            <button onclick="filterRoutes('inactive')" style="background: #c44536;">Ανενεργά</button>
+                        </div>
+                        <div style="max-height: 400px; overflow-y: auto;">
+                            <table class="data-table" id="routesTable">
+                                <thead><tr><th>Δρομολόγιο</th><th>Περιοχή</th><th>Κατάσταση</th><th>Πληρότητα</th></tr></thead>
+                                <tbody id="routesTableBody">
+                                    <!-- Τα δεδομένα θα μπουν εδώ από JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Γέμισμα του πίνακα δρομολογίων
+            const routesData = [
+                { id: "#1", region: "Κηφισιά - Μαρούσι", status: "active", fullness: "92%" },
+                { id: "#2", region: "Χαλάνδρι - Αγία Παρασκευή", status: "active", fullness: "88%" },
+                { id: "#4", region: "Γλυφάδα - Βούλα", status: "active", fullness: "79%" },
+                { id: "#5", region: "Περιστέρι - Αιγάλεω", status: "active", fullness: "84%" },
+                { id: "#6", region: "Ίλιον - Πετρούπολη", status: "active", fullness: "76%" },
+                { id: "#7", region: "Άλιμος - Ελληνικό", status: "active", fullness: "91%" },
+                { id: "#9", region: "Νέα Σμύρνη - Καλλιθέα", status: "active", fullness: "85%" },
+                { id: "#10", region: "Ζωγράφου - Καισαριανή", status: "active", fullness: "82%" },
+                { id: "#11", region: "Βύρωνας - Παγκράτι", status: "active", fullness: "78%" },
+                { id: "#12", region: "Γαλάτσι - Πατήσια", status: "active", fullness: "89%" },
+                { id: "#13", region: "Μαρούσι - Πεύκη", status: "active", fullness: "93%" },
+                { id: "#14", region: "Βριλήσσια - Χαλάνδρι", status: "active", fullness: "81%" },
+                { id: "#15", region: "Αγία Παρασκευή - Γέρακας", status: "active", fullness: "87%" },
+                { id: "#16", region: "Κορυδαλλός - Νίκαια", status: "active", fullness: "74%" },
+                { id: "#17", region: "Αιγάλεω - Χαϊδάρι", status: "active", fullness: "80%" },
+                { id: "#18", region: "Ηλιούπολη - Αργυρούπολη", status: "active", fullness: "95%" },
+                { id: "#19", region: "Μελίσσια - Κηφισιά", status: "active", fullness: "77%" },
+                { id: "#20", region: "Πικέρμι - Παλλήνη", status: "active", fullness: "83%" },
+                { id: "#21", region: "Μαρκόπουλο - Κορωπί", status: "active", fullness: "86%" },
+                { id: "#22", region: "Βάρη - Βούλα", status: "active", fullness: "89%" },
+                { id: "#23", region: "Διόνυσος - Εκάλη", status: "active", fullness: "72%" },
+                { id: "#24", region: "Χολαργός - Παπάγου", status: "active", fullness: "84%" },
+                { id: "#25", region: "Νέα Φιλαδέλφεια", status: "active", fullness: "79%" },
+                { id: "#26", region: "Περιστέρι - Ανθούπολη", status: "active", fullness: "81%" },
+                { id: "#27", region: "Μαρούσι - Λυκόβρυση", status: "active", fullness: "88%" },
+                { id: "#3", region: "Πειραιάς - Μοσχάτο", status: "inactive", fullness: "-" },
+                { id: "#8", region: "Γλυφάδα - Ελληνικό", status: "inactive", fullness: "-" }
+            ];
+
+            function renderRoutes(filter) {
+                const tbody = document.getElementById('routesTableBody');
+                if (!tbody) return;
+                tbody.innerHTML = '';
+                routesData.forEach(route => {
+                    if (filter === 'active' && route.status !== 'active') return;
+                    if (filter === 'inactive' && route.status !== 'inactive') return;
+                    const row = tbody.insertRow();
+                    row.insertCell(0).innerText = route.id;
+                    row.insertCell(1).innerText = route.region;
+                    row.insertCell(2).innerHTML = route.status === 'active' ? '<span class="badge">Ενεργό</span>' : '<span class="badge warning-badge">Ανενεργό</span>';
+                    row.insertCell(3).innerText = route.fullness;
+                });
+            }
+
+            window.filterRoutes = (filter) => renderRoutes(filter);
+            renderRoutes('all');
+
+            // Προσομοίωση online/offline
+            let isOnline = true;
+            const offlineWarningDiv = document.getElementById('offlineWarning');
+            function checkConnection() {
+                isOnline = Math.random() > 0.1;
+                if (offlineWarningDiv) {
+                    if (isOnline) offlineWarningDiv.classList.remove('show');
+                    else offlineWarningDiv.classList.add('show');
+                }
+                const tables = document.querySelectorAll('.data-table');
+                tables.forEach(table => table.style.opacity = isOnline ? '1' : '0.7');
+            }
+            checkConnection();
+            setInterval(checkConnection, 10000);
+        }
+    </script>
 </body>
 </html>
