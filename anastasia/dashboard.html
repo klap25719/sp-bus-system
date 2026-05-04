@@ -536,7 +536,7 @@
         const welcomeTitle = document.getElementById("welcome-title");
 
         const roleData = {
-            'parents': { title: 'Γονείς', items: ['Δήλωση απουσίας', 'Τροποποίηση απουσίας'] },
+            'parents': { title: 'Γονείς / Υπάλληλοι', items: ['Δήλωση απουσίας', 'Τροποποίηση απουσίας'] },
             'office': { title: 'Υπεύθυνος Κίνησης', items: ['Τακτικά δρομολόγια', 'Δήλωση απουσίας', 'Προβολή & Τροποποίηση', 'Έλεγχος & Οριστικοποίηση'] },
             'director': { title: 'Διευθυντής', items: ['Προβολή στατιστικών'] }
         };
@@ -1059,7 +1059,7 @@ else {
 
 // ==================== ΓΟΝΕΙΣ - ΔΗΛΩΣΗ ΑΠΟΥΣΙΑΣ ====================
 function loadAbsenceDeclaration() {
-    welcomeTitle.innerText = "Γονείς - Δήλωση Απουσίας / Αιτήματος";
+    welcomeTitle.innerText = "Γονείς / Υπάλληλοι - Δήλωση Απουσίας / Αιτήματος";
     dynamicContent.innerHTML = `
         <div style="max-width: 900px; margin: 0 auto;">
             <div class="card" style="margin-bottom: 20px;">
