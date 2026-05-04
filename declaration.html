@@ -19,7 +19,7 @@
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
         }
 
         .form-container {
@@ -99,12 +99,14 @@
         /* Form elements */
         .section {
             margin-bottom: 1.3rem;
+            margin: 0;
+            display: flow-root;
         }
 
         .section h3 {
             font-size: 0.9rem;
             font-weight: 600;
-            margin-bottom: 0.6rem;
+            margin: 0 0 0.8rem 0;
             color: #1e3a3f;
         }
 
@@ -128,6 +130,7 @@
         .date-wrapper {
             position: relative;
             width: 100%;
+            margin-top: 0.5rem;
         }
 
         .date-input {

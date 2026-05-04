@@ -260,6 +260,7 @@
             padding: 1.4rem 1.6rem;
             box-shadow: 0 10px 20px rgba(0,0,0,0.03), 0 2px 6px rgba(0,0,0,0.05);
             border: 1px solid #e2efe4;
+            margin-bottom: 20px;
         }
 
         .card h3 {
@@ -1411,7 +1412,7 @@ function loadAbsenceDeclaration() {
     welcomeTitle.innerText = "Δήλωση Απουσίας / Αιτήματος";
     dynamicContent.innerHTML = `
         <div style="max-width: 900px; margin: 0 auto;">
-            <div class="card" style="margin-bottom: 20px;">
+            <div class="card">
                 <h3>📝 Δήλωση Απουσίας / Αιτήματος</h3>
                 <p>Συμπληρώστε την αντίστοιχη φόρμα για να δηλώσετε την απουσία ενός μαθητή ή να υποβάλετε κάποιο αίτημα που αφορά τη μετακίνησή του.</p>
             </div>
@@ -1432,13 +1433,13 @@ function loadAbsenceDeclaration() {
                         <input type="text" id="studentSearchAbsence" placeholder="Ονοματεπώνυμο..." style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 14px;">
                         <div id="resultsAbsence" class="results" style="position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #ddd; border-radius: 10px; max-height: 200px; overflow-y: auto; display: none; z-index: 100;"></div>
                     </div>
-                
+                </div>
 
                 <div style="margin-bottom: 20px;">
                         <label style="display: block; margin-bottom: 8px; font-weight: bold;">📅 Ημερομηνία απουσίας</label>
                         <input type="date" id="realDateAbsence" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 14px;" value="<?php echo date('Y-m-d'); ?>">
                     </div>
-                </div>
+               
                 <div style="margin-bottom: 20px;">
                     <label style="display: block; margin-bottom: 8px; font-weight: bold;">🚌 Δρομολόγιο</label>
                     <select id="routeSelectAbsence" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 14px;">
