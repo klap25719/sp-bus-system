@@ -537,7 +537,7 @@
 
         const roleData = {
             'parents': { title: 'Γονείς', items: ['Δήλωση απουσίας', 'Τροποποίηση απουσίας'] },
-            'office': { title: 'Υπεύθυνος Κίνησης', items: ['Τακτικά δρομολόγια', 'Δηλώσεις απουσιών', 'Προβολή & Τροποποίηση', 'Έλεγχος & Οριστικοποίηση'] },
+            'office': { title: 'Υπεύθυνος Κίνησης', items: ['Τακτικά δρομολόγια', 'Δήλωση απουσίας', 'Προβολή & Τροποποίηση', 'Έλεγχος & Οριστικοποίηση'] },
             'director': { title: 'Διευθυντής', items: ['Προβολή στατιστικών'] }
         };
 
@@ -560,63 +560,101 @@
             menuTitle.innerHTML = `<i class="fas fa-bars"></i> ${roleData[role].title}`;
             menuList.innerHTML = '';
             
-            roleData[role].items.forEach(item => {
-                const li = document.createElement('li');
-                const a = document.createElement('a');
-                a.href = "#";
-                a.className = "menu-item";
-                a.innerHTML = item;
-                
-                if (role === 'director' && item === 'Προβολή στατιστικών') {
-                    a.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        loadDirectorStats();
-                    });
-                }
-                else if (role === 'office' && item === 'Τακτικά δρομολόγια') {
-                    a.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        loadRouteManagement();
-                    });
-                }
-                else {
-                    a.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        dynamicContent.innerHTML = `<p>Λειτουργία "${item}" υπό ανάπτυξη.</p>`;
-                    });
-                }
-                
-                li.appendChild(a);
-                menuList.appendChild(li);
+           roleData[role].items.forEach(item => {
+    const li = document.createElement('li');
+    const a = document.createElement('a');
+    a.href = "#";
+    a.className = "menu-item";
+    a.innerHTML = item;
+
+    // ΓΟΝΕΙΣ
+        if (role === 'parents' && item === 'Δήλωση απουσίας') {
+            a.addEventListener('click', (e) => {
+                e.preventDefault();
+                loadAbsenceDeclaration();
             });
-
-            closeBtn.onclick = () => {
-                sidebar.style.width = "0";
-                mainContent.style.marginLeft = "20px";
-                menuToggle.style.display = "block";
-            };
-
-            menuToggle.onclick = () => {
-                sidebar.style.width = "300px";
-                mainContent.style.marginLeft = "320px";
-                menuToggle.style.display = "none";
-            };
-
-            if (role === 'director' && view === 'stats') {
-                loadDirectorStats();
-            }
-            else if (role === 'office' && view === 'routes') {
-                loadRouteManagement();
-            }
-            else {
-                welcomeTitle.innerText = `${roleData[role].title} - Πίνακας Ελέγχου`;
-                dynamicContent.innerHTML = "<p>Επιλέξτε μια ενέργεια από το πλευρικό μενού.</p>";
-            }
         }
-        else {
-            welcomeTitle.innerText = "Πίνακας Διαχείρισης";
-            dynamicContent.innerHTML = "<p>Μη έγκυρος ρόλος. Παρακαλώ επιστρέψτε στην αρχική σελίδα.</p>";
-        }
+    else if (role === 'office' && item === 'Δήλωση απουσίας') {
+    a.addEventListener('click', (e) => {
+        e.preventDefault();
+        loadAbsenceDeclaration();
+    });
+   }
+
+    else if (role === 'parents' && item === 'Τροποποίηση απουσίας') {
+        a.addEventListener('click', (e) => {
+            e.preventDefault();
+            dynamicContent.innerHTML = `<div class="card"><p>🔧 Λειτουργία "Τροποποίηση απουσίας" υπό ανάπτυξη.</p></div>`;
+        });
+    }
+    
+
+    // ΔΙΕΥΘΥΝΤΗΣ
+    else if (role === 'director' && item === 'Προβολή στατιστικών') {
+        a.addEventListener('click', (e) => {
+            e.preventDefault();
+            loadDirectorStats();
+        });
+    }
+    // ΥΠΕΥΘΥΝΟΣ ΚΙΝΗΣΗΣ
+    else if (role === 'office' && item === 'Τακτικά δρομολόγια') {
+        a.addEventListener('click', (e) => {
+            e.preventDefault();
+            loadRouteManagement();
+        });
+    }
+    // ΟΛΑ ΤΑ ΑΛΛΑ
+    else {
+        a.addEventListener('click', (e) => {
+            e.preventDefault();
+            dynamicContent.innerHTML = `<div class="card"><p>🔧 Λειτουργία "${item}" υπό ανάπτυξη.</p></div>`;
+        });
+    }
+    
+    li.appendChild(a);
+    menuList.appendChild(li);
+});
+
+    closeBtn.onclick = () => {
+    sidebar.style.width = "0";
+    mainContent.style.marginLeft = "20px";
+    menuToggle.style.display = "block";
+};
+
+menuToggle.onclick = () => {
+    sidebar.style.width = "300px";
+    mainContent.style.marginLeft = "320px";
+    menuToggle.style.display = "none";
+};
+
+// ===== ΕΛΕΓΧΟΙ ΓΙΑ ΑΥΤΟΜΑΤΗ ΦΟΡΤΩΣΗ =====
+if (role === 'parents' && view === 'absence') {
+    setTimeout(() => {
+        loadAbsenceDeclaration();
+    }, 100);
+}
+else if (role === 'parents' && view === 'modify') {
+    dynamicContent.innerHTML = `<div class="card"><p>🔧 Λειτουργία "Τροποποίηση απουσίας" υπό ανάπτυξη.</p></div>`;
+}
+else if (role === 'director' && view === 'stats') {
+    loadDirectorStats();
+}
+else if (role === 'office' && view === 'routes') {
+    loadRouteManagement();
+}
+else if (role === 'office' && view === 'absence') {
+    setTimeout(() => {
+        loadAbsenceDeclaration();
+    }, 100);
+}
+else {
+    // Μόνο αν δεν υπάρχει view parameter, δείξε το default μήνυμα
+    if (!view) {
+        welcomeTitle.innerText = `${roleData[role]?.title || 'Πίνακας Διαχείρισης'} - Πίνακας Ελέγχου`;
+        dynamicContent.innerHTML = "<p>Επιλέξτε μια ενέργεια από το πλευρικό μενού για να συνεχίσετε.</p>";
+    }
+}
+}
 
         // ==================== ΔΙΕΥΘΥΝΤΗΣ - ΣΤΑΤΙΣΤΙΚΑ ====================
         function loadDirectorStats() {
@@ -1019,14 +1057,432 @@
     loadFromStorage();
 }
 
+// ==================== ΓΟΝΕΙΣ - ΔΗΛΩΣΗ ΑΠΟΥΣΙΑΣ ====================
+function loadAbsenceDeclaration() {
+    welcomeTitle.innerText = "Γονείς - Δήλωση Απουσίας / Αιτήματος";
+    dynamicContent.innerHTML = `
+        <div style="max-width: 900px; margin: 0 auto;">
+            <div class="card" style="margin-bottom: 20px;">
+                <h3>📝 Δήλωση Απουσίας / Αιτήματος</h3>
+                <p>Συμπληρώστε την αντίστοιχη φόρμα για να δηλώσετε την απουσία ενός μαθητή ή να υποβάλετε κάποιο αίτημα που αφορά τη μετακίνησή του.</p>
+            </div>
+
+            <!-- Tabs για εναλλαγή μεταξύ Απουσίας και Αιτήματος -->
+            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                <button id="tabAbsenceBtn" class="tab-btn active" style="background: #1e3a3f; color: white; padding: 10px 20px; border: none; border-radius: 30px; cursor: pointer;">📖 Δήλωση Απουσίας</button>
+                <button id="tabRequestBtn" class="tab-btn" style="background: #e2efe4; color: #1e3a3f; padding: 10px 20px; border: none; border-radius: 30px; cursor: pointer;">✉️ Υποβολή Αιτήματος</button>
+            </div>
+
+            <!-- ΦΟΡΜΑ ΑΠΟΥΣΙΑΣ -->
+            <div id="absenceForm" class="card" style="display: block;">
+                <h3 style="margin-bottom: 20px;">📖 Δήλωση Απουσίας</h3>
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: bold;">👨‍🎓 Μαθητής/τρια</label>
+                    <div class="search-box" style="position: relative;">
+                        <input type="text" id="studentSearchAbsence" placeholder="Αναζήτηση ονοματεπώνυμου..." style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 14px;">
+                        <div id="resultsAbsence" class="results" style="position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #ddd; border-radius: 10px; max-height: 200px; overflow-y: auto; display: none; z-index: 100;"></div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: bold;">📅 Ημερομηνία απουσίας</label>
+                    <div style="position: relative;">
+                        <input type="text" id="niceDateAbsence" placeholder="Επιλέξτε ημερομηνία" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; cursor: pointer; background: white;">
+                        <input type="date" id="realDateAbsence" style="position: absolute; top: 0; left: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer;">
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: bold;">🚌 Δρομολόγιο</label>
+                    <select id="routeSelectAbsence" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 14px;">
+                        <option value="">Επιλέξτε δρομολόγιο...</option>
+                        <option value="Δρομολόγιο 1 (Κηφισιά - Μαρούσι)">Δρομολόγιο 1 (Κηφισιά - Μαρούσι)</option>
+                        <option value="Δρομολόγιο 2 (Χαλάνδρι - Αγία Παρασκευή)">Δρομολόγιο 2 (Χαλάνδρι - Αγία Παρασκευή)</option>
+                        <option value="Δρομολόγιο 3 (Γλυφάδα - Βούλα)">Δρομολόγιο 3 (Γλυφάδα - Βούλα)</option>
+                        <option value="Δρομολόγιο 4 (Περιστέρι - Αιγάλεω)">Δρομολόγιο 4 (Περιστέρι - Αιγάλεω)</option>
+                        <option value="Δρομολόγιο 5 (Ίλιον - Πετρούπολη)">Δρομολόγιο 5 (Ίλιον - Πετρούπολη)</option>
+                        <option value="Δρομολόγιο 6 (Άλιμος - Ελληνικό)">Δρομολόγιο 6 (Άλιμος - Ελληνικό)</option>
+                        <option value="Δρομολόγιο 7 (Νέα Σμύρνη - Καλλιθέα)">Δρομολόγιο 7 (Νέα Σμύρνη - Καλλιθέα)</option>
+                        <option value="Δρομολόγιο 8 (Ζωγράφου - Καισαριανή)">Δρομολόγιο 8 (Ζωγράφου - Καισαριανή)</option>
+                        <option value="Δρομολόγιο 9 (Βύρωνας - Παγκράτι)">Δρομολόγιο 9 (Βύρωνας - Παγκράτι)</option>
+                        <option value="Δρομολόγιο 10 (Γαλάτσι - Πατήσια)">Δρομολόγιο 10 (Γαλάτσι - Πατήσια)</option>
+                        <option value="Δρομολόγιο 11 (Μαρούσι - Πεύκη)">Δρομολόγιο 11 (Μαρούσι - Πεύκη)</option>
+                        <option value="Δρομολόγιο 12 (Βριλήσσια - Χαλάνδρι)">Δρομολόγιο 12 (Βριλήσσια - Χαλάνδρι)</option>
+                        <option value="Δρομολόγιο 13 (Αγία Παρασκευή - Γέρακας)">Δρομολόγιο 13 (Αγία Παρασκευή - Γέρακας)</option>
+                        <option value="Δρομολόγιο 14 (Κορυδαλλός - Νίκαια)">Δρομολόγιο 14 (Κορυδαλλός - Νίκαια)</option>
+                        <option value="Δρομολόγιο 15 (Αιγάλεω - Χαϊδάρι)">Δρομολόγιο 15 (Αιγάλεω - Χαϊδάρι)</option>
+                        <option value="Δρομολόγιο 16 (Ηλιούπολη - Αργυρούπολη)">Δρομολόγιο 16 (Ηλιούπολη - Αργυρούπολη)</option>
+                        <option value="Δρομολόγιο 17 (Μελίσσια - Κηφισιά)">Δρομολόγιο 17 (Μελίσσια - Κηφισιά)</option>
+                        <option value="Δρομολόγιο 18 (Πικέρμι - Παλλήνη)">Δρομολόγιο 18 (Πικέρμι - Παλλήνη)</option>
+                        <option value="Δρομολόγιο 19 (Μαρκόπουλο - Κορωπί)">Δρομολόγιο 19 (Μαρκόπουλο - Κορωπί)</option>
+                        <option value="Δρομολόγιο 20 (Βάρη - Βούλα)">Δρομολόγιο 20 (Βάρη - Βούλα)</option>
+                        <option value="Δρομολόγιο 21 (Διόνυσος - Εκάλη)">Δρομολόγιο 21 (Διόνυσος - Εκάλη)</option>
+                        <option value="Δρομολόγιο 22 (Χολαργός - Παπάγου)">Δρομολόγιο 22 (Χολαργός - Παπάγου)</option>
+                        <option value="Δρομολόγιο 23 (Νέα Φιλαδέλφεια)">Δρομολόγιο 23 (Νέα Φιλαδέλφεια)</option>
+                        <option value="Δρομολόγιο 24 (Περιστέρι - Ανθούπολη)">Δρομολόγιο 24 (Περιστέρι - Ανθούπολη)</option>
+                        <option value="Δρομολόγιο 25 (Μαρούσι - Λυκόβρυση)">Δρομολόγιο 25 (Μαρούσι - Λυκόβρυση)</option>
+                        <option value="Δρομολόγιο 26 (Πειραιάς - Μοσχάτο)">Δρομολόγιο 26 (Πειραιάς - Μοσχάτο)</option>
+                        <option value="Δρομολόγιο 27 (Γλυφάδα - Ελληνικό)">Δρομολόγιο 27 (Γλυφάδα - Ελληνικό)</option>
+                    </select>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: bold;">🕐 Τύπος Δρομολογίου</label>
+                    <select id="routeTypeAbsence" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 14px;">
+                        <option value="">Επιλέξτε τύπο...</option>
+                        <option value="Πρωινό Δρομολόγιο">Πρωινό Δρομολόγιο</option>
+                        <option value="Μεσημεριανό Δρομολόγιο">Μεσημεριανό Δρομολόγιο</option>
+                        <option value="Απογευματινό Δρομολόγιο">Απογευματινό Δρομολόγιο</option>
+                    </select>
+                </div>
+
+                <div style="display: flex; gap: 15px;">
+                    <button id="submitAbsenceBtn" style="background: #16a34a; color: white; padding: 12px 24px; border: none; border-radius: 30px; cursor: pointer; font-weight: bold;">📤 Υποβολή</button>
+                    <button id="resetAbsenceBtn" style="background: #6b7280; color: white; padding: 12px 24px; border: none; border-radius: 30px; cursor: pointer;">🗑️ Καθαρισμός</button>
+                </div>
+            </div>
+
+            <!-- ΦΟΡΜΑ ΑΙΤΗΜΑΤΟΣ (αρχικά κρυφή) -->
+            <div id="requestForm" class="card" style="display: none;">
+                <h3 style="margin-bottom: 20px;">✉️ Υποβολή Αιτήματος</h3>
+                
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: bold;">👨‍🎓 Μαθητής/τρια</label>
+                    <div class="search-box" style="position: relative;">
+                        <input type="text" id="studentSearchRequest" placeholder="Αναζήτηση ονοματεπώνυμου..." style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 14px;">
+                        <div id="resultsRequest" class="results" style="position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #ddd; border-radius: 10px; max-height: 200px; overflow-y: auto; display: none; z-index: 100;"></div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: bold;">📅 Ημερομηνία αιτήματος</label>
+                    <div style="position: relative;">
+                        <input type="text" id="niceDateRequest" placeholder="Επιλέξτε ημερομηνία" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; cursor: pointer; background: white;">
+                        <input type="date" id="realDateRequest" style="position: absolute; top: 0; left: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer;">
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: bold;">🚌 Δρομολόγιο</label>
+                    <select id="routeSelectRequest" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 14px;">
+                        <option value="">Επιλέξτε δρομολόγιο...</option>
+                        <option value="Δρομολόγιο 1 (Κηφισιά - Μαρούσι)">Δρομολόγιο 1 (Κηφισιά - Μαρούσι)</option>
+                        <option value="Δρομολόγιο 2 (Χαλάνδρι - Αγία Παρασκευή)">Δρομολόγιο 2 (Χαλάνδρι - Αγία Παρασκευή)</option>
+                        <option value="Δρομολόγιο 3 (Γλυφάδα - Βούλα)">Δρομολόγιο 3 (Γλυφάδα - Βούλα)</option>
+                        <option value="Δρομολόγιο 4 (Περιστέρι - Αιγάλεω)">Δρομολόγιο 4 (Περιστέρι - Αιγάλεω)</option>
+                        <option value="Δρομολόγιο 5 (Ίλιον - Πετρούπολη)">Δρομολόγιο 5 (Ίλιον - Πετρούπολη)</option>
+                        <option value="Δρομολόγιο 6 (Άλιμος - Ελληνικό)">Δρομολόγιο 6 (Άλιμος - Ελληνικό)</option>
+                        <option value="Δρομολόγιο 7 (Νέα Σμύρνη - Καλλιθέα)">Δρομολόγιο 7 (Νέα Σμύρνη - Καλλιθέα)</option>
+                        <option value="Δρομολόγιο 8 (Ζωγράφου - Καισαριανή)">Δρομολόγιο 8 (Ζωγράφου - Καισαριανή)</option>
+                        <option value="Δρομολόγιο 9 (Βύρωνας - Παγκράτι)">Δρομολόγιο 9 (Βύρωνας - Παγκράτι)</option>
+                        <option value="Δρομολόγιο 10 (Γαλάτσι - Πατήσια)">Δρομολόγιο 10 (Γαλάτσι - Πατήσια)</option>
+                        <option value="Δρομολόγιο 11 (Μαρούσι - Πεύκη)">Δρομολόγιο 11 (Μαρούσι - Πεύκη)</option>
+                        <option value="Δρομολόγιο 12 (Βριλήσσια - Χαλάνδρι)">Δρομολόγιο 12 (Βριλήσσια - Χαλάνδρι)</option>
+                        <option value="Δρομολόγιο 13 (Αγία Παρασκευή - Γέρακας)">Δρομολόγιο 13 (Αγία Παρασκευή - Γέρακας)</option>
+                        <option value="Δρομολόγιο 14 (Κορυδαλλός - Νίκαια)">Δρομολόγιο 14 (Κορυδαλλός - Νίκαια)</option>
+                        <option value="Δρομολόγιο 15 (Αιγάλεω - Χαϊδάρι)">Δρομολόγιο 15 (Αιγάλεω - Χαϊδάρι)</option>
+                        <option value="Δρομολόγιο 16 (Ηλιούπολη - Αργυρούπολη)">Δρομολόγιο 16 (Ηλιούπολη - Αργυρούπολη)</option>
+                        <option value="Δρομολόγιο 17 (Μελίσσια - Κηφισιά)">Δρομολόγιο 17 (Μελίσσια - Κηφισιά)</option>
+                        <option value="Δρομολόγιο 18 (Πικέρμι - Παλλήνη)">Δρομολόγιο 18 (Πικέρμι - Παλλήνη)</option>
+                        <option value="Δρομολόγιο 19 (Μαρκόπουλο - Κορωπί)">Δρομολόγιο 19 (Μαρκόπουλο - Κορωπί)</option>
+                        <option value="Δρομολόγιο 20 (Βάρη - Βούλα)">Δρομολόγιο 20 (Βάρη - Βούλα)</option>
+                        <option value="Δρομολόγιο 21 (Διόνυσος - Εκάλη)">Δρομολόγιο 21 (Διόνυσος - Εκάλη)</option>
+                        <option value="Δρομολόγιο 22 (Χολαργός - Παπάγου)">Δρομολόγιο 22 (Χολαργός - Παπάγου)</option>
+                        <option value="Δρομολόγιο 23 (Νέα Φιλαδέλφεια)">Δρομολόγιο 23 (Νέα Φιλαδέλφεια)</option>
+                        <option value="Δρομολόγιο 24 (Περιστέρι - Ανθούπολη)">Δρομολόγιο 24 (Περιστέρι - Ανθούπολη)</option>
+                        <option value="Δρομολόγιο 25 (Μαρούσι - Λυκόβρυση)">Δρομολόγιο 25 (Μαρούσι - Λυκόβρυση)</option>
+                        <option value="Δρομολόγιο 26 (Πειραιάς - Μοσχάτο)">Δρομολόγιο 26 (Πειραιάς - Μοσχάτο)</option>
+                        <option value="Δρομολόγιο 27 (Γλυφάδα - Ελληνικό)">Δρομολόγιο 27 (Γλυφάδα - Ελληνικό)</option>
+                    </select>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: bold;">🕐 Τύπος Δρομολογίου</label>
+                    <select id="routeTypeRequest" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 14px;">
+                        <option value="">Επιλέξτε τύπο...</option>
+                        <option value="Πρωινό Δρομολόγιο">Πρωινό Δρομολόγιο</option>
+                        <option value="Μεσημεριανό Δρομολόγιο">Μεσημεριανό Δρομολόγιο</option>
+                        <option value="Απογευματινό Δρομολόγιο">Απογευματινό Δρομολόγιο</option>
+                    </select>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 8px; font-weight: bold;">📝 Περιγραφή αιτήματος</label>
+                    <textarea id="requestText" rows="4" placeholder="Καταγράψτε το αίτημά σας..." style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 14px;"></textarea>
+                </div>
+
+                <div style="display: flex; gap: 15px;">
+                    <button id="submitRequestBtn" style="background: #16a34a; color: white; padding: 12px 24px; border: none; border-radius: 30px; cursor: pointer; font-weight: bold;">📤 Υποβολή</button>
+                    <button id="resetRequestBtn" style="background: #6b7280; color: white; padding: 12px 24px; border: none; border-radius: 30px; cursor: pointer;">🗑️ Καθαρισμός</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- POPUPS -->
+        <div id="amPopup" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10000; justify-content: center; align-items: center;">
+            <div style="background: white; padding: 30px; border-radius: 20px; text-align: center; max-width: 350px;">
+                <p style="margin-bottom: 15px;">Εισάγετε Αριθμό Μητρώου για επιβεβαίωση</p>
+                <input type="text" id="amInput" placeholder="ΑΜ..." style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 15px;">
+                <button id="confirmAMBtn" style="background: #0047ab; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer;">OK</button>
+            </div>
+        </div>
+
+        <div id="successPopup" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10000; justify-content: center; align-items: center;">
+            <div style="background: white; padding: 30px; border-radius: 20px; text-align: center; max-width: 350px;">
+                <p id="successText" style="margin-bottom: 20px; font-size: 18px;">✅ Η δήλωσή σας υποβλήθηκε επιτυχώς!</p>
+                <button id="closeSuccessBtn" style="background: #0047ab; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer;">OK</button>
+            </div>
+        </div>
+    `;
+
+    // ===== JAVASCRIPT ΓΙΑ ΤΗ ΛΕΙΤΟΥΡΓΙΑ =====
+    const studentsData = [
+        { name: "Αντωνίου Πέτρος", am: "1001", route: "Δρομολόγιο 5 (Ίλιον - Πετρούπολη)" },
+        { name: "Βασιλείου Αγγελική", am: "1002", route: "Δρομολόγιο 2 (Χαλάνδρι - Αγία Παρασκευή)" },
+        { name: "Βασιλείου Άννα", am: "1003", route: "Δρομολόγιο 5 (Ίλιον - Πετρούπολη)" },
+        { name: "Γεωργίου Ελένη", am: "1004", route: "Δρομολόγιο 5 (Ίλιον - Πετρούπολη)" },
+        { name: "Δημητρίου Νίκος", am: "1005", route: "Δρομολόγιο 5 (Ίλιον - Πετρούπολη)" },
+        { name: "Θεοδώρου Άννα", am: "1006", route: "Δρομολόγιο 5 (Ίλιον - Πετρούπολη)" },
+        { name: "Ιωάννου Κατερίνα", am: "1007", route: "Δρομολόγιο 5 (Ίλιον - Πετρούπολη)" },
+        { name: "Ιωάννου Χριστίνα", am: "1008", route: "Δρομολόγιο 5 (Ίλιον - Πετρούπολη)" },
+        { name: "Καραγιάννη Ευαγγελία", am: "1009", route: "Δρομολόγιο 1 (Κηφισιά - Μαρούσι)" },
+        { name: "Καραγιάννη Παναγιώτα", am: "1010", route: "Δρομολόγιο 1 (Κηφισιά - Μαρούσι)" },
+        { name: "Καραγιάννης Πάνος", am: "1011", route: "Δρομολόγιο 5 (Ίλιον - Πετρούπολη)" },
+        { name: "Κωνσταντίνου Μαρία", am: "1012", route: "Δρομολόγιο 5 (Ίλιον - Πετρούπολη)" },
+        { name: "Μαντάς Αλέξανδρος", am: "1013", route: "Δρομολόγιο 3 (Γλυφάδα - Βούλα)" },
+        { name: "Μανωλάκης Χρήστος", am: "1014", route: "Δρομολόγιο 4 (Περιστέρι - Αιγάλεω)" },
+        { name: "Μακρής Κώστας", am: "1015", route: "Δρομολόγιο 4 (Περιστέρι - Αιγάλεω)" },
+        { name: "Νικολάου Ανδρέας", am: "1016", route: "Δρομολόγιο 5 (Ίλιον - Πετρούπολη)" },
+        { name: "Παπαδάκης Γιώργος", am: "1017", route: "Δρομολόγιο 4 (Περιστέρι - Αιγάλεω)" },
+        { name: "Παπαδόπουλος Γιάννης", am: "1018", route: "Δρομολόγιο 5 (Ίλιον - Πετρούπολη)" },
+        { name: "Παπαγεωργίου Ελένη", am: "1019", route: "Δρομολόγιο 5 (Ίλιον - Πετρούπολη)" },
+        { name: "Παπαζέρβα Παναγιώτα", am: "1020", route: "Δρομολόγιο 6 (Άλιμος - Ελληνικό)" },
+        { name: "Παπαδοπούλου Σοφία", am: "1021", route: "Δρομολόγιο 5 (Ίλιον - Πετρούπολη)" },
+        { name: "Παππά Ιωάννα", am: "1022", route: "Δρομολόγιο 6 (Άλιμος - Ελληνικό)" },
+        { name: "Παπασωτηρίου Μαρία", am: "1023", route: "Δρομολόγιο 3 (Γλυφάδα - Βούλα)" },
+        { name: "Παναγιώτου Δημήτρης", am: "1024", route: "Δρομολόγιο 5 (Ίλιον - Πετρούπολη)" },
+        { name: "Πολίτης Μάξιμος", am: "1025", route: "Δρομολόγιο 6 (Άλιμος - Ελληνικό)" },
+        { name: "Ράπτης Θανάσης", am: "1026", route: "Δρομολόγιο 7 (Νέα Σμύρνη - Καλλιθέα)" },
+        { name: "Στεφανέλης Σέργιος", am: "1027", route: "Δρομολόγιο 3 (Γλυφάδα - Βούλα)" },
+        { name: "Στεφανίδης Νικόλας", am: "1028", route: "Δρομολόγιο 5 (Ίλιον - Πετρούπολη)" },
+        { name: "Στεργίου Δέσποινα", am: "1029", route: "Δρομολόγιο 7 (Νέα Σμύρνη - Καλλιθέα)" },
+        { name: "Σχοινάς Σπύρος", am: "1030", route: "Δρομολόγιο 7 (Νέα Σμύρνη - Καλλιθέα)" },
+        { name: "Χατζής Ιάσονας", am: "1031", route: "Δρομολόγιο 8 (Ζωγράφου - Καισαριανή)" },
+        { name: "Χριστοδούλου Σταμάτης", am: "1032", route: "Δρομολόγιο 8 (Ζωγράφου - Καισαριανή)" }
+    ];
+
+    let selectedStudentAbsence = null;
+    let selectedStudentRequest = null;
+    let currentSubmissionType = null;
+
+    // Ημερομηνίες
+    const realDateAbsence = document.getElementById('realDateAbsence');
+    const niceDateAbsence = document.getElementById('niceDateAbsence');
+    if (realDateAbsence && niceDateAbsence) {
+        realDateAbsence.setAttribute('min', new Date().toISOString().split('T')[0]);
+        niceDateAbsence.addEventListener('click', () => realDateAbsence.showPicker?.() || realDateAbsence.focus());
+        realDateAbsence.addEventListener('change', () => {
+            const date = new Date(realDateAbsence.value);
+            niceDateAbsence.value = date.toLocaleDateString('el-GR');
+        });
+    }
+
+    const realDateRequest = document.getElementById('realDateRequest');
+    const niceDateRequest = document.getElementById('niceDateRequest');
+    if (realDateRequest && niceDateRequest) {
+        realDateRequest.setAttribute('min', new Date().toISOString().split('T')[0]);
+        niceDateRequest.addEventListener('click', () => realDateRequest.showPicker?.() || realDateRequest.focus());
+        realDateRequest.addEventListener('change', () => {
+            const date = new Date(realDateRequest.value);
+            niceDateRequest.value = date.toLocaleDateString('el-GR');
+        });
+    }
+
+    // Search functionality
+    function setupSearch(inputId, resultsId, isAbsence) {
+        const input = document.getElementById(inputId);
+        const results = document.getElementById(resultsId);
+        if (!input || !results) return;
+
+        function showResults(filtered) {
+            results.innerHTML = '';
+            if (filtered.length === 0) {
+                results.style.display = 'none';
+                return;
+            }
+            filtered.forEach(student => {
+                const div = document.createElement('div');
+                div.textContent = student.name;
+                div.style.padding = '10px';
+                div.style.cursor = 'pointer';
+                div.style.borderBottom = '1px solid #eee';
+                div.onmouseover = () => div.style.background = '#f0f4f2';
+                div.onmouseout = () => div.style.background = 'white';
+                div.onclick = () => {
+                    input.value = student.name;
+                    if (isAbsence) {
+                        selectedStudentAbsence = student;
+                        const routeSelect = document.getElementById('routeSelectAbsence');
+                        if (routeSelect) routeSelect.value = student.route;
+                    } else {
+                        selectedStudentRequest = student;
+                        const routeSelect = document.getElementById('routeSelectRequest');
+                        if (routeSelect) routeSelect.value = student.route;
+                    }
+                    results.style.display = 'none';
+                };
+                results.appendChild(div);
+            });
+            results.style.display = 'block';
+        }
+
+        input.addEventListener('focus', () => showResults(studentsData));
+        input.addEventListener('input', () => {
+            const value = input.value.toLowerCase();
+            showResults(studentsData.filter(s => s.name.toLowerCase().includes(value)));
+        });
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.search-box')) results.style.display = 'none';
+        });
+    }
+
+    setupSearch('studentSearchAbsence', 'resultsAbsence', true);
+    setupSearch('studentSearchRequest', 'resultsRequest', false);
+
+    // Tabs
+    const tabAbsence = document.getElementById('tabAbsenceBtn');
+    const tabRequest = document.getElementById('tabRequestBtn');
+    const absenceForm = document.getElementById('absenceForm');
+    const requestForm = document.getElementById('requestForm');
+
+    if (tabAbsence && tabRequest) {
+        tabAbsence.onclick = () => {
+            tabAbsence.style.background = '#1e3a3f';
+            tabAbsence.style.color = 'white';
+            tabRequest.style.background = '#e2efe4';
+            tabRequest.style.color = '#1e3a3f';
+            absenceForm.style.display = 'block';
+            requestForm.style.display = 'none';
+        };
+        tabRequest.onclick = () => {
+            tabRequest.style.background = '#1e3a3f';
+            tabRequest.style.color = 'white';
+            tabAbsence.style.background = '#e2efe4';
+            tabAbsence.style.color = '#1e3a3f';
+            absenceForm.style.display = 'none';
+            requestForm.style.display = 'block';
+        };
+    }
+
+    // Reset buttons
+    const resetAbsence = document.getElementById('resetAbsenceBtn');
+    if (resetAbsence) {
+        resetAbsence.onclick = () => {
+            document.getElementById('studentSearchAbsence').value = '';
+            document.getElementById('niceDateAbsence').value = '';
+            document.getElementById('realDateAbsence').value = '';
+            document.getElementById('routeSelectAbsence').value = '';
+            document.getElementById('routeTypeAbsence').value = '';
+            selectedStudentAbsence = null;
+        };
+    }
+
+    const resetRequest = document.getElementById('resetRequestBtn');
+    if (resetRequest) {
+        resetRequest.onclick = () => {
+            document.getElementById('studentSearchRequest').value = '';
+            document.getElementById('niceDateRequest').value = '';
+            document.getElementById('realDateRequest').value = '';
+            document.getElementById('routeSelectRequest').value = '';
+            document.getElementById('routeTypeRequest').value = '';
+            document.getElementById('requestText').value = '';
+            selectedStudentRequest = null;
+        };
+    }
+
+    // Submit functions
+    const amPopup = document.getElementById('amPopup');
+    const successPopup = document.getElementById('successPopup');
+    const successText = document.getElementById('successText');
+
+    function showAMPopup(type) {
+        currentSubmissionType = type;
+        amPopup.style.display = 'flex';
+    }
+
+    document.getElementById('confirmAMBtn')?.addEventListener('click', () => {
+        const inputAM = document.getElementById('amInput').value;
+        const student = currentSubmissionType === 'absence' ? selectedStudentAbsence : selectedStudentRequest;
+        
+        if (student && inputAM === student.am) {
+            amPopup.style.display = 'none';
+            document.getElementById('amInput').value = '';
+            successText.innerText = currentSubmissionType === 'absence' 
+                ? '✅ Η δήλωση απουσίας υποβλήθηκε επιτυχώς!' 
+                : '✅ Το αίτημά σας υποβλήθηκε επιτυχώς!';
+            successPopup.style.display = 'flex';
+        } else {
+            alert('Λάθος Αριθμός Μητρώου!');
+        }
+    });
+
+    document.getElementById('closeSuccessBtn')?.addEventListener('click', () => {
+        successPopup.style.display = 'none';
+        if (currentSubmissionType === 'absence') {
+            resetAbsence?.click();
+        } else {
+            resetRequest?.click();
+        }
+    });
+
+    document.getElementById('submitAbsenceBtn')?.addEventListener('click', () => {
+        if (!selectedStudentAbsence) {
+            alert('Παρακαλώ επιλέξτε μαθητή!');
+            return;
+        }
+        if (!document.getElementById('realDateAbsence').value) {
+            alert('Παρακαλώ επιλέξτε ημερομηνία!');
+            return;
+        }
+        if (!document.getElementById('routeSelectAbsence').value) {
+            alert('Παρακαλώ επιλέξτε δρομολόγιο!');
+            return;
+        }
+        if (!document.getElementById('routeTypeAbsence').value) {
+            alert('Παρακαλώ επιλέξτε τύπο δρομολογίου!');
+            return;
+        }
+        showAMPopup('absence');
+    });
+
+    document.getElementById('submitRequestBtn')?.addEventListener('click', () => {
+        if (!selectedStudentRequest) {
+            alert('Παρακαλώ επιλέξτε μαθητή!');
+            return;
+        }
+        if (!document.getElementById('realDateRequest').value) {
+            alert('Παρακαλώ επιλέξτε ημερομηνία!');
+            return;
+        }
+        if (!document.getElementById('routeSelectRequest').value) {
+            alert('Παρακαλώ επιλέξτε δρομολόγιο!');
+            return;
+        }
+        if (!document.getElementById('routeTypeRequest').value) {
+            alert('Παρακαλώ επιλέξτε τύπο δρομολογίου!');
+            return;
+        }
+        if (!document.getElementById('requestText').value) {
+            alert('Παρακαλώ καταγράψτε το αίτημά σας!');
+            return;
+        }
+        showAMPopup('request');
+    });
+}
+
         // ==================== ΔΙΑΧΕΙΡΙΣΗ ΔΡΟΜΟΛΟΓΙΩΝ ====================
-        const studentsList = [
-            "Νίκος Ανδρεόπουλος", "Μαρία Παπαδοπούλου", "Ιωάννα Αντωνίου", "Σπυρίδων Δημητρίου",
-            "Γεωργία Βασιλείου", "Δήμητρα Κωνσταντίνου", "Ιάσονας Χρηστίδης", "Χρήστος Αναστασίου",
-            "Σταύρος Νικολάου", "Αναστασία Ελευθερίου", "Νάνσυ Αθανασίου", "Αντώνης Γεωργίου",
-            "Ελένη Δασκαλάκη", "Πέτρος Λιάπης", "Σοφία Μακρή", "Αικατερίνη Δημητρίου",
-            "Δημήτρης Παπαδόπουλος", "Κωνσταντίνα Λεονταρίου"
-        ];
+       
 
         let currentSelection = [];
         let routes = [];

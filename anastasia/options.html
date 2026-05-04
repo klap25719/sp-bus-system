@@ -90,21 +90,40 @@
         const data = {
             'parents': { title: 'Γονείς / Υπάλληλοι', menu: ['Δήλωση απουσίας', 'Τροποποίηση απουσίας'] },
             'drivers': { title: 'Οδηγοί', menu: ['Προβολή Δρομολογίου', 'Αναφορά Προβλήματος'] },
-            'office': { title: 'Υπεύθυνος Κίνησης', menu: ['Τακτικά δρομολόγια', 'Δηλώσεις απουσιών', 'Προβολή & Τροποποίηση', 'Έλεγχος & Οριστικοποίηση'] },
+            'office': { title: 'Υπεύθυνος Κίνησης', menu: ['Τακτικά δρομολόγια', 'Δήλωση απουσίας', 'Προβολή & Τροποποίηση', 'Έλεγχος & Οριστικοποίηση'] },
             'director': { title: 'Διευθυντής', menu: ['Προβολή στατιστικών'] }
         };
 
-        if(data[role]) {
+        // Ειδική περίπτωση για οδηγούς - πάνε κατευθείαν στο dashboard
+        if (role === 'drivers') {
+            window.location.href = 'dashboard.html?role=drivers';
+        } 
+        else if (data[role]) {
             title.innerText = data[role].title;
             data[role].menu.forEach(item => {
                 const a = document.createElement('a');
                 let targetUrl = `dashboard.html?role=${role}`;
+                
+                // Για τον Διευθυντή
                 if (role === 'director' && item === 'Προβολή στατιστικών') {
                     targetUrl += '&view=stats';
                 }
-                if (role === 'office' && item === 'Τακτικά δρομολόγια') {
+                // Για τον Υπεύθυνο Κίνησης
+                else if (role === 'office' && item === 'Τακτικά δρομολόγια') {
                     targetUrl += '&view=routes';
                 }
+                else if (role === 'office' && item === 'Δήλωση απουσίας') {
+                    targetUrl += '&view=absence';
+                 }
+                // Για τους Γονείς - Δήλωση απουσίας
+                else if (role === 'parents' && item === 'Δήλωση απουσίας') {
+                    targetUrl += '&view=absence';
+                }
+                // Για τους Γονείς - Τροποποίηση απουσίας
+                else if (role === 'parents' && item === 'Τροποποίηση απουσίας') {
+                    targetUrl += '&view=modify';
+                }
+                
                 a.href = targetUrl;
                 a.className = 'option-btn';
                 a.innerText = item;
