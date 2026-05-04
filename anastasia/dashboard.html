@@ -1406,7 +1406,7 @@
     loadFromStorage();
 }
 
-// ==================== ΓΟΝΕΙΣ - ΔΗΛΩΣΗ ΑΠΟΥΣΙΑΣ ====================
+// ==================== ΓΟΝΕΙΣ - ΥΠΕΥΘΥΝΟΣ ΔΗΛΩΣΗ ΑΠΟΥΣΙΑΣ ====================
 function loadAbsenceDeclaration() {
     welcomeTitle.innerText = "Δήλωση Απουσίας / Αιτήματος";
     dynamicContent.innerHTML = `
@@ -1432,16 +1432,13 @@ function loadAbsenceDeclaration() {
                         <input type="text" id="studentSearchAbsence" placeholder="Ονοματεπώνυμο..." style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 14px;">
                         <div id="resultsAbsence" class="results" style="position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #ddd; border-radius: 10px; max-height: 200px; overflow-y: auto; display: none; z-index: 100;"></div>
                     </div>
-                </div>
+                
 
                 <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: bold;">📅 Ημερομηνία απουσίας</label>
-                    <div style="position: relative;">
-                        <input type="text" id="niceDateAbsence" placeholder="Επιλέξτε ημερομηνία" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; cursor: pointer; background: white;">
-                        <input type="date" id="realDateAbsence" style="position: absolute; top: 0; left: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer;">
+                        <label style="display: block; margin-bottom: 8px; font-weight: bold;">📅 Ημερομηνία απουσίας</label>
+                        <input type="date" id="realDateAbsence" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 14px;" value="<?php echo date('Y-m-d'); ?>">
                     </div>
                 </div>
-
                 <div style="margin-bottom: 20px;">
                     <label style="display: block; margin-bottom: 8px; font-weight: bold;">🚌 Δρομολόγιο</label>
                     <select id="routeSelectAbsence" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 14px;">
@@ -1503,13 +1500,10 @@ function loadAbsenceDeclaration() {
                         <div id="resultsRequest" class="results" style="position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #ddd; border-radius: 10px; max-height: 200px; overflow-y: auto; display: none; z-index: 100;"></div>
                     </div>
                 </div>
-
+                    
                 <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: bold;">📅 Ημερομηνία αιτήματος</label>
-                    <div style="position: relative;">
-                        <input type="text" id="niceDateRequest" placeholder="Επιλέξτε ημερομηνία" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; cursor: pointer; background: white;">
-                        <input type="date" id="realDateRequest" style="position: absolute; top: 0; left: 0; opacity: 0; width: 100%; height: 100%; cursor: pointer;">
-                    </div>
+                <label style="display: block; margin-bottom: 8px; font-weight: bold;">📅 Ημερομηνία απουσίας</label>
+                    <input type="date" id="realDateAbsence" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 14px;" value="<?php echo date('Y-m-d'); ?>">
                 </div>
 
                 <div style="margin-bottom: 20px;">
@@ -1627,26 +1621,14 @@ function loadAbsenceDeclaration() {
 
     // Ημερομηνίες
     const realDateAbsence = document.getElementById('realDateAbsence');
-    const niceDateAbsence = document.getElementById('niceDateAbsence');
-    if (realDateAbsence && niceDateAbsence) {
-        realDateAbsence.setAttribute('min', new Date().toISOString().split('T')[0]);
-        niceDateAbsence.addEventListener('click', () => realDateAbsence.showPicker?.() || realDateAbsence.focus());
-        realDateAbsence.addEventListener('change', () => {
-            const date = new Date(realDateAbsence.value);
-            niceDateAbsence.value = date.toLocaleDateString('el-GR');
-        });
-    }
+if (realDateAbsence) {
+    realDateAbsence.setAttribute('min', new Date().toISOString().split('T')[0]);
+}
 
-    const realDateRequest = document.getElementById('realDateRequest');
-    const niceDateRequest = document.getElementById('niceDateRequest');
-    if (realDateRequest && niceDateRequest) {
-        realDateRequest.setAttribute('min', new Date().toISOString().split('T')[0]);
-        niceDateRequest.addEventListener('click', () => realDateRequest.showPicker?.() || realDateRequest.focus());
-        realDateRequest.addEventListener('change', () => {
-            const date = new Date(realDateRequest.value);
-            niceDateRequest.value = date.toLocaleDateString('el-GR');
-        });
-    }
+const realDateRequest = document.getElementById('realDateRequest');
+if (realDateRequest) {
+    realDateRequest.setAttribute('min', new Date().toISOString().split('T')[0]);
+}
 
     // Search functionality
     function setupSearch(inputId, resultsId, isAbsence) {
