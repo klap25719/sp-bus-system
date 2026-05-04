@@ -503,8 +503,7 @@
 /* ΒΑΣΙΚΕΣ ΡΥΘΜΙΣΕΙΣ ΓΙΑ ΟΘΟΝΕΣ ΜΙΚΡΟΤΕΡΕΣ ΑΠΟ 768px */
 @media (max-width: 768px) {
     
-    /* 1. SIDEBAR - κρυβεται και ανοίγει με το κουμπί */
-     @media (max-width: 768px) 
+    /* 1. SIDEBAR - κρυβεται και ανοίγει με το κουμπί */ 
             .sidebar {
                 transform: translateX(-100%);
                 transition: transform 0.3s ease-in-out;
@@ -896,8 +895,8 @@
         const welcomeTitle = document.getElementById("welcome-title");
 
         const roleData = {
-            'parents': { title: 'Γονείς / Υπάλληλοι', items: ['Δήλωση απουσίας', 'Τροποποίηση απουσίας'] },
-            'office': { title: 'Υπεύθυνος Κίνησης', items: ['Τακτικά δρομολόγια', 'Δήλωση απουσίας', 'Προβολή & Τροποποίηση', 'Έλεγχος & Οριστικοποίηση'] },
+            'parents': { title: 'Γονείς / Υπάλληλοι', items: ['Δήλωση Aπουσίας / Αιτήματος', 'Τροποποίηση δήλωσης'] },
+            'office': { title: 'Υπεύθυνος Κίνησης', items: ['Τακτικά δρομολόγια', 'Δήλωση Απουσίας / Αιτήματος', 'Προβολή & Τροποποίηση', 'Έλεγχος & Οριστικοποίηση'] },
             'director': { title: 'Διευθυντής', items: ['Προβολή στατιστικών'] }
         };
 
@@ -921,100 +920,90 @@
             menuList.innerHTML = '';
             
            roleData[role].items.forEach(item => {
-    const li = document.createElement('li');
-    const a = document.createElement('a');
-    a.href = "#";
-    a.className = "menu-item";
-    a.innerHTML = item;
+               const li = document.createElement('li');
+               const a = document.createElement('a');
+               a.href = "#";
+               a.className = "menu-item";
+               a.innerHTML = item;
 
-    // ΓΟΝΕΙΣ
-        if (role === 'parents' && item === 'Δήλωση απουσίας') {
-            a.addEventListener('click', (e) => {
-                e.preventDefault();
-                loadAbsenceDeclaration();
+               // ΓΟΝΕΙΣ
+               if (role === 'parents' && item === 'Δήλωση Απουσίας / Αιτήματος') {
+                    a.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        loadAbsenceDeclaration();
+                    });
+                } else if (role === 'office' && item === 'Δήλωση Απουσίας / Αιτήματος') {
+                    a.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        loadAbsenceDeclaration();
+                    });
+                } else if (role === 'parents' && item === 'Τροποποίηση Δήλωσης') {
+                    a.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        dynamicContent.innerHTML = `<div class="card"><p>🔧 Λειτουργία "Τροποποίηση Δήλωσης" υπό ανάπτυξη.</p></div>`;
+                    });
+                }
+                // ΔΙΕΥΘΥΝΤΗΣ
+                else if (role === 'director' && item === 'Προβολή στατιστικών') {
+                    a.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        loadDirectorStats();
+                    });
+                }
+                // ΥΠΕΥΘΥΝΟΣ ΚΙΝΗΣΗΣ
+                else if (role === 'office' && item === 'Τακτικά δρομολόγια') {
+                    a.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        loadRouteManagement();
+                    });
+                }
+                // ΟΛΑ ΤΑ ΑΛΛΑ
+                else {
+                    a.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        dynamicContent.innerHTML = `<div class="card"><p>🔧 Λειτουργία "${item}" υπό ανάπτυξη.</p></div>`;
+                    });
+                }
+    
+               li.appendChild(a);
+               menuList.appendChild(li);
             });
+
+            closeBtn.onclick = () => {
+                sidebar.style.width = "0";
+                mainContent.style.marginLeft = "20px";
+                menuToggle.style.display = "block";
+            };
+
+            menuToggle.onclick = () => {
+                sidebar.style.width = "300px";
+                mainContent.style.marginLeft = "320px";
+                menuToggle.style.display = "none";
+            };
+
+            // ===== ΕΛΕΓΧΟΙ ΓΙΑ ΑΥΤΟΜΑΤΗ ΦΟΡΤΩΣΗ =====
+            if (role === 'parents' && view === 'absence') {
+                setTimeout(() => {
+                    loadAbsenceDeclaration();
+                }, 100);
+            } else if (role === 'parents' && view === 'modify') {
+                dynamicContent.innerHTML = `<div class="card"><p>🔧 Λειτουργία "Τροποποίηση Δήλωσης" υπό ανάπτυξη.</p></div>`;
+            } else if (role === 'director' && view === 'stats') {
+                loadDirectorStats();
+            } else if (role === 'office' && view === 'routes') {
+                loadRouteManagement();
+            } else if (role === 'office' && view === 'absence') {
+                setTimeout(() => {
+                    loadAbsenceDeclaration();
+                }, 100);
+            } else {
+                // Μόνο αν δεν υπάρχει view parameter, δείξε το default μήνυμα
+                if (!view) {
+                    welcomeTitle.innerText = `${roleData[role]?.title || 'Πίνακας Διαχείρισης'} - Πίνακας Ελέγχου`;
+                    dynamicContent.innerHTML = "<p>Επιλέξτε μια ενέργεια από το πλευρικό μενού για να συνεχίσετε.</p>";
+                }
+            }
         }
-    else if (role === 'office' && item === 'Δήλωση απουσίας') {
-    a.addEventListener('click', (e) => {
-        e.preventDefault();
-        loadAbsenceDeclaration();
-    });
-   }
-
-    else if (role === 'parents' && item === 'Τροποποίηση απουσίας') {
-        a.addEventListener('click', (e) => {
-            e.preventDefault();
-            dynamicContent.innerHTML = `<div class="card"><p>🔧 Λειτουργία "Τροποποίηση απουσίας" υπό ανάπτυξη.</p></div>`;
-        });
-    }
-    
-
-    // ΔΙΕΥΘΥΝΤΗΣ
-    else if (role === 'director' && item === 'Προβολή στατιστικών') {
-        a.addEventListener('click', (e) => {
-            e.preventDefault();
-            loadDirectorStats();
-        });
-    }
-    // ΥΠΕΥΘΥΝΟΣ ΚΙΝΗΣΗΣ
-    else if (role === 'office' && item === 'Τακτικά δρομολόγια') {
-        a.addEventListener('click', (e) => {
-            e.preventDefault();
-            loadRouteManagement();
-        });
-    }
-    // ΟΛΑ ΤΑ ΑΛΛΑ
-    else {
-        a.addEventListener('click', (e) => {
-            e.preventDefault();
-            dynamicContent.innerHTML = `<div class="card"><p>🔧 Λειτουργία "${item}" υπό ανάπτυξη.</p></div>`;
-        });
-    }
-    
-    li.appendChild(a);
-    menuList.appendChild(li);
-});
-
-    closeBtn.onclick = () => {
-    sidebar.style.width = "0";
-    mainContent.style.marginLeft = "20px";
-    menuToggle.style.display = "block";
-};
-
-menuToggle.onclick = () => {
-    sidebar.style.width = "300px";
-    mainContent.style.marginLeft = "320px";
-    menuToggle.style.display = "none";
-};
-
-// ===== ΕΛΕΓΧΟΙ ΓΙΑ ΑΥΤΟΜΑΤΗ ΦΟΡΤΩΣΗ =====
-if (role === 'parents' && view === 'absence') {
-    setTimeout(() => {
-        loadAbsenceDeclaration();
-    }, 100);
-}
-else if (role === 'parents' && view === 'modify') {
-    dynamicContent.innerHTML = `<div class="card"><p>🔧 Λειτουργία "Τροποποίηση απουσίας" υπό ανάπτυξη.</p></div>`;
-}
-else if (role === 'director' && view === 'stats') {
-    loadDirectorStats();
-}
-else if (role === 'office' && view === 'routes') {
-    loadRouteManagement();
-}
-else if (role === 'office' && view === 'absence') {
-    setTimeout(() => {
-        loadAbsenceDeclaration();
-    }, 100);
-}
-else {
-    // Μόνο αν δεν υπάρχει view parameter, δείξε το default μήνυμα
-    if (!view) {
-        welcomeTitle.innerText = `${roleData[role]?.title || 'Πίνακας Διαχείρισης'} - Πίνακας Ελέγχου`;
-        dynamicContent.innerHTML = "<p>Επιλέξτε μια ενέργεια από το πλευρικό μενού για να συνεχίσετε.</p>";
-    }
-}
-}
 
         // ==================== ΔΙΕΥΘΥΝΤΗΣ - ΣΤΑΤΙΣΤΙΚΑ ====================
         function loadDirectorStats() {
@@ -1419,7 +1408,7 @@ else {
 
 // ==================== ΓΟΝΕΙΣ - ΔΗΛΩΣΗ ΑΠΟΥΣΙΑΣ ====================
 function loadAbsenceDeclaration() {
-    welcomeTitle.innerText = "Γονείς / Υπάλληλοι - Δήλωση Απουσίας / Αιτήματος";
+    welcomeTitle.innerText = "Δήλωση Απουσίας / Αιτήματος";
     dynamicContent.innerHTML = `
         <div style="max-width: 900px; margin: 0 auto;">
             <div class="card" style="margin-bottom: 20px;">
@@ -1440,7 +1429,7 @@ function loadAbsenceDeclaration() {
                 <div style="margin-bottom: 20px;">
                     <label style="display: block; margin-bottom: 8px; font-weight: bold;">👨‍🎓 Μαθητής/τρια</label>
                     <div class="search-box" style="position: relative;">
-                        <input type="text" id="studentSearchAbsence" placeholder="Αναζήτηση ονοματεπώνυμου..." style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 14px;">
+                        <input type="text" id="studentSearchAbsence" placeholder="Ονοματεπώνυμο..." style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 14px;">
                         <div id="resultsAbsence" class="results" style="position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #ddd; border-radius: 10px; max-height: 200px; overflow-y: auto; display: none; z-index: 100;"></div>
                     </div>
                 </div>
@@ -1510,7 +1499,7 @@ function loadAbsenceDeclaration() {
                 <div style="margin-bottom: 20px;">
                     <label style="display: block; margin-bottom: 8px; font-weight: bold;">👨‍🎓 Μαθητής/τρια</label>
                     <div class="search-box" style="position: relative;">
-                        <input type="text" id="studentSearchRequest" placeholder="Αναζήτηση ονοματεπώνυμου..." style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 14px;">
+                        <input type="text" id="studentSearchRequest" placeholder="Ονοματεπώνυμο..." style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 14px;">
                         <div id="resultsRequest" class="results" style="position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid #ddd; border-radius: 10px; max-height: 200px; overflow-y: auto; display: none; z-index: 100;"></div>
                     </div>
                 </div>
@@ -1568,7 +1557,7 @@ function loadAbsenceDeclaration() {
                 </div>
 
                 <div style="margin-bottom: 20px;">
-                    <label style="display: block; margin-bottom: 8px; font-weight: bold;">📝 Περιγραφή αιτήματος</label>
+                    <label style="display: block; margin-bottom: 8px; font-weight: bold;">📝 Καταγραφή αιτήματος</label>
                     <textarea id="requestText" rows="4" placeholder="Καταγράψτε το αίτημά σας..." style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 14px;"></textarea>
                 </div>
 
