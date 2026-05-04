@@ -496,13 +496,51 @@
                 transform: translateX(-50%) translateY(0);
             }
         }
-        @media (max-width: 768px) {
+    /* ============================================ */
+/*   ΤΕΛΕΙΟ RESPONSIVE ΓΙΑ ΚΙΝΗΤΑ - ΟΛΕΣ ΟΙ ΡΥΘΜΙΣΕΙΣ   */
+/* ============================================ */
+
+/* ΒΑΣΙΚΕΣ ΡΥΘΜΙΣΕΙΣ ΓΙΑ ΟΘΟΝΕΣ ΜΙΚΡΟΤΕΡΕΣ ΑΠΟ 768px */
+@media (max-width: 768px) {
     
-    /* 1.1 Κάνουμε όλους τους πίνακες scrollable (το πιο σημαντικό!) */
+    /* 1. SIDEBAR - κρυβεται και ανοίγει με το κουμπί */
+    .sidebar {
+        width: 0 !important;
+        transition: 0.3s ease !important;
+    }
+    
+    /* 2. ΚΥΡΙΟ ΠΕΡΙΕΧΟΜΕΝΟ - γεμίζει όλη την οθόνη */
+    #main-content {
+        margin-left: 0 !important;
+        padding: 1rem !important;
+        width: 100% !important;
+    }
+    
+    /* 3. ΚΟΥΜΠΙ ΜΕΝΟΥ - κρυμμένο (υπάρχει ήδη το πάνω κουμπί) */
+    .menu-toggle {
+        display: none !important;
+    }
+    
+    /* 4. CARDS - στοιβάζονται κάθετα */
+    .dashboard-grid {
+        grid-template-columns: 1fr !important;
+        gap: 1rem !important;
+    }
+    
+    /* 5. GRID γενικά - μία στήλη */
+    [style*="display: grid"]:not(.sidebar) {
+        grid-template-columns: 1fr !important;
+    }
+    
+    /* 6. Grid στη διαχείριση δρομολογίων */
+    .grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    /* 7. ΠΙΝΑΚΕΣ - οριζόντια κύλιση */
     .data-table,
     table:not(.table),
-    #routesTable,
-    .table-responsive-fix {
+    #routesTable {
         display: block !important;
         overflow-x: auto !important;
         white-space: nowrap !important;
@@ -510,40 +548,28 @@
         width: 100% !important;
     }
     
-    /* 1.2 Τα grids γίνονται μία στήλη */
-    .dashboard-grid,
-    [style*="display: grid"]:not(.sidebar) {
-        grid-template-columns: 1fr !important;
-        gap: 1rem !important;
-    }
-    
-    /* 1.3 Το grid στη διαχείριση δρομολογίων */
-    .grid {
-        grid-template-columns: 1fr !important;
-    }
-    
-    /* 1.4 Τα cards δεν ξεχειλίζουν */
+    /* 8. CARDS - δεν ξεχειλίζουν */
     .card {
         overflow-x: hidden !important;
         word-wrap: break-word !important;
         padding: 1rem !important;
     }
     
-    /* 1.5 Όλα τα inputs και selects μεγάλα και readable */
+    /* 9. INPUTS, SELECTS - μεγάλα και readable */
     input, select, textarea, button {
         max-width: 100% !important;
-        font-size: 16px !important; /* Αποτρέπει zoom στο iOS */
+        font-size: 16px !important;  /* Αποτρέπει zoom στο iOS */
         border-radius: 12px !important;
     }
     
-    /* 1.6 Τα flex containers τυλίγονται */
+    /* 10. FLEX CONTAINERS - τυλίγονται */
     .filter-controls,
     div[style*="display: flex"]:not(.sidebar):not(.menu-section) {
         flex-wrap: wrap !important;
         justify-content: flex-start !important;
     }
     
-    /* 1.7 Τα κουμπιά φίλτρων */
+    /* 11. ΚΟΥΜΠΙΑ ΦΙΛΤΡΩΝ */
     .filter-controls button,
     .filter-btn-group button {
         margin-bottom: 8px !important;
@@ -551,7 +577,7 @@
         padding: 6px 12px !important;
     }
     
-    /* 1.8 Διόρθωση για τα δρομολόγια (route items) */
+    /* 12. ΔΡΟΜΟΛΟΓΙΑ - οι γραμμές γίνονται στήλες */
     .route-item,
     #savedRoutes > div {
         flex-direction: column !important;
@@ -564,29 +590,23 @@
         align-self: flex-end !important;
     }
     
-    /* 1.9 Για τη λίστα μαθητών */
+    /* 13. ΛΙΣΤΕΣ ΜΑΘΗΤΩΝ */
     .student-row,
-    .route-row {
+    .route-row,
+    .row {
         flex-wrap: wrap !important;
         gap: 10px !important;
     }
     
-    /* 1.10 Η κύρια περιοχή περιεχομένου */
-    #main-content {
-        margin-left: 0 !important;
-        padding: 1rem !important;
-        width: 100% !important;
-    }
-    
-    /* 1.11 Τα panels στη διαχείριση δρομολογίων */
+    /* 14. PANELS - απόσταση μεταξύ τους */
     .panel {
         margin-bottom: 16px !important;
     }
     
-    /* 1.12 Toasts (ειδοποιήσεις) στη σωστή θέση */
+    /* 15. TOASTS (ειδοποιήσεις) */
     .toast-message,
     .toast-message-custom {
-        bottom: 80px !important;
+        bottom: 20px !important;
         left: 50% !important;
         transform: translateX(-50%) !important;
         white-space: normal !important;
@@ -596,7 +616,7 @@
         z-index: 10000 !important;
     }
     
-    /* 1.13 Popups αναλογικά */
+    /* 16. POPUPS */
     #amPopup > div,
     #successPopup > div,
     .modal-content {
@@ -605,7 +625,7 @@
         margin: 0 auto !important;
     }
     
-    /* 1.14 Τα κελιά πινάκων */
+    /* 17. ΠΙΝΑΚΕΣ - κελιά */
     .data-table td,
     .data-table th {
         white-space: normal !important;
@@ -614,51 +634,156 @@
         font-size: 12px !important;
     }
     
-    /* 1.15 Το sidebar menu */
-    .sidebar {
-        width: 0 !important;
-        transition: 0.3s !important;
-    }
-    
-    /* 1.16 Το κουμπί menu */
-    .menu-toggle {
-        position: fixed !important;
-        bottom: 20px !important;
-        left: 20px !important;
-        top: auto !important;
-        width: 50px !important;
-        height: 50px !important;
-        border-radius: 50% !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        z-index: 1050 !important;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2) !important;
-    }
-    
-    /* 1.17 Αριθμοί στατιστικών */
+    /* 18. ΣΤΑΤΙΣΤΙΚΑ - αριθμοί */
     .stat-number {
         font-size: 1.5rem !important;
     }
     
-    /* 1.18 Pie chart μικρότερο */
+    /* 19. PIE CHART */
     .pie-chart {
         width: 120px !important;
         height: 120px !important;
     }
     
-    /* 1.19 Το container της εφαρμογής */
+    /* 20. CONTAINERS */
     .app-container,
     .container {
         padding: 0 !important;
         margin: 0 !important;
     }
     
-    /* 1.20 Όλα τα κουμπιά */
-    button {
-        cursor: pointer !important;
-        -webkit-tap-highlight-color: transparent !important;
+    /* 21. BODY */
+    body {
+        padding: 0.5rem !important;
     }
+    
+    /* 22. ΦΟΡΜΕΣ - ομαλή εμφάνιση */
+    .login-form {
+        max-width: 100% !important;
+    }
+    
+    /* 23. ΚΕΦΑΛΙΔΕΣ CARDS */
+    .card h3 {
+        font-size: 1.1rem !important;
+    }
+    
+    /* 24. FILTER CONTROLS */
+    .filter-controls {
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+    }
+}
+
+/* ============================================ */
+/*   ΠΟΛΥ ΜΙΚΡΕΣ ΟΘΟΝΕΣ (iPhone SE, 320px-480px)   */
+/* ============================================ */
+@media (max-width: 480px) {
+    body {
+        padding: 0.5rem !important;
+    }
+    
+    .card {
+        padding: 0.8rem !important;
+    }
+    
+    .card h3 {
+        font-size: 1rem !important;
+    }
+    
+    .stat-number {
+        font-size: 1.3rem !important;
+    }
+    
+    .pie-chart {
+        width: 100px !important;
+        height: 100px !important;
+    }
+    
+    .login-btn {
+        padding: 8px 16px !important;
+        font-size: 14px !important;
+    }
+    
+    .data-table td,
+    .data-table th {
+        font-size: 11px !important;
+        padding: 6px 3px !important;
+    }
+}
+
+/* ============================================ */
+/*   TABLET (769px - 1024px) - προαιρετικό       */
+/* ============================================ */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .dashboard-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+    }
+    
+    #main-content {
+        margin-left: 280px !important;
+        padding: 1.5rem !important;
+    }
+    
+    .sidebar {
+        width: 260px !important;
+    }
+}
+
+/* ============================================ */
+/*   ΒΕΛΤΙΩΣΕΙΣ ΓΙΑ TOUCH SCREENS               */
+/* ============================================ */
+@media (hover: none) and (pointer: coarse) {
+    /* Όλα τα κλικ-στοιχεία μεγάλα για άνετο πάτημα */
+    button, 
+    .menu-item,
+    .login-btn,
+    [onclick],
+    a {
+        min-height: 44px !important;  /* Apple guideline */
+    }
+    
+    input, select, textarea {
+        font-size: 16px !important;  /* Αποτρέπει zoom */
+    }
+    
+    /* Αφαιρούμε το hover (δεν υπάρχει σε touch) */
+    .menu-item:hover {
+        background: none !important;
+    }
+    
+    .menu-item:active {
+        background: #c44536 !important;
+    }
+}
+    @media (max-width: 768px) {
+    .sidebar {
+        width: 0;
+    }
+    #main-content {
+        margin-left: 20px;
+        padding: 1rem;
+    }
+    .menu-toggle {
+        position: fixed !important;
+        bottom: 20px !important;
+        left: 20px !important;
+        top: auto !important;
+        width: 56px !important;
+        height: 56px !important;
+        border-radius: 50% !important;
+        background: #1e3a3f !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        z-index: 9999 !important;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.25) !important;
+        font-size: 24px !important;
+        padding: 0 !important;
+    }
+    .menu-toggle i {
+        font-size: 24px !important;
+    }
+
 }
 
 /* 2. ΠΟΛΥ ΜΙΚΡΕΣ ΟΘΟΝΕΣ (iPhone SE, κλπ) */
