@@ -504,10 +504,22 @@
 @media (max-width: 768px) {
     
     /* 1. SIDEBAR - κρυβεται και ανοίγει με το κουμπί */
-    .sidebar {
-        width: 0 !important;
-        transition: 0.3s ease !important;
-    }
+     @media (max-width: 768px) 
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease-in-out;
+                width: 280px !important;
+                box-shadow: 5px 0 25px rgba(0,0,0,0.3);
+            }
+            
+            .sidebar[style*="width: 300px"] {
+                transform: translateX(0) !important;
+            }
+            
+            .sidebar[style*="width: 0"] {
+                transform: translateX(-100%) !important;
+            }
+        
     
     /* 2. ΚΥΡΙΟ ΠΕΡΙΕΧΟΜΕΝΟ - γεμίζει όλη την οθόνη */
     #main-content {
