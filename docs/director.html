@@ -1,354 +1,56 @@
 <!DOCTYPE html>
 <html lang="el">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Saint-Paul | Γενικός Διευθυντής - Στατιστικά & Ιστορικό</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+        <title>Saint-Paul | Γενικός Διευθυντής - Στατιστικά & Ιστορικό</title>
+        <link rel="stylesheet" href="director.css">
+    </head>
 
-        body {
-            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-            background: transparent;
-            color: #1e2a2e;
-            padding: 1rem;
-        }
-
-        .app-container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        .header { display: none; }
-
-    
-
-        .logo h1 {
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
-
-        .logo p {
-            font-size: 0.8rem;
-            opacity: 0.8;
-        }
-
-        .role-badge {
-            background: #c44536;
-            padding: 0.5rem 1rem;
-            border-radius: 3rem;
-            font-weight: bold;
-            font-size: 0.9rem;
-        }
-
-        /* Login section (βασική ροή 3.1 & 3.2) */
-        .login-section {
-            background: white;
-            border-radius: 2rem;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            text-align: center;
-        }
-
-        .login-section h2 {
-            color: #1e3a3f;
-            margin-bottom: 0.5rem;
-        }
-
-        .login-section p {
-            color: #577a7e;
-            margin-bottom: 1.5rem;
-        }
-
-        .login-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            max-width: 300px;
-            margin: 0 auto;
-        }
-
-        .login-form input {
-            padding: 0.8rem 1rem;
-            border: 1px solid #cbdcd8;
-            border-radius: 2rem;
-            font-size: 1rem;
-            outline: none;
-            transition: 0.2s;
-        }
-
-        .login-form input:focus {
-            border-color: #1e3a3f;
-            box-shadow: 0 0 0 2px rgba(30,58,63,0.2);
-        }
-
-        .login-btn {
-            background: #1e3a3f;
-            color: white;
-            border: none;
-            padding: 0.8rem;
-            border-radius: 2rem;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .login-btn:hover {
-            background: #2c5a5f;
-        }
-
-        .error-message {
-            color: #c44536;
-            font-size: 0.85rem;
-            margin-top: 0.5rem;
-            display: none;
-        }
-
-        /* Dashboard (εμφανίζεται μετά την επιτυχή σύνδεση) */
-        .dashboard {
-            display: none;
-        }
-
-        .dashboard.visible {
-            display: block;
-        }
-
-        /* Cards & Grids */
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 1.8rem;
-            margin-bottom: 2rem;
-        }
-
-        .card {
-            background: white;
-            border-radius: 1.8rem;
-            padding: 1.4rem 1.6rem;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.03), 0 2px 6px rgba(0,0,0,0.05);
-            border: 1px solid #e2efe4;
-        }
-
-        .card h3 {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 1.3rem;
-            margin-bottom: 1.2rem;
-            color: #1e3a3f;
-            border-left: 5px solid #c44536;
-            padding-left: 0.8rem;
-        }
-
-        .stat-number {
-            font-size: 2rem;
-            font-weight: 800;
-            color: #1e3a3f;
-        }
-
-        .stat-label {
-            color: #577a7e;
-            font-size: 0.85rem;
-        }
-
-        /* Πίνακες */
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.9rem;
-        }
-
-        .data-table th,
-        .data-table td {
-            text-align: left;
-            padding: 0.75rem 0.4rem;
-            border-bottom: 1px solid #deeae6;
-        }
-
-        .data-table th {
-            font-weight: 600;
-            color: #1e3a3f;
-            background: #f5faf7;
-        }
-
-        .badge {
-            background: #eaf4e8;
-            padding: 0.2rem 0.7rem;
-            border-radius: 2rem;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: #2c6e4f;
-            display: inline-block;
-        }
-
-        .warning-badge {
-            background: #ffe5d9;
-            color: #bc4e2c;
-        }
-
-        /* Διάγραμμα πίτας (Pie Chart) */
-        .pie-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .pie-chart {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            background: conic-gradient(
-                #2c6e4f 0% 64%,
-                #e0a800 64% 86%,
-                #c44536 86% 100%
-            );
-            margin-bottom: 0.5rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        .pie-legend {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 1rem;
-            font-size: 0.8rem;
-        }
-
-        .legend-color {
-            display: inline-block;
-            width: 12px;
-            height: 12px;
-            border-radius: 2px;
-            margin-right: 0.3rem;
-        }
-
-        /* Ποσοστά ενεργών δρομολογίων - progress bar */
-        .progress-bar-container {
-            background: #e2efe4;
-            border-radius: 1rem;
-            height: 1.2rem;
-            width: 100%;
-            overflow: hidden;
-            margin: 0.8rem 0;
-        }
-
-        .progress-bar {
-            background: #2c6e4f;
-            height: 100%;
-            width: 85.7%;
-            border-radius: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            padding-right: 0.5rem;
-            color: white;
-            font-size: 0.7rem;
-            font-weight: bold;
-        }
-
-        /* Offline warning (εναλλακτική ροή 4.1) */
-        .offline-warning {
-            background: #ffe5d9;
-            border-left: 5px solid #c44536;
-            padding: 1rem;
-            border-radius: 1rem;
-            margin-bottom: 1.5rem;
-            display: none;
-        }
-
-        .offline-warning.show {
-            display: block;
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 3rem;
-            padding: 1rem;
-            font-size: 0.7rem;
-            color: #5c7a7e;
-            border-top: 1px solid #deeae6;
-        }
-        .inactive-list {
-            background: #fff5f5;
-            padding: 0.8rem;
-            border-radius: 1rem;
-            border: 1px solid #ffe5d9;
-        }
-
-        @media (max-width: 680px) {
-            body {
-                padding: 0.8rem;
-            }
-            .card {
-                padding: 1rem;
-            }
-            .data-table th,
-            .data-table td {
-                font-size: 0.75rem;
-                padding: 0.5rem 0.2rem;
-            }
-            .stat-number {
-                font-size: 1.5rem;
-            }
-            .pie-chart {
-                width: 140px;
-                height: 140px;
-            }
-        }
-    </style>
-</head>
-<body>
-<div class="app-container">
-    <div class="header">
-        <div class="logo">
-            <h1>📘 Saint-Paul</h1>
-            <p>Ελληνογαλλική Σχολή · La Salle</p>
+    <body>
+    <div class="app-container">
+        <div class="header">
+            <div class="logo">
+                <h1>📘 Saint-Paul</h1>
+                <p>Ελληνογαλλική Σχολή · La Salle</p>
+            </div>
+            <div class="role-badge">Γενικός Διευθυντής</div>
         </div>
-        <div class="role-badge">Γενικός Διευθυντής</div>
-    </div>
 
-    <!-- Dashboard - Εμφανίζεται μετά την επιτυχή σύνδεση (βασική ροή 3.2, 3.3, 3.4) -->
-    <div id="dashboard" class="dashboard visible">
+        <div id="dashboard" class="dashboard visible">
         
-        <!-- Offline warning - Εναλλακτική ροή 4.1 -->
-        <div id="offlineWarning" class="offline-warning">
-            ⚠️ <strong>Μη διαθεσιμότητα επικαιροποιημένων δεδομένων</strong><br>
-            Λόγω ασταθούς σύνδεσης, τα δεδομένα που εμφανίζονται ενδέχεται να μην είναι πλήρως ενημερωμένα. 
-            Παρακαλώ ελέγξτε τη σύνδεσή σας στο διαδίκτυο.
-        </div>
+            <!-- Offline warning-->
+            <div id="offlineWarning" class="offline-warning">
+                ⚠️ <strong>Μη διαθεσιμότητα επικαιροποιημένων δεδομένων</strong><br>
+                Λόγω ασταθούς σύνδεσης, τα δεδομένα που εμφανίζονται ενδέχεται να μην είναι πλήρως ενημερωμένα. 
+                Παρακαλώ ελέγξτε τη σύνδεσή σας στο διαδίκτυο.
+            </div>
 
-        <!-- 3.3 Συγκεντρωτικά στοιχεία από το τρέχον σχολικό έτος -->
-        <div class="dashboard-grid">
-            <!-- Πίνακας με ποσοστά ενεργών δρομολογίων -->
-            <div class="card">
-    <h3>🚌 Ποσοστά ενεργών δρομολογίων</h3>
-    <div class="stat-number">25 / 27</div>
-    <div class="progress-bar-container">
-        <div class="progress-bar" style="width: 92.6%;">92.6%</div>
-    </div>
-    <div class="stat-label" style="margin-bottom: 1rem;">Σύνολο: 27 | Ενεργά: 25 | Ανενεργά: 2</div>
+            <!-- Data from the current year-->
+            <div class="dashboard-grid">
+                <div class="card">
+                    <h3>🚌 Ποσοστά ενεργών δρομολογίων</h3>
+                    <div class="stat-number">25 / 27</div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: 92.6%;">92.6%</div>
+                    </div>
+                <div class="stat-label" style="margin-bottom: 1rem;">Σύνολο: 27 | Ενεργά: 25 | Ανενεργά: 2</div>
     
-    <div class="inactive-list">
-        <p style="font-size: 0.85rem; font-weight: 600; color: #c44536; margin-bottom: 0.5rem;">Ανενεργά δρομολόγια:</p>
-        <table class="data-table">
-            <thead>
-                <tr><th>ID</th><th>Περιοχή</th></tr>
-            </thead>
-            <tbody>
-                <tr><td>#3</td><td>Πειραιάς - Μοσχάτο</td></tr>
-                <tr><td>#8</td><td>Γλυφάδα - Ελληνικό</td></tr>
-            </tbody>
-        </table>
-    </div>
-    </div>
+                <div class="inactive-list">
+                    <p style="font-size: 0.85rem; font-weight: 600; color: #c44536; margin-bottom: 0.5rem;">Ανενεργά δρομολόγια:</p>
+                    <table class="data-table">
+                        <thead>
+                            <tr><th>ID</th><th>Περιοχή</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>#3</td><td>Πειραιάς - Μοσχάτο</td></tr>
+                            <tr><td>#8</td><td>Γλυφάδα - Ελληνικό</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-            <!-- Διάγραμμα πίτας με τις πηγές δήλωσης απουσίας -->
+            <!-- Pie chart with the sources of absence declarations -->
             <div class="card">
                 <h3>📞 Πηγές δήλωσης απουσίας</h3>
                 <div class="pie-container">
@@ -362,7 +64,7 @@
                 <div class="stat-label" style="margin-top: 0.5rem; text-align:center;">Στοιχεία Σχολικού Έτους 2025-26</div>
             </div>
 
-            <!-- Πίνακας ιστορικού με συνολική πληρότητα κάθε ημέρας -->
+            <!-- Historical table with total occupancy per day  -->
             <div class="card">
                 <h3>📅 Ιστορικό πληρότητας δρομολογίων</h3>
                 <table class="data-table">
@@ -380,7 +82,7 @@
             </div>
         </div>
 
-        <!-- Πινακάκι με μαθητές με τις περισσότερες αδήλωτες απουσίες -->
+        <!-- Students with the most unreported absences-->
         <div class="card" style="margin-bottom: 1.8rem;">
             <h3>⚠️ Μαθητές με περισσότερες αδήλωτες απουσίες</h3>
             <table class="data-table">
@@ -399,7 +101,7 @@
                 χωρίς προηγούμενη ενημέρωση γονέα, υπαλλήλου ή υπευθύνου γραφείου κίνησης.
             </div>
         </div>
-    <!-- Πίνακας με αναλυτικά ποσοστά ενεργών δρομολογίων ανά περιοχή -->
+        <!-- Table with percentages of active routes per route-->
         <div class="card">
             <h3>📊 Αναλυτικά ποσοστά δρομολογίων (Σύνολο: 27)</h3>
             
@@ -442,8 +144,7 @@
                         <tr data-status="active"><td>#27</td><td>Μαρούσι - Λυκόβρυση </td><td><span class="badge">Ενεργό</span></td><td>88%</td></tr>
                         
                         <tr data-status="inactive"><td>#3</td><td>Πειραιάς - Μοσχάτο</td><td><span class="badge warning-badge">Ανενεργό</span></td><td>-</td></tr>
-                        <tr data-status="inactive"><td>#8</td><td>Γλυφάδα - Ελληνικό </td><td><span class="badge warning-badge">Ανενεργό</span></td><td>-</td></tr>
-</tbody>    
+                        <tr data-status="inactive"><td>#8</td><td>Γλυφάδα - Ελληνικό </td><td><span class="badge warning-badge">Ανενεργό</span></td><td>-</td></tr>    
                     </tbody>
                 </table>
             </div>
@@ -454,45 +155,6 @@
         Ελληνογαλλική Σχολή Saint-Paul | Σύστημα διαχείρισης δρομολογίων & απουσιών<br>
         Ανάλυση & Σχεδιασμός Πληροφοριακών Συστημάτων - Ομάδα 86
     </footer>
-</div>
-
-<script>
-const dashboard = document.getElementById('dashboard');
-const offlineWarning = document.getElementById('offlineWarning');
-
-let isOnline = true;
-
-function checkConnection() {
-    const randomStatus = Math.random() > 0.1;
-    isOnline = randomStatus;
-
-    if (isOnline) {
-        offlineWarning.classList.remove('show');
-    } else {
-        offlineWarning.classList.add('show');
-    }
-
-    const tables = document.querySelectorAll('.data-table');
-
-    tables.forEach(table => {
-        table.style.opacity = isOnline ? '1' : '0.7';
-    });
-}
-
-function simulateOffline() {
-    isOnline = false;
-    checkConnection();
-}
-
-function simulateOnline() {
-    isOnline = true;
-    checkConnection();
-}
-
-checkConnection();
-setInterval(checkConnection, 10000);
-
-console.log('Dashboard loaded successfully');
-</script>
-</body>
+    <script src="director.js"></script>
+    </body>
 </html>

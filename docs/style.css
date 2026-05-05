@@ -1,4 +1,3 @@
-/* Βασικές Ρυθμίσεις */
 body {
     margin: 0;
     padding: 0;
@@ -6,13 +5,10 @@ body {
     text-align: center;
     color: #333;
 
-    /*Το βασικό παστέλ κίτρινο */
     background-color: #fdfd96; 
 
-    /* Το μοτίβο με τις βούλες */
     background-image: radial-gradient(rgba(255, 255, 255, 0.5) 2px, transparent 2px);
     
-    /* Η απόσταση μεταξύ των βουλών */
     background-size: 25px 25px;
 }
 
@@ -23,27 +19,26 @@ header {
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-/* Αυτό ευθυγραμμίζει το λογότυπο και το κείμενο */
 .logo-container {
     display: flex;
-    align-items: center;  /* Κεντράρισμα καθ' ύψος */
-    justify-content: center; /* Κεντράρισμα στο κέντρο της σελίδας */
-    gap: 20px; /* Απόσταση μεταξύ εικόνας και κειμένου */
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
 }
 
 .logo-text h1 {
     margin: 0;
     font-size: 2.2rem;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* Δίνει βάθος στα γράμματα */
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 }
 
 .school-logo {
-    height: 80px; /* Ρύθμισε το ύψος ανάλογα με το λογότυπό σου */
+    height: 80px;
     width: auto;
 }
 
 .logo-text {
-    text-align: left; /* Το κείμενο να στοιχίζεται αριστερά ως προς το λογότυπο */
+    text-align: left;
 }
 
 .logo-text h1 {
@@ -62,16 +57,14 @@ header {
     padding: 20px;
 }
 
-/* Φωτογραφία */
 .main-photo {
-    width: 100%;           /* Πιάνει όλο το διαθέσιμο πλάτος του container */
-    max-width: 900px;      /* Δεν επιτρέπουμε να ξεχειλώσει πάνω από 900px */
-    height: 450px;         /* Ορίζουμε ένα σταθερό ύψος για ομοιομορφία */
+    width: 100%;
+    max-width: 900px;
+    height: 450px;
     
-    /* Η ΠΙΟ ΣΗΜΑΝΤΙΚΗ ΕΝΤΟΛΗ: */
-    object-fit: cover;     /* Η εικόνα γεμίζει το πλαίσιο χωρίς να παραμορφώνεται, κόβοντας αν χρειαστεί λίγο από τα πλάγια */
+    object-fit: cover;
     
-    object-position: center; /* Εστιάζει στο κέντρο της φωτογραφίας */
+    object-position: center;
     border-radius: 15px;
     border: 5px solid white;
     box-shadow: 0 10px 25px rgba(0,0,0,0.2);
@@ -79,14 +72,7 @@ header {
     transition: transform 0.3s ease;
 }
 
-/* Για κινητά, χαμηλώνουμε το ύψος για να μην πιάνει όλη την οθόνη */
-@media (max-width: 768px) {
-    .main-photo {
-        height: 250px;
-    }
-}
-
-/* Για κινητά, χαμηλώνουμε το ύψος για να μην πιάνει όλη την οθόνη */
+/*For phones */
 @media (max-width: 768px) {
     .main-photo {
         height: 250px;
@@ -94,12 +80,11 @@ header {
 }
 
 .main-photo:hover {
-    transform: scale(1.02); /* Μεγαλώνει ελάχιστα όταν ακουμπάς το ποντίκι */
+    transform: scale(1.02);
     transition: transform 0.5s ease;
     cursor: pointer;
 }
 
-/* Κείμενο */
 .intro-text h2 {
     color: #0047ab;
     margin-top: 20px;
@@ -110,26 +95,26 @@ header {
     line-height: 1.6;
 }
 
-/* Κουμπιά */
+/* Buttons */
 .user-roles {
     margin-top: 40px;
     padding: 30px;
-    background-color: rgba(255, 255, 255, 0.5); /* Ημιδιαφανές λευκό */
+    background-color: rgba(255, 255, 255, 0.5);
     border-radius: 20px;
 }
 
 .button-group {
     display: flex;
-    flex-wrap: wrap; /* Επιτρέπει στα κουμπιά να αλλάζουν γραμμή */
+    flex-wrap: wrap;
     gap: 20px;
     justify-content: center;
-    max-width: 700px; /* Περιορίζουμε το πλάτος για να μπουν ανά δύο */
+    max-width: 700px;
     margin: 20px auto 0 auto;
 }
 
 .btn {
     display: inline-block;
-    width: 280px; /* Σταθερό πλάτος για να είναι ομοιόμορφα */
+    width: 280px;
     padding: 15px;
     background-color: #0047ab;
     color: white;
@@ -146,9 +131,9 @@ header {
 }
 
 .btn i {
-    margin-right: 10px; /* Απόσταση εικονιδίου από το κείμενο */
-    font-size: 1.1rem;   /* Μέγεθος εικονιδίου */
-    vertical-align: middle; /* Ευθυγράμμιση στο κέντρο */
+    margin-right: 10px;
+    font-size: 1.1rem;
+    vertical-align: middle;
 }
 
 footer {
@@ -182,10 +167,10 @@ footer {
     font-weight: bold;
 }
 
-/* Το κουμπί "Hamburger" */
+/*Button "Hamburger" */
 .menu-toggle {
     position: fixed;
-    top: 25px; /* Ύψος από την κορυφή */
+    top: 25px;
     left: 20px;
     font-size: 24px;
     background-color: #0047ab;
@@ -194,7 +179,7 @@ footer {
     padding: 10px 15px;
     border-radius: 5px;
     cursor: pointer;
-    display: none; /* Ξεκινάει κρυμμένο, το εμφανίζει η JS */
+    display: none; 
     z-index: 1000;
     transition: background 0.3s;
 }
@@ -203,47 +188,42 @@ footer {
     background-color: #003580;
 }
 
-/* Το περιεχόμενο της σελίδας */
 #main-content {
     transition: margin-left 0.3s;
-    padding-top: 25px !important; /* Ίδιο ύψος με το κουμπί για ευθυγράμμιση */
-    padding-left: 80px !important; /* Χώρος αριστερά για να μην πέφτει το κουμπί πάνω στον τίτλο */
+    padding-top: 25px !important;
+    padding-left: 80px !important;
     display: block;
 }
 
-/* Ο τίτλος μέσα στο περιεχόμενο */
 #main-content h2, #main-content h1 {
-    margin-top: 0 !important; /* Αφαιρούμε το προκαθορισμένο κενό του τίτλου */
+    margin-top: 0 !important;
     line-height: 1.2;
     color: #0047ab;
 }
 
-/* Ρυθμίσεις για Κινητά */
+/*For phones*/
 @media (max-width: 768px) {
     
-    /* Το Header (Λογότυπο + Τίτλος) να μπαίνει το ένα κάτω από το άλλο */
     .logo-container {
         flex-direction: column;
         gap: 10px;
     }
 
     .logo-text {
-        text-align: center; /* Κεντράρισμα κειμένου στο κινητό */
+        text-align: center;
     }
 
     .logo-text h1 {
-        font-size: 1.8rem; /* Λίγο μικρότερα γράμματα για να χωράνε */
+        font-size: 1.8rem;
     }
 
-    /* Η φωτογραφία να πιάνει σχεδόν όλο το πλάτος */
     .main-photo {
         width: 95%;
         border-width: 3px;
     }
 
-    /* Τα κουμπιά να γίνονται λίγο πιο μεγάλα για να πατιούνται εύκολα με το δάχτυλο */
     .btn {
-        width: 90%; /* Σχεδόν όλο το πλάτος της οθόνης */
+        width: 90%;
         padding: 18px 0;
         font-size: 1rem;
     }
@@ -253,12 +233,10 @@ footer {
     }
 }
 
-/* Σκιά στον Τίτλο */
 .logo-text h1 {
     text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
 }
 
-/* Ρυθμίσεις Sidebar */
 .sidebar {
     height: 100%;
     width: 0; 

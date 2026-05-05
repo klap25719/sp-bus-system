@@ -1,135 +1,20 @@
 <!DOCTYPE html>
 <html lang="el">
-<head>
-    <meta charset="UTF-8">
-    <title>Saint-Paul | Επιλογές</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
-            background: #fdfd96;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-        
-        .options-container {
-            background: white;
-            border-radius: 2rem;
-            padding: 2rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            text-align: center;
-            max-width: 500px;
-            width: 100%;
-        }
-        
-        h2 {
-            color: #0047ab;
-            margin-bottom: 25px;
-            font-size: 1.8rem;
-        }
-        
-        .options-box {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .option-btn {
-            background: #1e3a3f;
-            color: white;
-            padding: 12px 20px;
-            border-radius: 2rem;
-            text-decoration: none;
-            font-weight: bold;
-            transition: 0.2s;
-            display: block;
-        }
-        
-        .option-btn:hover {
-            background: #2c5a5f;
-            transform: translateY(-2px);
-        }
-        
-        .back-link {
-            display: inline-block;
-            margin-top: 15px;
-            color: #0047ab;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        
-        .back-link:hover {
-            text-decoration: underline;
-        }
-    </style>
-</head>
-<body>
-    <div class="options-container">
-        <h2 id="role-title"></h2>
-        <div id="options-box" class="options-box"></div>
-        <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Πίσω στην Αρχική</a>
-    </div>
+    <head>
+        <meta charset="UTF-8">
+        <title>Saint-Paul | Επιλογές</title>
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <link rel="stylesheet" href="options.css">
+    </head>
+    
+    <body>
+        <div class="options-container">
+            <h2 id="role-title"></h2>
+            <div id="options-box" class="options-box"></div>
+            <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Πίσω στην Αρχική</a>
+        </div>
 
-    <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const role = urlParams.get('role');
-        const box = document.getElementById('options-box');
-        const title = document.getElementById('role-title');
-
-        const data = {
-            'parents': { title: 'Γονείς / Υπάλληλοι', menu: ['Δήλωση Απουσίας / Αιτήματος', 'Τροποποίηση Δήλωσης'] },
-            'drivers': { title: 'Οδηγοί', menu: ['Προβολή Δρομολογίου', 'Αναφορά Προβλήματος'] },
-            'office': { title: 'Υπεύθυνος Κίνησης', menu: ['Καθορισμός Δρομολογίων', 'Καθορισμός Τακτικών Μαθητών','Δήλωση Απουσίας / Αιτήματος', 'Προβολή & Τροποποίηση', 'Έλεγχος & Οριστικοποίηση'] },
-            'director': { title: 'Διευθυντής', menu: ['Προβολή στατιστικών'] }
-        };
-
-        // Ειδική περίπτωση για οδηγούς - πάνε κατευθείαν στο dashboard
-        if (role === 'drivers') {
-            window.location.href = 'dashboard.html?role=drivers';
-        } 
-        else if (data[role]) {
-            title.innerText = data[role].title;
-            data[role].menu.forEach(item => {
-                const a = document.createElement('a');
-                let targetUrl = `dashboard.html?role=${role}`;
-                
-                // Για τον Διευθυντή
-                if (role === 'director' && item === 'Προβολή στατιστικών') {
-                    targetUrl += '&view=stats';
-                }
-                // Για τον Υπεύθυνο Κίνησης
-                else if (role === 'office' && item === 'Καθορισμός Δρομολογίων') {
-                    targetUrl += '&view=routes';
-                }
-                else if (role === 'office' && item === 'Δήλωση Απουσίας / Αιτήματος') {
-                    targetUrl += '&view=absence';
-                 }
-                // Για τους Γονείς - Δήλωση απουσίας
-                else if (role === 'parents' && item === 'Δήλωση Απουσίας / Αιτήματος') {
-                    targetUrl += '&view=absence';
-                }
-                // Για τους Γονείς - Τροποποίηση απουσίας
-                else if (role === 'parents' && item === 'Τροποποίηση Δήλωσης') {
-                    targetUrl += '&view=modify';
-                }
-                
-                a.href = targetUrl;
-                a.className = 'option-btn';
-                a.innerText = item;
-                box.appendChild(a);
-            });
-        }
-    </script>
-</body>
+        <script src="options.js"></script>
+    </body>
 </html>
