@@ -1,429 +1,357 @@
 <!DOCTYPE html>
 <html lang="el">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Λίστα Επιβατών</title>
-
-  <!-- Bootstrap -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Icons -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-
-  <style>
-    body {
-      background-color: #f8f9fa;
-      padding-bottom: 80px;
-    }
-
-    .waiting-state {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100vh;
-
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-
-      text-align: center;
-      background-color: #f8f9fa;
-    }
-
-    .passenger-row {
-      background: white;
-      border-radius: 10px;
-      padding: 10px;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-    }
-
-    .absent-passenger-row {
-      background: rgb(234, 60, 60);
-      border-radius: 10px;
-      padding: 10px;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-    }
-
-    .name {
-      font-size: 16px;
-    }
-
-    .btn-circle {
-      width: 35px;
-      height: 35px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0;
-    }
-
-    .bottom-button {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      padding: 10px;
-      background: white;
-      border-top: 1px solid #ddd;
-    }
-
-    .list-space {
-      padding-bottom: 80px;
-    }
-
-    .actions {
-      display: flex;
-      gap: 8px;
-    }
-  </style>
-</head>
-
-<body class="p-3">
-
-<div class="d-flex justify-content-between align-items-center mb-3">
-  <h5 class="mb-0">Επιβάτες</h5>
-
-  <a href="index.html" class="btn btn-link text-dark">
-    <i class="bi bi-arrow-left"></i> Επιστροφή στην αρχική οθόνη
-  </a>
-</div>
-
-<p>Σχολικό 1 - Δρομολόγιο: Πρωινό</p>
-
-<!-- STATE 1 -->
-<div id="waitingState" class="waiting-state">
-  <h5>Η λίστα δεν έχει οριστικοποιηθεί ακόμη.</h5>
-  <p>Θα ειδοποιηθείτε όταν οριστικοποιηθεί.</p>
-</div>
-
-<!-- STATE 2 -->
-<div id="listState" class="container list-space d-none">
-
-  <!-- 1 -->
-  <div class="passenger-row">
-    <div class="name">Γιάννης Παπαδόπουλος</div>
-
-    <button class="btn btn-warning btn-circle ms-2 me-2"
-            title="Ειδικό αίτημα"
-            onclick="alert('Ειδικό αίτημα:\n\nΣπασμένο πόδι. Θα χρειαστεί βοήθεια κατά την επιβίβαση/ αποβίβαση')">
-      <i class="bi bi-exclamation-lg"></i>
-    </button>
-
-    <div class="actions ms-auto">
-      <button class="btn btn-success btn-circle"
-              title="Κλήση γονέα">
-        <i class="bi bi-telephone"></i>
-      </button>
-      <button class="btn btn-danger btn-circle"
-              title="Μη προσέλευση"
-              onclick="markAbsent(this)">
-        <i class="bi bi-x-lg"></i>
-      </button>
-    </div>
-  </div>
-
-  <!-- 2 -->
-  <div class="absent-passenger-row">
-    <div class="name">Μαρία Κωνσταντίνου</div>
-  </div>
-
-  <!-- 3 -->
-  <div class="passenger-row">
-    <div class="name">Νίκος Δημητρίου</div>
-
-    <button class="btn btn-warning btn-circle ms-2 me-2"
-            title="Ειδικό αίτημα"
-            onclick="alert('Ειδικό αίτημα:\n\nΤρίτη και Πέμπτη παραλαβή από Διεύθυνση 2')">
-      <i class="bi bi-exclamation-lg"></i>
-    </button>
-
-    <div class="actions ms-auto">
-      <button class="btn btn-success btn-circle"
-              title="Κλήση γονέα">
-        <i class="bi bi-telephone"></i>
-      </button>
-      <button class="btn btn-danger btn-circle"
-              title="Μη προσέλευση"
-              onclick="markAbsent(this)">
-        <i class="bi bi-x-lg"></i>
-      </button>
-    </div>
-  </div>
-
-  <!-- 4 -->
-  <div class="passenger-row">
-    <div class="name">Ελένη Γεωργίου</div>
-
-    <div class="actions ms-auto">
-      <button class="btn btn-success btn-circle"
-              title="Κλήση γονέα">
-        <i class="bi bi-telephone"></i>
-      </button>
-      <button class="btn btn-danger btn-circle"
-              title="Μη προσέλευση"
-              onclick="markAbsent(this)">
-        <i class="bi bi-x-lg"></i>
-      </button>
-    </div>
-  </div>
-
-  <!-- 5 -->
-  <div class="passenger-row">
-    <div class="name">Πέτρος Αντωνίου</div>
-
-    <button class="btn btn-warning btn-circle ms-2 me-2"
-            title="Ειδικό αίτημα"
-            onclick="alert('Ειδικό αίτημα:\n\nΚάθε Τετάρτη παράδοση στη Διεύθυνση 2')">
-      <i class="bi bi-exclamation-lg"></i>
-    </button>
-
-    <div class="actions ms-auto">
-      <button class="btn btn-success btn-circle"
-              title="Κλήση γονέα">
-        <i class="bi bi-telephone"></i>
-      </button>
-      <button class="btn btn-danger btn-circle"
-              title="Μη προσέλευση"
-              onclick="markAbsent(this)">
-        <i class="bi bi-x-lg"></i>
-      </button>
-    </div>
-  </div>
-
-  <!-- 6 -->
-  <div class="passenger-row">
-    <div class="name">Σοφία Παπαδοπούλου</div>
-
-    <div class="actions ms-auto">
-      <button class="btn btn-success btn-circle"
-              title="Κλήση γονέα">
-        <i class="bi bi-telephone"></i>
-      </button>
-      <button class="btn btn-danger btn-circle"
-              title="Μη προσέλευση"
-              onclick="markAbsent(this)">
-        <i class="bi bi-x-lg"></i>
-      </button>
-    </div>
-  </div>
-
-  <!-- 7 -->
-  <div class="passenger-row">
-    <div class="name">Ανδρέας Νικολάου</div>
-
-    <div class="actions ms-auto">
-      <button class="btn btn-success btn-circle"
-              title="Κλήση γονέα">
-        <i class="bi bi-telephone"></i>
-      </button>
-      <button class="btn btn-danger btn-circle"
-              title="Μη προσέλευση"
-              onclick="markAbsent(this)">
-        <i class="bi bi-x-lg"></i>
-      </button>
-    </div>
-  </div>
-
-  <!-- 8 -->
-  <div class="passenger-row">
-    <div class="name">Χριστίνα Ιωάννου</div>
-
-    <div class="actions ms-auto">
-      <button class="btn btn-success btn-circle"
-              title="Κλήση γονέα">
-        <i class="bi bi-telephone"></i>
-      </button>
-      <button class="btn btn-danger btn-circle"
-              title="Μη προσέλευση"
-              onclick="markAbsent(this)">
-        <i class="bi bi-x-lg"></i>
-      </button>
-    </div>
-  </div>
-
-  <!-- 9 -->
-  <div class="passenger-row">
-    <div class="name">Δημήτρης Παναγιώτου</div>
-
-    <div class="actions ms-auto">
-      <button class="btn btn-success btn-circle"
-              title="Κλήση γονέα">
-        <i class="bi bi-telephone"></i>
-      </button>
-      <button class="btn btn-danger btn-circle"
-              title="Μη προσέλευση"
-              onclick="markAbsent(this)">
-        <i class="bi bi-x-lg"></i>
-      </button>
-    </div>
-  </div>
-
-  <!-- 10 -->
-  <div class="passenger-row">
-    <div class="name">Άννα Θεοδώρου</div>
-
-    <div class="actions ms-auto">
-      <button class="btn btn-success btn-circle"
-              title="Κλήση γονέα">
-        <i class="bi bi-telephone"></i>
-      </button>
-      <button class="btn btn-danger btn-circle"
-              title="Μη προσέλευση"
-              onclick="markAbsent(this)">
-        <i class="bi bi-x-lg"></i>
-      </button>
-    </div>
-  </div>
-
-    <!-- 11 -->
-  <div class="passenger-row">
-    <div class="name">Νικόλας Στεφανίδης</div>
-
-    <div class="actions ms-auto">
-      <button class="btn btn-success btn-circle"
-              title="Κλήση γονέα">
-        <i class="bi bi-telephone"></i>
-      </button>
-      <button class="btn btn-danger btn-circle"
-              title="Μη προσέλευση"
-              onclick="markAbsent(this)">
-        <i class="bi bi-x-lg"></i>
-      </button>
-    </div>
-  </div>
-
-  <!-- 12 -->
-  <div class="passenger-row">
-    <div class="name">Άννα Βασιλείου</div>
-
-    <div class="actions ms-auto">
-      <button class="btn btn-success btn-circle"
-              title="Κλήση γονέα">
-        <i class="bi bi-telephone"></i>
-      </button>
-      <button class="btn btn-danger btn-circle"
-              title="Μη προσέλευση"
-              onclick="markAbsent(this)">
-        <i class="bi bi-x-lg"></i>
-      </button>
-    </div>
-  </div>
-
-  <!-- 13 -->
-  <div class="passenger-row">
-    <div class="name">Πάνος Καραγιάννης</div>
-
-    <div class="actions ms-auto">
-      <button class="btn btn-success btn-circle"
-              title="Κλήση γονέα">
-        <i class="bi bi-telephone"></i>
-      </button>
-      <button class="btn btn-danger btn-circle"
-              title="Μη προσέλευση"
-              onclick="markAbsent(this)">
-        <i class="bi bi-x-lg"></i>
-      </button>
-    </div>
-  </div>
-
-  <!-- 14 -->
-  <div class="passenger-row">
-    <div class="name">Κατερίνα Ιωάννου</div>
-
-    <div class="actions ms-auto">
-      <button class="btn btn-success btn-circle"
-              title="Κλήση γονέα">
-        <i class="bi bi-telephone"></i>
-      </button>
-      <button class="btn btn-danger btn-circle"
-              title="Μη προσέλευση"
-              onclick="markAbsent(this)">
-        <i class="bi bi-x-lg"></i>
-      </button>
-    </div>
-  </div>
-
-  <!-- 15 -->
-  <div class="passenger-row">
-    <div class="name">Ελένη Παπαγεωργίου</div>
-
-    <div class="actions ms-auto">
-      <button class="btn btn-success btn-circle"
-              title="Κλήση γονέα">
-        <i class="bi bi-telephone"></i>
-      </button>
-      <button class="btn btn-danger btn-circle"
-              title="Μη προσέλευση"
-              onclick="markAbsent(this)">
-        <i class="bi bi-x-lg"></i>
-      </button>
-    </div>
-  </div>
-
-</div>
-
-<!-- BUTTON -->
-<div class="bottom-button">
-  <button id="actionBtn" class="btn btn-success w-100 py-3 d-none">
-    Παραλαβή λίστας
-  </button>
-</div>
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-
-  const waitingState = document.getElementById("waitingState");
-  const listState = document.getElementById("listState");
-  const actionBtn = document.getElementById("actionBtn");
-
-  // STATE 1 → STATE 2 (λίστα εμφανίζεται μετά από λίγο)
-  setTimeout(function () {
-    waitingState.classList.add("d-none");
-    listState.classList.remove("d-none");
-    actionBtn.classList.remove("d-none");
-  }, 4000);
-
-  // STATE 2 → STATE 3 (παραλαβή → ολοκλήρωση)
-  actionBtn.addEventListener("click", function () {
-
-    // αν είναι πράσινο → πάει σε κόκκινο
-    if (actionBtn.classList.contains("btn-success")) {
-      actionBtn.classList.remove("btn-success");
-      actionBtn.classList.add("btn-danger");
-      actionBtn.innerText = "Ολοκλήρωση δρομολογίου";
-    }
-
-    // αν είναι κόκκινο → ολοκλήρωση (γκρι + disable)
-    else if (actionBtn.classList.contains("btn-danger")) {
-      actionBtn.classList.remove("btn-danger");
-      actionBtn.classList.add("btn-secondary");
-      actionBtn.innerText = "Ολοκληρώθηκε";
-      actionBtn.disabled = true;
-    }
-
-  });
-
-});
-
-function markAbsent(button) {
-  const row = button.closest(".passenger-row");
-  const actions = row.querySelector(".actions");
-
-  // βάφει το row
-  row.classList.add("absent-passenger-row");
-
-  // κρύβει τα κουμπιά
-  actions.style.display = "none";
-}
-</script>
-
-</body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Λίστα Επιβατών</title>
+
+        <!-- Bootstrap -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Icons -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+        <link rel="stylesheet" href="../css/drivers.css">
+    </head>
+
+    <body class="p-3">
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="mb-0">Επιβάτες</h5>
+
+            <a href="index.html" class="btn btn-link text-dark">
+                <i class="bi bi-arrow-left"></i> Επιστροφή στην αρχική οθόνη
+            </a>
+        </div>
+
+        <p>Σχολικό 1 - Δρομολόγιο: Πρωινό</p>
+
+        <!-- Κατάσταση 1 (Οθόνη αναμονής) -->
+        <div id="waitingState" class="waiting-state">
+            <h5>Η λίστα δεν έχει οριστικοποιηθεί ακόμη.</h5>
+            <p>Θα ειδοποιηθείτε όταν οριστικοποιηθεί.</p>
+        </div>
+
+        <!-- Κατάσταση 2 (Λίστα επιβατών) -->
+        <div id="listState" class="container list-space d-none">
+
+            <!-- 1 -->
+            <div class="passenger-row">
+                <div class="name">Γιάννης Παπαδόπουλος</div>
+
+                <button class="btn btn-warning btn-circle ms-2 me-2"
+                        title="Ειδικό αίτημα"
+                        onclick="alert('Ειδικό αίτημα:\n\nΣπασμένο πόδι. Θα χρειαστεί βοήθεια κατά την επιβίβαση/ αποβίβαση')">
+                    <i class="bi bi-exclamation-lg"></i>
+                </button>
+
+                <div class="actions ms-auto">
+                    <button class="btn btn-success btn-circle"
+                            title="Κλήση γονέα">
+                        <i class="bi bi-telephone"></i>
+                    </button>
+                    <button class="btn btn-danger btn-circle"
+                            title="Μη προσέλευση"
+                            onclick="markAbsent(this)">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 2 -->
+            <div class="absent-passenger-row">
+                <div class="name">Μαρία Κωνσταντίνου</div>
+            </div>
+
+            <!-- 3 -->
+            <div class="passenger-row">
+                <div class="name">Νίκος Δημητρίου</div>
+
+                <button class="btn btn-warning btn-circle ms-2 me-2"
+                        title="Ειδικό αίτημα"
+                        onclick="alert('Ειδικό αίτημα:\n\nΤρίτη και Πέμπτη παραλαβή από Διεύθυνση 2')">
+                    <i class="bi bi-exclamation-lg"></i>
+                </button>
+
+                <div class="actions ms-auto">
+                    <button class="btn btn-success btn-circle"
+                            title="Κλήση γονέα">
+                        <i class="bi bi-telephone"></i>
+                    </button>
+                    <button class="btn btn-danger btn-circle"
+                            title="Μη προσέλευση"
+                            onclick="markAbsent(this)">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 4 -->
+            <div class="passenger-row">
+                <div class="name">Ελένη Γεωργίου</div>
+
+                <div class="actions ms-auto">
+                    <button class="btn btn-success btn-circle"
+                            title="Κλήση γονέα">
+                        <i class="bi bi-telephone"></i>
+                    </button>
+                    <button class="btn btn-danger btn-circle"
+                            title="Μη προσέλευση"
+                            onclick="markAbsent(this)">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 5 -->
+            <div class="passenger-row">
+                <div class="name">Πέτρος Αντωνίου</div>
+
+                <button class="btn btn-warning btn-circle ms-2 me-2"
+                        title="Ειδικό αίτημα"
+                        onclick="alert('Ειδικό αίτημα:\n\nΚάθε Τετάρτη παράδοση στη Διεύθυνση 2')">
+                    <i class="bi bi-exclamation-lg"></i>
+                </button>
+
+                <div class="actions ms-auto">
+                    <button class="btn btn-success btn-circle"
+                            title="Κλήση γονέα">
+                        <i class="bi bi-telephone"></i>
+                    </button>
+                    <button class="btn btn-danger btn-circle"
+                            title="Μη προσέλευση"
+                            onclick="markAbsent(this)">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 6 -->
+            <div class="passenger-row">
+                <div class="name">Σοφία Παπαδοπούλου</div>
+
+                <div class="actions ms-auto">
+                    <button class="btn btn-success btn-circle"
+                            title="Κλήση γονέα">
+                        <i class="bi bi-telephone"></i>
+                    </button>
+                    <button class="btn btn-danger btn-circle"
+                            title="Μη προσέλευση"
+                            onclick="markAbsent(this)">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 7 -->
+            <div class="passenger-row">
+                <div class="name">Ανδρέας Νικολάου</div>
+
+                <div class="actions ms-auto">
+                    <button class="btn btn-success btn-circle"
+                            title="Κλήση γονέα">
+                        <i class="bi bi-telephone"></i>
+                    </button>
+                    <button class="btn btn-danger btn-circle"
+                            title="Μη προσέλευση"
+                            onclick="markAbsent(this)">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 8 -->
+            <div class="passenger-row">
+                <div class="name">Χριστίνα Ιωάννου</div>
+
+                <div class="actions ms-auto">
+                    <button class="btn btn-success btn-circle"
+                            title="Κλήση γονέα">
+                        <i class="bi bi-telephone"></i>
+                    </button>
+                    <button class="btn btn-danger btn-circle"
+                            title="Μη προσέλευση"
+                            onclick="markAbsent(this)">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 9 -->
+            <div class="passenger-row">
+                <div class="name">Δημήτρης Παναγιώτου</div>
+
+                <div class="actions ms-auto">
+                    <button class="btn btn-success btn-circle"
+                            title="Κλήση γονέα">
+                        <i class="bi bi-telephone"></i>
+                    </button>
+                    <button class="btn btn-danger btn-circle"
+                            title="Μη προσέλευση"
+                            onclick="markAbsent(this)">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 10 -->
+            <div class="passenger-row">
+                <div class="name">Άννα Θεοδώρου</div>
+
+                <div class="actions ms-auto">
+                    <button class="btn btn-success btn-circle"
+                            title="Κλήση γονέα">
+                        <i class="bi bi-telephone"></i>
+                    </button>
+                    <button class="btn btn-danger btn-circle"
+                            title="Μη προσέλευση"
+                            onclick="markAbsent(this)">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 11 -->
+            <div class="passenger-row">
+                <div class="name">Νικόλας Στεφανίδης</div>
+
+                <div class="actions ms-auto">
+                    <button class="btn btn-success btn-circle"
+                            title="Κλήση γονέα">
+                        <i class="bi bi-telephone"></i>
+                    </button>
+                    <button class="btn btn-danger btn-circle"
+                            title="Μη προσέλευση"
+                            onclick="markAbsent(this)">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 12 -->
+            <div class="passenger-row">
+                <div class="name">Άννα Βασιλείου</div>
+
+                <div class="actions ms-auto">
+                    <button class="btn btn-success btn-circle"
+                            title="Κλήση γονέα">
+                        <i class="bi bi-telephone"></i>
+                    </button>
+                    <button class="btn btn-danger btn-circle"
+                            title="Μη προσέλευση"
+                            onclick="markAbsent(this)">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 13 -->
+            <div class="passenger-row">
+                <div class="name">Πάνος Καραγιάννης</div>
+
+                <div class="actions ms-auto">
+                    <button class="btn btn-success btn-circle"
+                            title="Κλήση γονέα">
+                        <i class="bi bi-telephone"></i>
+                    </button>
+                    <button class="btn btn-danger btn-circle"
+                            title="Μη προσέλευση"
+                            onclick="markAbsent(this)">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 14 -->
+            <div class="passenger-row">
+                <div class="name">Κατερίνα Ιωάννου</div>
+
+                <div class="actions ms-auto">
+                    <button class="btn btn-success btn-circle"
+                            title="Κλήση γονέα">
+                        <i class="bi bi-telephone"></i>
+                    </button>
+                    <button class="btn btn-danger btn-circle"
+                            title="Μη προσέλευση"
+                            onclick="markAbsent(this)">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 15 -->
+            <div class="passenger-row">
+                <div class="name">Ελένη Παπαγεωργίου</div>
+
+                <div class="actions ms-auto">
+                    <button class="btn btn-success btn-circle"
+                            title="Κλήση γονέα">
+                        <i class="bi bi-telephone"></i>
+                    </button>
+                    <button class="btn btn-danger btn-circle"
+                            title="Μη προσέλευση"
+                            onclick="markAbsent(this)">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Κουμπί παραλαβής -->
+        <div class="bottom-button">
+            <button id="actionBtn" class="btn btn-success w-100 py-3 d-none">
+                Παραλαβή λίστας
+            </button>
+        </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+
+                const waitingState = document.getElementById("waitingState");
+                const listState = document.getElementById("listState");
+                const actionBtn = document.getElementById("actionBtn");
+
+                // Κατάσταση 1 → Κατάσταση 2 (λίστα εμφανίζεται μετά από λίγο)
+                setTimeout(function () {
+                    waitingState.classList.add("d-none");
+                    listState.classList.remove("d-none");
+                    actionBtn.classList.remove("d-none");
+                }, 4000);
+
+                // Κατάσταση 2 → Κατάσταση 3 (παραλαβή → ολοκλήρωση)
+                actionBtn.addEventListener("click", function () {
+
+                    // αν είναι πράσινο → πάει σε κόκκινο
+                    if (actionBtn.classList.contains("btn-success")) {
+                        actionBtn.classList.remove("btn-success");
+                        actionBtn.classList.add("btn-danger");
+                        actionBtn.innerText = "Ολοκλήρωση δρομολογίου";
+                    }
+
+                    // αν είναι κόκκινο → ολοκλήρωση (γκρι + disable)
+                    else if (actionBtn.classList.contains("btn-danger")) {
+                        actionBtn.classList.remove("btn-danger");
+                        actionBtn.classList.add("btn-secondary");
+                        actionBtn.innerText = "Ολοκληρώθηκε";
+                        actionBtn.disabled = true;
+                    }
+
+                });
+
+            });
+
+            //όταν πατηθεί το "Μη ποσέλλευση"
+            function markAbsent(button) {
+                const row = button.closest(".passenger-row");
+                const actions = row.querySelector(".actions");
+
+                // βάφει το row
+                row.classList.add("absent-passenger-row");
+
+                // κρύβει τα κουμπιά
+                actions.style.display = "none";
+            }
+        </script>
+
+    </body>
 </html>
